@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO: Write a unique, compelling description for your blog index page -->
+    <meta name="description" content="The official blog of flywithpeggs.com, featuring articles on health, wellness, mindful living, travel inspiration, and tech to help you live well and travel far.">
+    <title>Blog - flywithpeggs.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --royal: #4A00E0;      /* Primary purple */
+            --velvet: #5D3FD3;      /* Secondary purple */
+            --amethyst: #9966CC;    /* Light purple accent */
+            --gold: #FFD700;        /* Accent for buttons/borders */
+            --text-light: #F8F8FF;  /* Off-white for text on dark bg */
+            --text-dark: #2E2E2E;   /* Dark gray for body text */
+            --card-bg: #FAF5FF;      /* Soft purple-tinged white for cards */
+            --header-bg: #1A0033;   /* Deep purple for header/footer */
+            --page-bg: #FDFBFF;      /* Very light purple/white for main background */
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--page-bg);
+            color: var(--text-dark);
+        }
+        .page-header-bg { background-color: var(--card-bg); }
+        .btn { @apply px-6 py-3 rounded-lg font-semibold transition-colors duration-300 inline-block; }
+        .btn-primary { background-color: var(--royal); color: var(--text-light); }
+        .btn-primary:hover { background-color: var(--velvet); }
+        .btn-accent { 
+            background-color: var(--gold); 
+            color: var(--text-dark);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-accent:hover { background-color: #e6c200; /* Darker Gold */ }
+        
+        header { background-color: var(--header-bg); }
+        .brand-logo { 
+            font-family: 'Playfair Display', serif; 
+            color: var(--gold); 
+            font-weight: 700; 
+            font-size: 1.5rem; 
+            line-height: 2rem; 
+            text-decoration: none; 
+            position: relative;
+            overflow: hidden;
+            display: inline-block; 
+        }
+        header nav a, header nav button { color: var(--amethyst); }
+        header nav a:hover, header nav button:hover { color: var(--gold); }
+        header nav a.active { color: var(--gold); @apply font-semibold; }
+
+        #mobile-menu { background-color: var(--header-bg); }
+        #mobile-menu a { color: var(--amethyst); @apply block px-4 py-3 text-sm; }
+        #mobile-menu a:hover { background-color: var(--velvet); color: var(--gold); }
+        #mobile-menu a.active { background-color: var(--royal); color: var(--gold); @apply font-semibold; }
+
+        footer { background-color: var(--header-bg); color: var(--text-light); }
+        footer a { color: var(--amethyst); }
+        footer a:hover { color: var(--gold); }
+        footer .brand-name { color: var(--text-light); }
+        
+        a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+            outline: 3px solid var(--gold);
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+
+        .blog-card {
+            background-color: var(--card-bg);
+            @apply rounded-xl shadow-lg overflow-hidden transition-all duration-300 flex flex-col;
+        }
+        .blog-card:hover { @apply shadow-2xl transform -translate-y-1; }
+        .blog-card-content { @apply p-6 flex flex-col flex-grow; }
+        .blog-card h2 a { color: var(--text-dark); }
+        .blog-card h2 a:hover { color: var(--royal); }
+        .blog-card-meta { color: var(--amethyst); }
+        .blog-card-read-more { color: var(--velvet); }
+        .blog-card-read-more:hover { color: var(--royal); }
+
+        .category-button {
+            @apply px-4 py-2 text-sm font-semibold rounded-full border-2 transition-colors;
+            color: var(--velvet);
+            border-color: var(--amethyst);
+        }
+        .category-button:hover, .category-button.active {
+            background-color: var(--velvet);
+            color: var(--text-light);
+            border-color: var(--velvet);
+        }
+        .section-title { color: var(--royal); }
+    </style>
+</head>
+<body class="bg-page-bg text-text-dark">
+
+    <header>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="brand-logo">flywithpeggs.com</a>
+                </div>
+                <nav class="hidden md:flex space-x-2 items-center">
+                    <a href="index.html">Home</a>
+                     <div class="relative group">
+                        <button class="px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                            Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg z-20 hidden group-hover:block" style="background-color: var(--card-bg);">
+                            <a href="health-consulting.html" class="block px-4 py-2 text-sm text-text-dark hover:bg-page-bg">Health Consulting</a>
+                            <a href="wellness-coaching.html" class="block px-4 py-2 text-sm text-text-dark hover:bg-page-bg">Wellness Coaching</a>
+                            <a href="travel-services.html" class="block px-4 py-2 text-sm text-text-dark hover:bg-page-bg">Travel Services</a>
+                        </div>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="blog.html" class="active">Blog</a> <!-- Active for this page -->
+                    <a href="bulletin.html">Bulletin</a>
+                    <a href="schedule.html" class="btn btn-accent text-xs">Book Time</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="focus:outline-none text-white">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden shadow-lg">
+            <a href="index.html">Home</a><a href="about.html">About Peggens</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Services</strong>
+            <a href="health-consulting.html" class="pl-6">Health Consulting</a><a href="wellness-coaching.html" class="pl-6">Wellness Coaching</a><a href="travel-services.html" class="pl-6">Travel Services</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Explore</strong>
+            <a href="blog.html" class="active">Blog</a><a href="news.html">News</a><a href="tips.html">Helpful Tips</a><a href="bulletin.html">Bulletin Board</a><a href="escapades.html">My Escapades</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Plan & Connect</strong>
+            <a href="survey.html">Travel Survey (AI Ideas)</a><a href="schedule.html">Schedule Consultation</a><a href="partners.html">My Partners</a><a href="support.html">Support My Work</a><a href="game.html">Travel Game</a><a href="contact.html">Contact Me</a>
+        </div>
+    </header>
+
+    <div id="blog-index-content">
+        <section class="page-header-bg py-12 md:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-3xl md:text-5xl font-bold section-title">From My Desk to Yours</h1>
+                <p class="text-md md:text-lg mt-2">Insights on Health, Wellness, Tech, and Transformative Travel</p>
+            </div>
+        </section>
+
+        <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <section id="featured-post" class="mb-16">
+                <h2 class="text-2xl font-bold mb-6 text-center section-title">Featured Post</h2>
+                <article class="grid md:grid-cols-2 gap-8 items-center p-6 rounded-xl shadow-lg" style="background-color: var(--card-bg);">
+                    <a href="blog-post-template.html">
+                        <img src="https://placehold.co/800x600/5D3FD3/FFD700?text=Mindful+Travel" alt="A serene travel scene with a person meditating." class="w-full h-full object-cover rounded-lg" loading="lazy">
+                    </a>
+                    <div>
+                        <p class="text-sm mb-2 blog-card-meta"><time datetime="2025-06-05">June 5, 2025</time> • Wellness, Travel</p>
+                        <h3 class="text-3xl font-bold mb-4">
+                            <a href="blog-post-template.html" class="hover:text-royal" style="color: var(--royal);">The Art of Mindful Travel</a>
+                        </h3>
+                        <p class="text-base mb-6">Travel is more than just seeing new places; it's about experiencing them fully. Discover simple techniques to incorporate mindfulness into your adventures for a richer, more fulfilling trip.</p>
+                        <a href="blog-post-template.html" class="btn btn-accent">Continue Reading</a>
+                    </div>
+                </article>
+            </section>
+
+            <section id="category-filters" class="mb-12">
+                <h3 class="text-xl font-bold mb-4 text-center section-title">Browse by Category</h3>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button class="category-button active" data-category="all">All Topics</button>
+                    <button class="category-button" data-category="travel">Travel</button>
+                    <button class="category-button" data-category="health-wellness">Health & Wellness</button>
+                    <button class="category-button" data-category="tech">Tech</button>
+                    <button class="category-button" data-category="passion">Passion Topics</button>
+                </div>
+            </section>
+
+            <!-- 
+                =========================================================================================
+                EASY BLOG UPDATE INSTRUCTIONS
+                =========================================================================================
+                Hi Peggens, to add a new blog post for your bi-weekly updates, follow these simple steps:
+
+                STEP 1: Create Your New Post File
+                - Duplicate the "blog-post-template.html" file.
+                - Rename the duplicate file to something descriptive, like "my-haitian-food-guide.html".
+                - Open that new file and write your article content inside it.
+
+                STEP 2: Add the Post to This List
+                - Come back to this file (blog.html).
+                - Copy the entire <article> block below (from <article... to </article>).
+                - Paste the copied block at the TOP of the list, right under this comment block.
+                
+                STEP 3: Update the Information in the Pasted Block
+                - href="...": Change the link to your new filename (e.g., href="my-haitian-food-guide.html").
+                - img src="...": Change the image URL.
+                - alt="...": Write a good description for your new image.
+                - <time>...</time>: Update the date.
+                - Category text: Update the category name shown to the user (e.g., • Passion).
+                - data-category="...": **This is essential for filtering!** Set it to the correct category slug (e.g., "tech", "travel", "health-wellness", "passion"). For multiple categories, separate with a space (e.g., data-category="travel passion").
+                - Update the Post Title and the short preview text.
+
+                That's it! Your new post will appear here and the filters will work automatically.
+            -->
+            <div id="blog-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog posts will be listed here. Add new ones at the top. -->
+                <article class="blog-card" data-category="health-wellness">
+                    <a href="#"><img src="https://placehold.co/600x400/9966CC/FAF5FF?text=Digital+Detox" alt="A person turning off their phone screen." class="w-full h-56 object-cover" loading="lazy"></a>
+                    <div class="blog-card-content">
+                        <p class="text-sm mb-1 blog-card-meta"><time datetime="2025-05-15">May 15, 2025</time> • Health & Wellness</p>
+                        <h2 class="text-2xl font-bold mb-3"><a href="#">5 Steps for a Successful Digital Detox</a></h2>
+                        <p class="text-sm flex-grow">Feeling overwhelmed by screen time? A digital detox can reset your mind. Here are five practical steps to unplug effectively.</p>
+                        <div class="mt-4"><a href="#" class="font-semibold blog-card-read-more">Read More →</a></div>
+                    </div>
+                </article>
+                <article class="blog-card" data-category="travel passion">
+                    <a href="#"><img src="https://placehold.co/600x400/FFD700/1A0033?text=Haitian+Cuisine" alt="A vibrant plate of Haitian food." class="w-full h-56 object-cover" loading="lazy"></a>
+                    <div class="blog-card-content">
+                        <p class="text-sm mb-1 blog-card-meta"><time datetime="2025-05-28">May 28, 2025</time> • Travel, Passion</p>
+                        <h2 class="text-2xl font-bold mb-3"><a href="#">A Taste of Home: The Healthy Side of Haitian Cuisine</a></h2>
+                        <p class="text-sm flex-grow">As a proud Haitian American, I love sharing the rich, healthy flavors of my heritage. Let's explore some delicious dishes.</p>
+                        <div class="mt-4"><a href="#" class="font-semibold blog-card-read-more">Read More →</a></div>
+                    </div>
+                </article>
+                <article class="blog-card" data-category="tech">
+                    <a href="#"><img src="https://placehold.co/600x400/4A00E0/F8F8FF?text=Travel+Tech" alt="A smartphone displaying a map and travel apps." class="w-full h-56 object-cover" loading="lazy"></a>
+                    <div class="blog-card-content">
+                        <p class="text-sm mb-1 blog-card-meta"><time datetime="2025-04-30">April 30, 2025</time> • Tech</p>
+                        <h2 class="text-2xl font-bold mb-3"><a href="#">Top 5 Tech Gadgets for Smarter Travel</a></h2>
+                        <p class="text-sm flex-grow">From smart luggage to universal translators, technology has revolutionized how we explore the world. Here are my top 5 must-have gadgets.</p>
+                        <div class="mt-4"><a href="#" class="font-semibold blog-card-read-more">Read More →</a></div>
+                    </div>
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-12">
+            <div class="mb-4"><a href="index.html" class="brand-logo" style="color: var(--gold);">flywithpeggs.com</a></div>
+            <nav class="mb-4 space-x-4 text-sm"><a href="about.html">About</a><a href="blog.html" class="active">Blog</a><a href="contact.html">Contact</a><a href="schedule.html">Schedule Time</a><a href="privacy.html">Privacy Policy</a></nav>
+            <p class="mb-4 text-sm">Empowering your journey to health, wellness, and discovery.</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://facebook.com/flywithpeggs" aria-label="Visit our Facebook page" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-facebook-f fa-lg"></i></a>
+                <a href="https://instagram.com/flywithpeggs" aria-label="Visit our Instagram page" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="https://linkedin.com/in/peggensaltidor" aria-label="Visit our LinkedIn profile" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                <a href="https://www.youtube.com/@peggensaltidor" aria-label="Visit our YouTube channel" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-youtube fa-lg"></i></a>
+                <a href="https://pinterest.com/flywithpeggs" aria-label="Visit our Pinterest page" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-pinterest-p fa-lg"></i></a>
+            </div>
+            <p class="text-sm">© <span id="currentYear"></span> Peggens Altidor. All Rights Reserved.</p>
+            <p class="text-xs mt-1">Phone: <a href="tel:516-984-3733">(516) 984-3733</a></p>
+        </div>
+    </footer>
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuButton && mobileMenu) { mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); }); }
+        if (mobileMenu) { mobileMenu.querySelectorAll('a').forEach(anchor => { anchor.addEventListener('click', function() { if (!this.closest('.relative.group')) { mobileMenu.classList.add('hidden'); } }); }); }
+        
+        const currentYearEl = document.getElementById('currentYear');
+        if (currentYearEl) { currentYearEl.textContent = new Date().getFullYear(); }
+        
+        const filterContainer = document.querySelector('#category-filters');
+        const blogItems = document.querySelectorAll('#blog-grid .blog-card');
+        if (filterContainer && blogItems.length > 0) {
+            filterContainer.addEventListener('click', (event) => {
+                const targetButton = event.target.closest('button');
+                if (!targetButton) return;
+
+                filterContainer.querySelector('.active').classList.remove('active');
+                targetButton.classList.add('active');
+
+                const filter = targetButton.dataset.category;
+                
+                blogItems.forEach(item => {
+                    const itemCategories = item.dataset.category.split(' ');
+                    if (filter === 'all' || itemCategories.includes(filter)) {
+                        item.style.display = 'flex'; // Use flex to maintain card structure
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
