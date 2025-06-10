@@ -1,0 +1,271 @@
+<!-- NEWS INDEX PAGE: news.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO: Write a unique, compelling description for your News page -->
+    <meta name="description" content="The latest news, announcements, and press mentions from Peggens Altidor of flywithpeggs.com. Stay informed on new workshops, partnerships, and more.">
+    <title>News & Announcements | flywithpeggs.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --royal: #4A00E0; --velvet: #5D3FD3; --amethyst: #9966CC; --gold: #FFD700; --text-light: #F8F8FF; --text-dark: #2E2E2E; --card-bg: #FAF5FF; --header-bg: #1A0033; --page-bg: #FFFFFF;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--page-bg); color: var(--text-dark); }
+        .page-header-bg { background-image: linear-gradient(rgba(26,0,51,0.6), rgba(26,0,51,0.6)), url('https://placehold.co/1600x500/5D3FD3/F8F8FF?text=Latest+News'); background-size: cover; background-position: center; }
+        .btn { @apply px-6 py-3 rounded-lg font-semibold transition-colors duration-300 inline-block; }
+        .btn-primary { background-color: var(--royal); color: var(--text-light); }
+        .btn-primary:hover { background-color: var(--velvet); }
+        .btn-accent { 
+            background-color: var(--gold); 
+            color: var(--text-dark);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-accent:hover { background-color: #e6c200; }
+        header { background-color: var(--header-bg); }
+        .brand-logo { 
+            font-family: 'Playfair Display', serif; 
+            color: var(--gold); 
+            font-weight: 700; 
+            font-size: 1.5rem; 
+            line-height: 2rem; 
+            text-decoration: none; 
+            position: relative;
+            overflow: hidden;
+            display: inline-block; 
+        }
+        header nav a, header nav button { color: var(--amethyst); }
+        header nav a:hover, header nav button:hover { color: var(--gold); }
+        header nav a.active, header nav button.active { color: var(--gold); @apply font-semibold; }
+        #mobile-menu a { color: var(--amethyst); @apply block px-4 py-3 text-sm; }
+        #mobile-menu a:hover { background-color: var(--velvet); color: var(--gold); }
+        #mobile-menu a.active { background-color: var(--royal); color: var(--gold); @apply font-semibold; }
+        footer { background-color: var(--header-bg); color: var(--text-light); }
+        footer a { color: var(--amethyst); }
+        footer a:hover { color: var(--gold); }
+        a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 2px; }
+        .section-title { color: var(--royal); @apply text-3xl md:text-4xl font-bold text-center mb-4; }
+        .section-subtitle { @apply text-lg text-center mb-12; color: var(--velvet); }
+        .news-item { background-color: var(--card-bg); @apply rounded-lg shadow-md p-6 flex flex-col md:flex-row items-start gap-6 transition-shadow hover:shadow-lg; }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) skewX(-25deg); }
+            100% { transform: translateX(100%) skewX(-25deg); }
+        }
+        .brand-logo:hover::after, .btn-accent:hover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shine 1.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-page-bg text-text-dark">
+
+    <header>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="brand-logo">flywithpeggs.com</a>
+                </div>
+                <nav class="hidden md:flex space-x-2 items-center">
+                    <a href="index.html">Home</a>
+                     <div class="relative group">
+                        <button class="px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                            Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg z-20 hidden group-hover:block" style="background-color: var(--card-bg);">
+                            <a href="health-consulting.html" class="block px-4 py-2 text-sm text-text-dark hover:bg-page-bg">Health Consulting</a>
+                            <a href="wellness-coaching.html" class="block px-4 py-2 text-sm text-text-dark hover:bg-page-bg">Wellness Coaching</a>
+                            <a href="travel-services.html" class="block px-4 py-2 text-sm text-text-dark hover:bg-page-bg">Travel Services</a>
+                        </div>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="bulletin.html">Bulletin</a>
+                    <a href="schedule.html" class="btn btn-accent text-xs">Book Time</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="focus:outline-none text-white">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden shadow-lg" style="background-color: var(--header-bg);">
+            <a href="index.html">Home</a><a href="about.html">About Peggens</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Services</strong>
+            <a href="health-consulting.html" class="pl-6">Health Consulting</a><a href="wellness-coaching.html" class="pl-6">Wellness Coaching</a><a href="travel-services.html" class="pl-6">Travel Services</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Explore</strong>
+            <a href="blog.html">Blog</a><a href="news.html" class="active">News</a>
+            <a href="tips.html">Helpful Tips</a><a href="bulletin.html">Bulletin Board</a><a href="escapades.html">My Escapades</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Plan & Connect</strong>
+            <a href="survey.html">Travel Survey (AI Ideas)</a><a href="schedule.html">Schedule Consultation</a><a href="partners.html">My Partners</a><a href="support.html">Support My Work</a><a href="game.html">Travel Game</a>
+            <a href="contact.html">Contact Me</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Page Header -->
+        <section class="page-header-bg py-20 md:py-32">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+                <h1 class="text-4xl md:text-6xl font-extrabold" style="color: var(--text-light); text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">News & Announcements</h1>
+                <p class="text-xl md:text-2xl mt-6 max-w-3xl mx-auto opacity-90">The latest official updates, press mentions, and milestones from flywithpeggs.com.</p>
+            </div>
+        </section>
+
+        <!-- News Feed -->
+        <section class="py-16 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+                <div class="space-y-12">
+
+                    <!-- News Item 1 -->
+                    <article class="news-item">
+                        <div class="w-32 text-center flex-shrink-0">
+                            <p class="text-lg font-bold" style="color: var(--royal);">JUL</p>
+                            <p class="text-5xl font-extrabold" style="color: var(--velvet);">01</p>
+                            <p class="text-lg font-bold" style="color: var(--royal);">2025</p>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold mb-2"><a href="news-article-template.html" class="hover:text-royal">Announcing New "Wellness for Professionals" Workshop Series</a></h2>
+                            <p class="text-sm" style="color: var(--amethyst);">ANNOUNCEMENT</p>
+                            <p class="mt-4">I'm thrilled to announce a new series of online workshops designed specifically for busy professionals looking to combat burnout and find better work-life balance. The first session kicks off in August...</p>
+                            <a href="news-article-template.html" class="font-bold mt-4 inline-block" style="color: var(--gold);">Read Full Story →</a>
+                        </div>
+                    </article>
+
+                    <!-- News Item 2 -->
+                    <article class="news-item">
+                        <div class="w-32 text-center flex-shrink-0">
+                            <p class="text-lg font-bold" style="color: var(--royal);">JUN</p>
+                            <p class="text-5xl font-extrabold" style="color: var(--velvet);">15</p>
+                            <p class="text-lg font-bold" style="color: var(--royal);">2025</p>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold mb-2"><a href="#" class="hover:text-royal">flywithpeggs.com Featured in "Travel Weekly"</a></h2>
+                            <p class="text-sm" style="color: var(--amethyst);">PRESS MENTION</p>
+                            <p class="mt-4">I am honored to be featured in the latest edition of Travel Weekly, discussing the rising trend of wellness-focused travel and the importance of a holistic approach to planning modern vacations...</p>
+                            <a href="#" class="font-bold mt-4 inline-block" style="color: var(--gold);">Read Full Story →</a>
+                        </div>
+                    </article>
+
+                    <!-- News Item 3 -->
+                    <article class="news-item">
+                        <div class="w-32 text-center flex-shrink-0">
+                            <p class="text-lg font-bold" style="color: var(--royal);">MAY</p>
+                            <p class="text-5xl font-extrabold" style="color: var(--velvet);">20</p>
+                            <p class="text-lg font-bold" style="color: var(--royal);">2025</p>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold mb-2"><a href="#" class="hover:text-royal">New Partnership with Mindful Moments App</a></h2>
+                            <p class="text-sm" style="color: var(--amethyst);">PARTNERSHIP</p>
+                            <p class="mt-4">To provide even more value to my wellness clients, I've officially partnered with the Mindful Moments app. All new coaching clients will receive a complimentary 3-month subscription...</p>
+                            <a href="#" class="font-bold mt-4 inline-block" style="color: var(--gold);">Read Full Story →</a>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-12">
+            <div class="mb-4"><a href="index.html" class="brand-logo" style="color: var(--gold);">flywithpeggs.com</a></div>
+            <nav class="mb-4 space-x-4 text-sm"><a href="about.html">About</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="schedule.html">Schedule Time</a><a href="privacy.html">Privacy Policy</a></nav>
+            <p class="mb-4 text-sm">Empowering your journey to health, wellness, and discovery.</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://facebook.com/flywithpeggs" aria-label="Visit our Facebook page" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-facebook-f fa-lg"></i></a>
+                <a href="https://instagram.com/flywithpeggs" aria-label="Visit our Instagram page" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="https://linkedin.com/in/peggensaltidor" aria-label="Visit our LinkedIn profile" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                <a href="https://www.youtube.com/@peggensaltidor" aria-label="Visit our YouTube channel" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-youtube fa-lg"></i></a>
+                <a href="https://pinterest.com/flywithpeggs" aria-label="Visit our Pinterest page" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-pinterest-p fa-lg"></i></a>
+            </div>
+            <p class="text-sm">© <span id="currentYear"></span> Peggens Altidor. All Rights Reserved.</p>
+            <p class="text-xs mt-1">Phone: <a href="tel:516-984-3733">(516) 984-3733</a></p>
+        </div>
+    </footer>
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuButton && mobileMenu) { mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); }); }
+        if (mobileMenu) { mobileMenu.querySelectorAll('a').forEach(anchor => { anchor.addEventListener('click', function() { if (!this.closest('.relative.group')) { mobileMenu.classList.add('hidden'); } }); }); }
+        const currentYearEl = document.getElementById('currentYear');
+        if (currentYearEl) { currentYearEl.textContent = new Date().getFullYear(); }
+    </script>
+</body>
+</html>
+
+<!-- NEWS ARTICLE TEMPLATE: news-article-template.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO: Write a unique, compelling title and description for each news article -->
+    <meta name="description" content="[Write a 1-2 sentence summary of this specific news article here]">
+    <title>News Article Title - flywithpeggs.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --royal: #4A00E0; --velvet: #5D3FD3; --amethyst: #9966CC; --gold: #FFD700; --text-light: #F8F8FF; --text-dark: #2E2E2E; --card-bg: #FAF5FF; --header-bg: #1A0033; --page-bg: #FFFFFF;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--page-bg); color: var(--text-dark); }
+        header { background-color: var(--header-bg); }
+        header nav a, header nav button { color: var(--amethyst); }
+        header nav a:hover, header nav button:hover { color: var(--gold); }
+        header nav a.active, header nav button.active { color: var(--gold); @apply font-semibold; }
+        .brand-logo { font-family: 'Playfair Display', serif; color: var(--gold); font-weight: 700; font-size: 1.5rem; line-height: 2rem; text-decoration: none; }
+        .prose h2, .prose h3 { color: var(--royal); @apply mt-8 mb-4 font-bold; }
+        .prose p { @apply mb-6 leading-relaxed; }
+        .prose a { color: var(--velvet); @apply font-semibold underline; }
+        .prose a:hover { color: var(--amethyst); }
+        .prose img { @apply rounded-lg shadow-md my-8; }
+    </style>
+</head>
+<body class="bg-page-bg text-text-dark">
+    <!-- Your standard header would go here -->
+    <header>
+        <!-- ... Header content from other pages ... -->
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        <article class="max-w-3xl mx-auto p-6 md:p-10 rounded-xl shadow-xl prose" style="background-color: var(--card-bg);">
+            <header class="mb-8 border-b border-amethyst/30 pb-4">
+                <p class="text-sm font-semibold" style="color: var(--amethyst);">ANNOUNCEMENT</p> <!-- MODIFY: Category -->
+                <h1 class="text-3xl md:text-4xl font-extrabold mt-2" style="color: var(--royal);">[MODIFY: News Article Title Here]</h1>
+                <div class="mt-4 text-sm">
+                    <span>Posted on <time datetime="YYYY-MM-DD">[MODIFY: Post Date]</time></span>
+                </div>
+            </header>
+            
+            <!-- MODIFY: Main news content starts here -->
+            <p>This is the first paragraph of your news article. State the main point of the announcement clearly and directly.</p>
+            <img src="https://placehold.co/800x450/5D3FD3/FFD700?text=News+Image" alt="[MODIFY: A descriptive alt text for the main news image]" class="w-full" loading="lazy">
+            <p>Use subsequent paragraphs to provide more details, context, and any necessary information related to the announcement. This template uses "prose" styling for clean, readable typography.</p>
+        </article>
+
+        <div class="text-center mt-12">
+            <a href="news.html" class="font-semibold" style="color: var(--royal);"><i class="fas fa-arrow-left mr-2"></i> Back to All News</a>
+        </div>
+    </main>
+
+    <!-- Your standard footer would go here -->
+    <footer>
+        <!-- ... Footer content from other pages ... -->
+    </footer>
+</body>
+</html>

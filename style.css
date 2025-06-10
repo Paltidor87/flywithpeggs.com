@@ -1,0 +1,86 @@
+/* ==========================================================================
+   1. BRAND PALETTE & GLOBAL STYLES (Uniform Design)
+   ========================================================================== */
+   :root {
+    --royal: #4A00E0;      /* Primary purple */
+    --velvet: #5D3FD3;      /* Secondary purple */
+    --amethyst: #9966CC;    /* Light purple accent */
+    --gold: #FFD700;        /* Accent for buttons/borders */
+    --text-light: #F8F8FF;  /* Off-white for text on dark bg */
+    --text-dark: #2E2E2E;   /* Dark gray for body text */
+    --card-bg: #FAF5FF;      /* Soft purple-tinged white for cards */
+    --header-bg: #1A0033;   /* Deep purple for header/footer */
+    --page-bg: #FFFFFF;      /* Softer, clean white background */
+}
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: var(--page-bg);
+    color: var(--text-dark);
+}
+
+/* ==========================================================================
+   2. REUSABLE COMPONENTS (Header, Footer, Buttons, Cards)
+   ========================================================================== */
+.page-header-bg { background-color: var(--card-bg); }
+.btn { @apply px-6 py-3 rounded-lg font-semibold transition-colors duration-300 inline-block; }
+.btn-primary { background-color: var(--royal); color: var(--text-light); }
+.btn-primary:hover { background-color: var(--velvet); }
+.btn-accent { 
+    background-color: var(--gold); 
+    color: var(--text-dark);
+    position: relative;
+    overflow: hidden;
+}
+.btn-accent:hover { background-color: #e6c200; }
+
+header { background-color: var(--header-bg); }
+.brand-logo { 
+    font-family: 'Playfair Display', serif; 
+    color: var(--gold); 
+    font-weight: 700; 
+    font-size: 1.5rem; 
+    line-height: 2rem; 
+    text-decoration: none; 
+    position: relative;
+    overflow: hidden;
+    display: inline-block; 
+}
+header nav a, header nav button { color: var(--amethyst); }
+header nav a:hover, header nav button:hover { color: var(--gold); }
+header nav a.active, header nav button.active { color: var(--gold); @apply font-semibold; }
+
+#mobile-menu a { color: var(--amethyst); @apply block px-4 py-3 text-sm; }
+#mobile-menu:hover { background-color: var(--velvet); color: var(--gold); }
+#mobile-menu a.active { background-color: var(--royal); color: var(--gold); @apply font-semibold; }
+
+footer { background-color: var(--header-bg); color: var(--text-light); }
+footer a { color: var(--amethyst); }
+footer a:hover { color: var(--gold); }
+footer .brand-name { color: var(--text-light); }
+
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+.section-title { color: var(--royal); @apply text-3xl md:text-4xl font-bold text-center mb-4; }
+.section-subtitle { @apply text-lg text-center mb-12; color: var(--velvet); }
+
+/* ==========================================================================
+   3. ANIMATIONS
+   ========================================================================== */
+@keyframes shine {
+    0% { transform: translateX(-100%) skewX(-25deg); }
+    100% { transform: translateX(100%) skewX(-25deg); }
+}
+.brand-logo:hover::after, .btn-accent:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shine 1.2s ease;
+}

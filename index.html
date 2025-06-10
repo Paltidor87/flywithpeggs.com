@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO: Unique, compelling description for each page -->
+    <meta name="description" content="Welcome to flywithpeggs.com, the home of Peggens Altidor Consulting. Discover expert health and wellness coaching, plus superior travel consulting services to help you live well and travel far.">
+    <title>flywithpeggs.com | Health, Wellness, Travel Consulting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- This links to your single, shared stylesheet -->
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body class="bg-page-bg text-text-dark">
+
+    <header>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="brand-logo">flywithpeggs.com</a>
+                </div>
+                <nav class="hidden md:flex space-x-2 items-center">
+                    <a href="index.html" class="active">Home</a>
+                     <div class="relative group">
+                        <button class="px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                            Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg z-20 hidden group-hover:block" style="background-color: var(--card-bg);">
+                            <a href="health-consulting.html" class="block px-4 py-2 text-sm text-text-dark hover:bg-page-bg">Health Consulting</a>
+                            <a href="wellness-coaching.html" class="block px-4 py-2 text-sm text-text-dark hover:bg-page-bg">Wellness Coaching</a>
+                            <a href="travel-services.html" class="block px-4 py-2 text-sm text-text-dark hover:bg-page-bg">Travel Services</a>
+                        </div>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="focus:outline-none text-white"><i class="fas fa-bars text-2xl"></i></button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden shadow-lg" style="background-color: var(--header-bg);">
+            <a href="index.html" class="active">Home</a>
+            <a href="about.html">About Peggens</a>
+            <a href="blog.html">Blog</a>
+            <a href="contact.html">Contact Me</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="home-hero" class="hero-bg text-white py-24 md:py-40">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight text-text-light">Live Well, Travel Far: Your Journey Starts Here</h1>
+                <p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto text-text-light opacity-90">Guidance from Peggens Altidor for vibrant health, fulfilling wellness, and unforgettable travel adventures tailored to you.</p>
+                <div class="space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="schedule.html" class="btn btn-accent text-lg">Schedule a Consultation</a>
+                    <a href="travel-services.html" class="btn btn-outline-white text-lg">Explore Travel Services</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="home-services" class="py-16 md:py-24" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title">How I Can Help You Thrive</h2>
+                <p class="section-subtitle">A holistic approach to living your best life, at home and on the road.</p>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="card p-8 text-center">
+                        <div class="text-5xl mb-6" style="color: var(--velvet);"><i class="fas fa-heart-pulse"></i></div>
+                        <h3 class="text-2xl font-bold mb-3" style="color: var(--royal);">Health Consulting</h3>
+                        <p class="mb-5">Personalized strategies to achieve your health goals and improve vitality.</p>
+                        <a href="health-consulting.html" class="btn btn-outline w-full">Discover Health Coaching</a>
+                    </div>
+                    <div class="card p-8 text-center">
+                        <div class="text-5xl mb-6" style="color: var(--amethyst);"><i class="fas fa-spa"></i></div>
+                        <h3 class="text-2xl font-bold mb-3" style="color: var(--royal);">Wellness Coaching</h3>
+                        <p class="mb-5">Holistic approaches to balance mind, body, and spirit for a fulfilling life.</p>
+                        <a href="wellness-coaching.html" class="btn btn-outline w-full">Explore Wellness Programs</a>
+                    </div>
+                    <div class="card p-8 text-center">
+                        <div class="text-5xl mb-6" style="color: var(--royal);"><i class="fas fa-plane-departure"></i></div>
+                        <h3 class="text-2xl font-bold mb-3" style="color: var(--royal);">Superior Travel Consulting</h3>
+                        <p class="mb-5">Crafting unique travel experiences, from relaxing getaways to grand adventures.</p>
+                        <a href="travel-services.html" class="btn btn-outline w-full">Plan Your Adventure</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16" style="background-color: var(--velvet); color: var(--text-light);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold mb-4">Ready for Your Next Journey?</h2>
+                <p class="text-lg mb-6 max-w-xl mx-auto opacity-90">For direct travel bookings and exclusive deals, visit my partner site:</p>
+                <a href="http://superiortravel.info" target="_blank" rel="noopener noreferrer" class="btn btn-accent text-lg font-semibold">
+                    Book via SuperiorTravel.info <i class="fas fa-external-link-alt ml-2"></i>
+                </a>
+            </div>
+        </section>
+
+        <section id="home-about" class="py-16 md:py-24 bg-page-bg">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <img src="https://placehold.co/600x700/4A00E0/F8F8FF?text=Peggens" alt="A professional portrait of Peggens Altidor." class="rounded-lg shadow-2xl" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x700/cccccc/FFFFFF?text=P.A.';">
+                    </div>
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold" style="color: var(--royal);">An Invitation to Your Journey</h2>
+                        <p class="text-lg mt-4 mb-6" style="color: var(--velvet);">My story is one of exploration—of my Haitian roots, of global destinations, and of the deep connection between a healthy body and a curious spirit.</p>
+                        <p class="mb-6">I created flywithpeggs.com not just as a business, but as a resource for those who, like me, believe in living a vibrant, multifaceted life. My approach is simple: I combine evidence-based wellness strategies with the transformative power of travel to help you become the best version of yourself.</p>
+                        <a href="about.html" class="btn btn-primary">Read My Full Story</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="home-newsletter" class="py-16" style="background-color: var(--royal);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold mb-3 text-text-light">Stay Connected</h2>
+                    <p class="text-lg mb-6 text-text-light opacity-90">Get exclusive tips, travel deals, and updates from Peggens Altidor delivered to your inbox.</p>
+                    <form action="#" method="POST" class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" name="email_signup" placeholder="Enter your email" required 
+                               class="w-full px-4 py-3 rounded-md focus:outline-none sm:flex-1" 
+                               style="color: var(--text-dark); background-color: var(--page-bg);" aria-label="Email for newsletter">
+                        <button type="submit" class="btn btn-accent font-semibold">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-12">
+            <div class="mb-4">
+                <a href="index.html" class="brand-logo" style="color: var(--gold);">flywithpeggs.com</a>
+            </div>
+            <nav class="mb-4 space-x-4 text-sm"><a href="about.html">About</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="schedule.html">Schedule Time</a><a href="privacy.html">Privacy Policy</a></nav>
+            <p class="mb-4 text-sm">Empowering your journey to health, wellness, and discovery.</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://facebook.com/flywithpeggs" aria-label="Visit our Facebook page" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-facebook-f fa-lg"></i></a>
+                <a href="https://instagram.com/flywithpeggs" aria-label="Visit our Instagram page" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="https://linkedin.com/in/peggensaltidor" aria-label="Visit our LinkedIn profile" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                <a href="https://www.youtube.com/@peggensaltidor" aria-label="Visit our YouTube channel" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-youtube fa-lg"></i></a>
+                <a href="https://pinterest.com/flywithpeggs" aria-label="Visit our Pinterest page" target="_blank" rel="noopener noreferrer" class="hover:text-gold"><i class="fab fa-pinterest-p fa-lg"></i></a>
+            </div>
+            <p class="text-sm">© <span id="currentYear"></span> Peggens Altidor. All Rights Reserved.</p>
+            <p class="text-xs mt-1">Phone: <a href="tel:516-984-3733">(516) 984-3733</a></p>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script> 
+</body>
+</html>
