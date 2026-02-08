@@ -1,0 +1,32 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependencies (none currently, but just in case)
+node_modules/
+
+# Build output
+_site/
+
+# Don't commit sensitive files
+*.env
+*recovery_code*
+*secret*
+*.pem
+*.key
+
+# Don't commit large binaries or installers
+*.dmg
+*.exe
+*.msi
+*.tar.gz
+*.zip
+
+# Don't commit PDFs (store in Google Drive / Notion)
+*.pdf

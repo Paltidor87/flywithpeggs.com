@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Travel services by Peggens Altidor — curated travel experiences, cultural immersions, and personalized trip planning through flywithpeggs and Superior Travel.">
+    <title>Travel Services | flywithpeggs.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-white text-gray-800">
+
+    <header>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0"><a href="index.html" class="brand-logo">flywithpeggs.com</a></div>
+                <nav class="hidden md:flex space-x-2 items-center">
+                    <a href="index.html">Home</a>
+                    <div class="relative group">
+                        <button class="px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">Services <i class="fas fa-chevron-down ml-1 text-xs"></i></button>
+                        <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg z-20 hidden group-hover:block" style="background-color: var(--card-bg);">
+                            <a href="wellness.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Wellness</a>
+                            <a href="travel-services.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Travel Services</a>
+                            <a href="ai-consulting.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">AI Consulting</a>
+                        </div>
+                    </div>
+                    <a href="peggens-favorites.html">Favorites</a>
+                    <a href="meet-the-team.html">Meet the Team</a>
+                    <a href="about.html">About</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="schedule.html" class="btn btn-accent text-xs">Book Time</a>
+                </nav>
+                <div class="md:hidden"><button id="mobile-menu-button" class="focus:outline-none text-white"><i class="fas fa-bars text-2xl"></i></button></div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden shadow-lg" style="background-color: var(--header-bg);">
+            <a href="index.html">Home</a><a href="about.html">About Peggens</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Services</strong>
+            <a href="wellness.html" class="pl-6">Wellness</a><a href="travel-services.html" class="pl-6 active">Travel Services</a><a href="ai-consulting.html" class="pl-6">AI Consulting</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Explore</strong>
+            <a href="peggens-favorites.html">Peggens Favorites</a><a href="meet-the-team.html">Meet the AI Team</a><a href="blog.html">Blog</a><a href="news.html">News</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Connect</strong>
+            <a href="schedule.html">Book a Consultation</a><a href="partners.html">Partners</a><a href="support.html">Support My Work</a><a href="contact.html">Contact Me</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero-bg-travel text-white py-20 md:py-32">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6" style="color: var(--text-light);">Every Journey Tells Your Story</h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8" style="color: var(--text-light); opacity: 0.9;">Curated travel experiences with cultural depth and personal care. From relaxing getaways to grand adventures -- planned with precision and heart.</p>
+                <div class="space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="http://superiortravel.info" target="_blank" rel="noopener noreferrer" class="btn btn-accent text-lg">Book via SuperiorTravel.info <i class="fas fa-external-link-alt ml-2"></i></a>
+                    <a href="schedule.html" class="btn btn-outline-white text-lg">Plan With Me</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- What I Offer -->
+        <section class="py-16 md:py-24" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title">Travel Services</h2>
+                <p class="section-subtitle">Whether it's a solo escape, a family vacation, or a group adventure -- I handle the details so you can focus on the experience.</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-8 text-center">
+                        <div class="text-4xl mb-4" style="color: var(--velvet);"><i class="fas fa-route"></i></div>
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--royal);">Custom Itineraries</h3>
+                        <p class="text-sm">Personalized trip plans built around your interests, budget, and travel style. No cookie-cutter vacations.</p>
+                    </div>
+                    <div class="card p-8 text-center">
+                        <div class="text-4xl mb-4" style="color: var(--amethyst);"><i class="fas fa-hotel"></i></div>
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--royal);">Resort & Hotel Bookings</h3>
+                        <p class="text-sm">Access to exclusive deals and hand-picked accommodations through our partner networks, including Sandals Resorts.</p>
+                    </div>
+                    <div class="card p-8 text-center">
+                        <div class="text-4xl mb-4" style="color: var(--royal);"><i class="fas fa-users"></i></div>
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--royal);">Group Travel</h3>
+                        <p class="text-sm">Family reunions, friend trips, corporate retreats -- I coordinate group travel so everyone enjoys the journey.</p>
+                    </div>
+                    <div class="card p-8 text-center">
+                        <div class="text-4xl mb-4" style="color: var(--gold);"><i class="fas fa-globe-americas"></i></div>
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--royal);">Cultural Immersions</h3>
+                        <p class="text-sm">Go beyond the tourist spots. I plan experiences that connect you with local culture, food, history, and people.</p>
+                    </div>
+                    <div class="card p-8 text-center">
+                        <div class="text-4xl mb-4" style="color: var(--velvet);"><i class="fas fa-ring"></i></div>
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--royal);">Special Occasions</h3>
+                        <p class="text-sm">Honeymoons, anniversaries, milestone birthdays -- I create unforgettable moments for life's biggest celebrations.</p>
+                    </div>
+                    <div class="card p-8 text-center">
+                        <div class="text-4xl mb-4" style="color: var(--amethyst);"><i class="fas fa-umbrella-beach"></i></div>
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--royal);">All-Inclusive Packages</h3>
+                        <p class="text-sm">Stress-free vacations where everything is taken care of. Just pack, fly, and enjoy.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Partners -->
+        <section class="py-16" style="background-color: var(--card-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="section-title">Trusted Partners</h2>
+                <p class="section-subtitle">I work with leading travel brands to bring you the best experiences and value.</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-3xl mx-auto items-center">
+                    <div class="partner-logo-card">
+                        <img src="sandals-logo.png" alt="Sandals Resorts" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/200x100/FAF5FF/4A00E0?text=Sandals';">
+                        <p class="text-sm font-semibold" style="color: var(--royal);">Sandals Resorts</p>
+                    </div>
+                    <div class="partner-logo-card">
+                        <img src="spt-logo.png" alt="Superior Travel" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/200x100/FAF5FF/4A00E0?text=Superior+Travel';">
+                        <p class="text-sm font-semibold" style="color: var(--royal);">Superior Travel</p>
+                    </div>
+                    <div class="partner-logo-card">
+                        <a href="http://superiortravel.info" target="_blank" rel="noopener noreferrer" class="btn btn-accent text-sm">Visit SuperiorTravel.info</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Meet Mira -->
+        <section class="py-16" style="background-color: var(--velvet); color: var(--text-light);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold mb-4">Meet Mira, Your Travel Concierge</h2>
+                <p class="text-lg max-w-2xl mx-auto mb-8 opacity-90">Mira is our AI-powered travel concierge, specializing in personalized planning, cultural immersion, and travel storytelling. She's part of the Digital Dream Team -- designed to help you plan unforgettable journeys.</p>
+                <a href="meet-the-team.html" class="btn btn-accent text-lg">Meet the Full Team</a>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-16 md:py-24" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="section-title">Ready for Your Next Adventure?</h2>
+                <p class="section-subtitle">Let's plan something unforgettable together.</p>
+                <div class="space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="schedule.html" class="btn btn-primary text-lg">Schedule a Travel Consultation</a>
+                    <a href="http://superiortravel.info" target="_blank" rel="noopener noreferrer" class="btn btn-outline text-lg">Book Directly Online</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-12">
+            <div class="mb-4"><a href="index.html" class="brand-logo" style="color: var(--gold);">flywithpeggs.com</a></div>
+            <nav class="mb-4 space-x-4 text-sm"><a href="about.html">About</a><a href="wellness.html">Wellness</a><a href="travel-services.html">Travel</a><a href="ai-consulting.html">AI Consulting</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="schedule.html">Book Time</a></nav>
+            <p class="mb-4 text-sm">Empowering your journey through wellness, innovation, and transformative experiences.</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://facebook.com/flywithpeggs" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f fa-lg"></i></a>
+                <a href="https://instagram.com/flywithpeggs" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="https://linkedin.com/in/peggensaltidor" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                <a href="https://www.youtube.com/@peggensaltidor" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube fa-lg"></i></a>
+                <a href="https://pinterest.com/flywithpeggs" aria-label="Pinterest" target="_blank" rel="noopener noreferrer"><i class="fab fa-pinterest-p fa-lg"></i></a>
+            </div>
+            <p class="text-sm">&copy; <span id="currentYear"></span> Peggens Altidor / Altidor Wellness LLC. All Rights Reserved.</p>
+            <p class="text-xs mt-1">Phone: <a href="tel:516-984-3733">(516) 984-3733</a></p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

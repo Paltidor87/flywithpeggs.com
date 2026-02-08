@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Peggens' Favorites — hand-picked finds, UGC videos, and curated picks from Amazon, TikTok, Temu, and more. Affiliate links included.">
+    <title>Peggens' Favorites | flywithpeggs.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-white text-gray-800">
+
+    <header>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0"><a href="index.html" class="brand-logo">flywithpeggs.com</a></div>
+                <nav class="hidden md:flex space-x-2 items-center">
+                    <a href="index.html">Home</a>
+                    <div class="relative group">
+                        <button class="px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">Services <i class="fas fa-chevron-down ml-1 text-xs"></i></button>
+                        <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg z-20 hidden group-hover:block" style="background-color: var(--card-bg);">
+                            <a href="wellness.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Wellness</a>
+                            <a href="travel-services.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Travel Services</a>
+                            <a href="ai-consulting.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">AI Consulting</a>
+                        </div>
+                    </div>
+                    <a href="peggens-favorites.html" class="active">Favorites</a>
+                    <a href="meet-the-team.html">Meet the Team</a>
+                    <a href="about.html">About</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="schedule.html" class="btn btn-accent text-xs">Book Time</a>
+                </nav>
+                <div class="md:hidden"><button id="mobile-menu-button" class="focus:outline-none text-white"><i class="fas fa-bars text-2xl"></i></button></div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden shadow-lg" style="background-color: var(--header-bg);">
+            <a href="index.html">Home</a><a href="about.html">About Peggens</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Services</strong>
+            <a href="wellness.html" class="pl-6">Wellness</a><a href="travel-services.html" class="pl-6">Travel Services</a><a href="ai-consulting.html" class="pl-6">AI Consulting</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Explore</strong>
+            <a href="peggens-favorites.html" class="active">Peggens Favorites</a><a href="meet-the-team.html">Meet the AI Team</a><a href="blog.html">Blog</a><a href="news.html">News</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Connect</strong>
+            <a href="schedule.html">Book a Consultation</a><a href="partners.html">Partners</a><a href="support.html">Support My Work</a><a href="contact.html">Contact Me</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero-bg text-white py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6" style="color: var(--text-light);">Peggens' Favorites</h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto" style="color: var(--text-light); opacity: 0.9;">Things I love -- UGC videos I've created, hand-picked finds from Amazon, TikTok, Temu, and beyond. Curated with care, shared with heart.</p>
+            </div>
+        </section>
+
+        <!-- Affiliate Disclosure -->
+        <section class="py-6" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+                <div class="affiliate-disclosure">
+                    <strong>Affiliate Disclosure:</strong> This page contains affiliate links. If you purchase through these links, I may earn a small commission at no extra cost to you. I only recommend products and services I genuinely use and love. Thank you for supporting flywithpeggs!
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Filters -->
+        <section class="py-8" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div id="fav-filters" class="flex flex-wrap justify-center gap-4">
+                    <button class="category-button active" data-category="all">All Favorites</button>
+                    <button class="category-button" data-category="ugc">UGC Videos</button>
+                    <button class="category-button" data-category="amazon">Amazon Finds</button>
+                    <button class="category-button" data-category="tiktok">TikTok Finds</button>
+                    <button class="category-button" data-category="temu">Temu Finds</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Favorites Grid -->
+        <section class="py-8 pb-16" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+                <!--
+                =========================================================================================
+                HOW TO ADD NEW FAVORITES
+                =========================================================================================
+                Hi Peggens! To add a new favorite item, follow these steps:
+
+                STEP 1: Copy an entire <article class="fav-card" ...> block below.
+                STEP 2: Paste it at the TOP of the grid (right under this comment).
+                STEP 3: Update the following:
+                    - data-category="..." : Set to "ugc", "amazon", "tiktok", or "temu"
+                    - img src="..." : Your product/video thumbnail image URL
+                    - alt="..." : A good description of the image
+                    - The fav-category-tag text (e.g., "Amazon Find")
+                    - The title and description
+                    - The affiliate link in the <a> tag
+                    - For videos: replace the <img> with an iframe or video embed
+
+                That's it! The category filters will work automatically.
+                =========================================================================================
+                -->
+
+                <div id="fav-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- Sample: UGC Video -->
+                    <article class="fav-card" data-category="ugc">
+                        <img src="https://placehold.co/600x400/4A00E0/FFD700?text=UGC+Video" alt="UGC video thumbnail" class="w-full h-56 object-cover" loading="lazy">
+                        <div class="fav-card-content">
+                            <span class="fav-category-tag">UGC Video</span>
+                            <h2 class="text-xl font-bold mb-2" style="color: var(--text-dark);">My Morning Wellness Routine</h2>
+                            <p class="text-sm flex-grow mb-4">A quick look at how I start my day -- from herbal tea to stretching to planning my travel itinerary. Watch, be inspired, and try it yourself!</p>
+                            <a href="#" class="btn btn-primary text-sm w-full text-center">Watch Video</a>
+                        </div>
+                    </article>
+
+                    <!-- Sample: Amazon Find -->
+                    <article class="fav-card" data-category="amazon">
+                        <img src="https://placehold.co/600x400/FFD700/1A0033?text=Amazon+Find" alt="Amazon product recommendation" class="w-full h-56 object-cover" loading="lazy">
+                        <div class="fav-card-content">
+                            <span class="fav-category-tag" style="background-color: #FF9900;">Amazon Find</span>
+                            <h2 class="text-xl font-bold mb-2" style="color: var(--text-dark);">Travel Organizer Bag Set</h2>
+                            <p class="text-sm flex-grow mb-4">This packing cube set changed my travel game. Keeps everything organized and fits perfectly in any suitcase. A must-have for frequent flyers.</p>
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-sm w-full text-center">Shop on Amazon <i class="fas fa-external-link-alt ml-1"></i></a>
+                        </div>
+                    </article>
+
+                    <!-- Sample: TikTok Find -->
+                    <article class="fav-card" data-category="tiktok">
+                        <img src="https://placehold.co/600x400/5D3FD3/F8F8FF?text=TikTok+Find" alt="TikTok product recommendation" class="w-full h-56 object-cover" loading="lazy">
+                        <div class="fav-card-content">
+                            <span class="fav-category-tag" style="background-color: #010101;">TikTok Find</span>
+                            <h2 class="text-xl font-bold mb-2" style="color: var(--text-dark);">LED Sunset Lamp</h2>
+                            <p class="text-sm flex-grow mb-4">This went viral for a reason. Perfect ambient lighting for content creation or just setting the mood at home. I use it in every video now.</p>
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-sm w-full text-center">Find on TikTok <i class="fas fa-external-link-alt ml-1"></i></a>
+                        </div>
+                    </article>
+
+                    <!-- Sample: Temu Find -->
+                    <article class="fav-card" data-category="temu">
+                        <img src="https://placehold.co/600x400/9966CC/F8F8FF?text=Temu+Find" alt="Temu product recommendation" class="w-full h-56 object-cover" loading="lazy">
+                        <div class="fav-card-content">
+                            <span class="fav-category-tag" style="background-color: #FB7701; color: white;">Temu Find</span>
+                            <h2 class="text-xl font-bold mb-2" style="color: var(--text-dark);">Portable Mini Steamer</h2>
+                            <p class="text-sm flex-grow mb-4">Wrinkle-free clothes on the go? Yes please. This compact steamer fits in my carry-on and saves me every trip. Under $15 and works like a charm.</p>
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-sm w-full text-center">Shop on Temu <i class="fas fa-external-link-alt ml-1"></i></a>
+                        </div>
+                    </article>
+
+                    <!-- Sample: UGC Video 2 -->
+                    <article class="fav-card" data-category="ugc">
+                        <img src="https://placehold.co/600x400/1A0033/FFD700?text=UGC+Review" alt="UGC review video thumbnail" class="w-full h-56 object-cover" loading="lazy">
+                        <div class="fav-card-content">
+                            <span class="fav-category-tag">UGC Video</span>
+                            <h2 class="text-xl font-bold mb-2" style="color: var(--text-dark);">Hotel Room Tour: My Favorite Budget Stay</h2>
+                            <p class="text-sm flex-grow mb-4">You don't need to spend a fortune to get a great room. Here's my honest walkthrough of one of my go-to budget hotels that never disappoints.</p>
+                            <a href="#" class="btn btn-primary text-sm w-full text-center">Watch Video</a>
+                        </div>
+                    </article>
+
+                    <!-- Sample: Amazon Find 2 -->
+                    <article class="fav-card" data-category="amazon">
+                        <img src="https://placehold.co/600x400/FFD700/4A00E0?text=Wellness+Find" alt="Amazon wellness product" class="w-full h-56 object-cover" loading="lazy">
+                        <div class="fav-card-content">
+                            <span class="fav-category-tag" style="background-color: #FF9900;">Amazon Find</span>
+                            <h2 class="text-xl font-bold mb-2" style="color: var(--text-dark);">Herbal Tea Sampler Set</h2>
+                            <p class="text-sm flex-grow mb-4">I start every morning with one of these blends. The chamomile-lavender is my favorite for winding down after a long travel day. Great gift too.</p>
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-sm w-full text-center">Shop on Amazon <i class="fas fa-external-link-alt ml-1"></i></a>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-12">
+            <div class="mb-4"><a href="index.html" class="brand-logo" style="color: var(--gold);">flywithpeggs.com</a></div>
+            <nav class="mb-4 space-x-4 text-sm"><a href="about.html">About</a><a href="wellness.html">Wellness</a><a href="travel-services.html">Travel</a><a href="ai-consulting.html">AI Consulting</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="schedule.html">Book Time</a></nav>
+            <p class="mb-4 text-sm">Empowering your journey through wellness, innovation, and transformative experiences.</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://facebook.com/flywithpeggs" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f fa-lg"></i></a>
+                <a href="https://instagram.com/flywithpeggs" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="https://linkedin.com/in/peggensaltidor" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                <a href="https://www.youtube.com/@peggensaltidor" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube fa-lg"></i></a>
+                <a href="https://pinterest.com/flywithpeggs" aria-label="Pinterest" target="_blank" rel="noopener noreferrer"><i class="fab fa-pinterest-p fa-lg"></i></a>
+            </div>
+            <p class="text-sm">&copy; <span id="currentYear"></span> Peggens Altidor / Altidor Wellness LLC. All Rights Reserved.</p>
+            <p class="text-xs mt-1">Phone: <a href="tel:516-984-3733">(516) 984-3733</a></p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+        // Favorites category filter (same pattern as blog)
+        const favFilterContainer = document.querySelector('#fav-filters');
+        const favItems = document.querySelectorAll('#fav-grid .fav-card');
+        if (favFilterContainer && favItems.length > 0) {
+            favFilterContainer.addEventListener('click', (event) => {
+                const targetButton = event.target.closest('button');
+                if (!targetButton) return;
+                favFilterContainer.querySelector('.active').classList.remove('active');
+                targetButton.classList.add('active');
+                const filter = targetButton.dataset.category;
+                favItems.forEach(item => {
+                    const itemCategories = item.dataset.category.split(' ');
+                    if (filter === 'all' || itemCategories.includes(filter)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

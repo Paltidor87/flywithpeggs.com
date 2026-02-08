@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book a consultation with Peggens Altidor — schedule time for AI consulting, wellness coaching, or travel planning.">
+    <title>Book a Consultation | flywithpeggs.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-white text-gray-800">
+
+    <header>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0"><a href="index.html" class="brand-logo">flywithpeggs.com</a></div>
+                <nav class="hidden md:flex space-x-2 items-center">
+                    <a href="index.html">Home</a>
+                    <div class="relative group">
+                        <button class="px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">Services <i class="fas fa-chevron-down ml-1 text-xs"></i></button>
+                        <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg z-20 hidden group-hover:block" style="background-color: var(--card-bg);">
+                            <a href="wellness.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Wellness</a>
+                            <a href="travel-services.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Travel Services</a>
+                            <a href="ai-consulting.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">AI Consulting</a>
+                        </div>
+                    </div>
+                    <a href="peggens-favorites.html">Favorites</a>
+                    <a href="meet-the-team.html">Meet the Team</a>
+                    <a href="about.html">About</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="schedule.html" class="btn btn-accent text-xs active">Book Time</a>
+                </nav>
+                <div class="md:hidden"><button id="mobile-menu-button" class="focus:outline-none text-white"><i class="fas fa-bars text-2xl"></i></button></div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden shadow-lg" style="background-color: var(--header-bg);">
+            <a href="index.html">Home</a><a href="about.html">About Peggens</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Services</strong>
+            <a href="wellness.html" class="pl-6">Wellness</a><a href="travel-services.html" class="pl-6">Travel Services</a><a href="ai-consulting.html" class="pl-6">AI Consulting</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Explore</strong>
+            <a href="peggens-favorites.html">Peggens Favorites</a><a href="meet-the-team.html">Meet the AI Team</a><a href="blog.html">Blog</a><a href="news.html">News</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Connect</strong>
+            <a href="schedule.html" class="active">Book a Consultation</a><a href="partners.html">Partners</a><a href="support.html">Support My Work</a><a href="contact.html">Contact Me</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="page-header-bg py-12 md:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="section-title text-4xl md:text-5xl">Book a Consultation</h1>
+                <p class="text-lg mt-2" style="color: var(--velvet);">Choose a time that works for you. I look forward to our conversation.</p>
+            </div>
+        </section>
+
+        <!-- Consultation Types -->
+        <section class="py-12" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div class="card p-8 text-center">
+                        <div class="text-4xl mb-4" style="color: var(--velvet);"><i class="fas fa-robot"></i></div>
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--royal);">AI Consulting</h3>
+                        <p class="text-sm mb-4">Discuss AI agents, website builds, tool integrations, or workshops.</p>
+                        <p class="text-sm font-semibold" style="color: var(--amethyst);">30 or 60 minutes</p>
+                    </div>
+                    <div class="card p-8 text-center">
+                        <div class="text-4xl mb-4" style="color: var(--amethyst);"><i class="fas fa-spa"></i></div>
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--royal);">Wellness Coaching</h3>
+                        <p class="text-sm mb-4">Health assessments, wellness plans, herbal guidance, or general coaching.</p>
+                        <p class="text-sm font-semibold" style="color: var(--amethyst);">30 or 60 minutes</p>
+                    </div>
+                    <div class="card p-8 text-center">
+                        <div class="text-4xl mb-4" style="color: var(--royal);"><i class="fas fa-plane-departure"></i></div>
+                        <h3 class="text-xl font-bold mb-2" style="color: var(--royal);">Travel Planning</h3>
+                        <p class="text-sm mb-4">Destination research, itinerary design, group travel, or special occasions.</p>
+                        <p class="text-sm font-semibold" style="color: var(--amethyst);">30 or 60 minutes</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scheduling Widget Placeholder -->
+        <section class="py-16 md:py-24" style="background-color: var(--card-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold mb-4" style="color: var(--royal);">Choose Your Time</h2>
+                    <p style="color: var(--velvet);">Select a date and time below, and I'll confirm your booking.</p>
+                </div>
+
+                <!--
+                =====================================================================
+                CAL.COM SETUP (Free, Open Source Scheduling)
+                =====================================================================
+                1. Go to https://cal.com and create a free account
+                2. Set up your event types (e.g., "AI Consulting - 30min",
+                   "Wellness Coaching - 60min", "Travel Planning - 30min")
+                3. Replace YOUR_CALCOM_USERNAME below with your Cal.com username
+                4. The widget will embed directly on this page
+
+                Cal.com is 100% open source (AGPL-3.0 license).
+                Free tier includes unlimited bookings and event types.
+                =====================================================================
+                -->
+
+                <!-- Cal.com Inline Embed -->
+                <div id="cal-embed" style="width:100%; min-height:700px; overflow:auto; border-radius:0.75rem;">
+                    <!-- The Cal.com widget loads here. If you haven't set up Cal.com yet, the fallback below shows. -->
+                </div>
+
+                <!-- Cal.com embed script -->
+                <script>
+                    // Replace YOUR_CALCOM_USERNAME with your actual Cal.com username
+                    // Example: if your Cal.com URL is cal.com/peggensaltidor, use "peggensaltidor"
+                    const CAL_USERNAME = "YOUR_CALCOM_USERNAME";
+
+                    if (CAL_USERNAME !== "YOUR_CALCOM_USERNAME") {
+                        // Load Cal.com embed
+                        (function (C, A, L) {
+                            let p = function (a, ar) { a.q.push(ar); };
+                            let d = C.document;
+                            C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); };
+                        })(window, "https://app.cal.com/embed/embed.js", "init");
+
+                        Cal("init", { origin: "https://cal.com" });
+                        Cal("inline", {
+                            elementOrSelector: "#cal-embed",
+                            calLink: CAL_USERNAME,
+                            layout: "month_view",
+                            config: {
+                                theme: "light"
+                            }
+                        });
+                        Cal("ui", {
+                            styles: { branding: { brandColor: "#4A00E0" } },
+                            hideEventTypeDetails: false,
+                            layout: "month_view"
+                        });
+                    } else {
+                        // Show fallback if Cal.com isn't configured yet
+                        document.getElementById('cal-embed').innerHTML = `
+                            <div style="padding:3rem; text-align:center; background-color:var(--page-bg); border:2px dashed var(--amethyst); border-radius:0.75rem;">
+                                <div style="font-size:3rem; color:var(--amethyst); margin-bottom:1.5rem;"><i class="fas fa-calendar-alt"></i></div>
+                                <h3 style="font-size:1.25rem; font-weight:700; color:var(--royal); margin-bottom:1rem;">Online Booking Coming Soon</h3>
+                                <p style="color:var(--velvet); margin-bottom:1.5rem;">In the meantime, reach out directly to schedule your consultation.</p>
+                                <div style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center;">
+                                    <a href="contact.html" class="btn btn-primary">Send Me a Message</a>
+                                    <a href="tel:516-984-3733" class="btn btn-outline">Call (516) 984-3733</a>
+                                </div>
+                            </div>
+                        `;
+                    }
+                </script>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-12">
+            <div class="mb-4"><a href="index.html" class="brand-logo" style="color: var(--gold);">flywithpeggs.com</a></div>
+            <nav class="mb-4 space-x-4 text-sm"><a href="about.html">About</a><a href="wellness.html">Wellness</a><a href="travel-services.html">Travel</a><a href="ai-consulting.html">AI Consulting</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="schedule.html">Book Time</a></nav>
+            <p class="mb-4 text-sm">Empowering your journey through wellness, innovation, and transformative experiences.</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://facebook.com/flywithpeggs" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f fa-lg"></i></a>
+                <a href="https://instagram.com/flywithpeggs" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="https://linkedin.com/in/peggensaltidor" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                <a href="https://www.youtube.com/@peggensaltidor" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube fa-lg"></i></a>
+                <a href="https://pinterest.com/flywithpeggs" aria-label="Pinterest" target="_blank" rel="noopener noreferrer"><i class="fab fa-pinterest-p fa-lg"></i></a>
+            </div>
+            <p class="text-sm">&copy; <span id="currentYear"></span> Peggens Altidor / Altidor Wellness LLC. All Rights Reserved.</p>
+            <p class="text-xs mt-1">Phone: <a href="tel:516-984-3733">(516) 984-3733</a></p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
