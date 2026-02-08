@@ -116,7 +116,7 @@
                                 const formData = new FormData(form);
                                 result.classList.remove('hidden');
                                 result.textContent = 'Sending...';
-                                result.style.color = 'var(--velvet)';
+                                result.style.color = '#5D3FD3';
                                 fetch('https://api.web3forms.com/submit', {
                                     method: 'POST',
                                     body: formData
@@ -124,7 +124,7 @@
                                     let json = await response.json();
                                     if (response.status === 200) {
                                         result.textContent = 'Message sent successfully! I\'ll get back to you soon.';
-                                        result.style.color = 'var(--royal)';
+                                        result.style.color = '#4A00E0';
                                         form.reset();
                                     } else {
                                         result.textContent = 'Something went wrong. Please try again or call me directly.';
