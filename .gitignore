@@ -30,3 +30,7 @@ _site/
 
 # Don't commit PDFs (store in Google Drive / Notion)
 *.pdf
+
+# Hetzner / deployment
+caddy_data/
+caddy_config/

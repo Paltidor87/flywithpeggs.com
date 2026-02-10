@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trip showcase by Peggens Altidor — real trips, real stories. Explore destinations across the Caribbean, the U.S., and beyond.">
+    <title>My Trips | flywithpeggs.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-white text-gray-800">
+
+    <header>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0"><a href="index.html" class="brand-logo">flywithpeggs.com</a></div>
+                <nav class="hidden md:flex space-x-2 items-center">
+                    <a href="index.html">Home</a>
+                    <div class="relative group">
+                        <button class="px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">Services <i class="fas fa-chevron-down ml-1 text-xs"></i></button>
+                        <div class="nav-dropdown absolute left-0 pt-2 w-48 z-20">
+                            <div class="rounded-md shadow-lg py-1" style="background-color: var(--card-bg);">
+                                <a href="wellness.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Wellness</a>
+                                <a href="travel-services.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Travel Services</a>
+                                <a href="ai-consulting.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">AI Consulting</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative group">
+                        <button class="active px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">Explore <i class="fas fa-chevron-down ml-1 text-xs"></i></button>
+                        <div class="nav-dropdown absolute left-0 pt-2 w-48 z-20">
+                            <div class="rounded-md shadow-lg py-1" style="background-color: var(--card-bg);">
+                                <a href="peggens-favorites.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Favorites</a>
+                                <a href="my-trips.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">My Trips</a>
+                                <a href="meet-the-team.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Meet the Team</a>
+                                <a href="blog.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Blog</a>
+                                <a href="news.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">News</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="schedule.html" class="btn btn-accent text-xs">Book Time</a>
+                </nav>
+                <div class="md:hidden"><button id="mobile-menu-button" class="focus:outline-none text-white"><i class="fas fa-bars text-2xl"></i></button></div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden shadow-lg" style="background-color: var(--header-bg);">
+            <a href="index.html">Home</a><a href="about.html">About Peggens</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Services</strong>
+            <a href="wellness.html" class="pl-6">Wellness</a><a href="travel-services.html" class="pl-6">Travel Services</a><a href="ai-consulting.html" class="pl-6">AI Consulting</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Explore</strong>
+            <a href="peggens-favorites.html">Peggens Favorites</a><a href="my-trips.html" class="active">My Trips</a><a href="meet-the-team.html">Meet the AI Team</a><a href="blog.html">Blog</a><a href="news.html">News</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Connect</strong>
+            <a href="schedule.html">Book a Consultation</a><a href="partners.html">Partners</a><a href="support.html">Support My Work</a><a href="contact.html">Contact Me</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero-bg-trips text-white py-20 md:py-32">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6" style="color: var(--text-light);">My Trips</h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto" style="color: var(--text-light); opacity: 0.9;">Real destinations, real stories. Every trip shapes the way I plan yours.</p>
+            </div>
+        </section>
+
+        <!-- Featured Trip -->
+        <section class="py-10 md:py-16" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8">
+                    <p class="trip-kicker">Latest adventure</p>
+                    <h2 class="section-title">Featured Trip</h2>
+                </div>
+                <div id="trip-featured"></div>
+            </div>
+        </section>
+
+        <!-- Region Filters -->
+        <section class="py-8" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div id="trip-filters" class="flex flex-wrap justify-center gap-4">
+                    <button class="category-button active" data-category="all" aria-pressed="true">All Trips</button>
+                    <button class="category-button" data-category="caribbean" aria-pressed="false">Caribbean</button>
+                    <button class="category-button" data-category="domestic" aria-pressed="false">Domestic</button>
+                    <button class="category-button" data-category="international" aria-pressed="false">International</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trips Grid -->
+        <section class="py-8 pb-16" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+                <!--
+                =========================================================================================
+                HOW TO ADD NEW TRIPS (data-driven)
+                =========================================================================================
+                1) Scroll to the bottom <script> and add an object to the tripsData array.
+                2) Set region to "caribbean", "domestic", or "international".
+                3) Replace placeholder image URLs with your real trip photos.
+                4) Set featured: true on your most recent or favorite trip.
+                5) Add gallery image URLs to show multiple photos per trip.
+                =========================================================================================
+                -->
+
+                <div id="trip-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-16" style="background-color: var(--velvet); color: var(--text-light);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl font-bold mb-4">Want a Trip Like This?</h2>
+                <p class="text-lg mb-8 max-w-2xl mx-auto opacity-90">I plan trips with the same care I put into my own. Let's build your next adventure together.</p>
+                <div class="space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="travel-services.html" class="btn btn-accent text-lg">Explore Travel Services</a>
+                    <a href="schedule.html" class="btn btn-outline-white text-lg">Book a Consultation</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Photo Lightbox -->
+    <div id="trip-lightbox" class="trip-lightbox" role="dialog" aria-modal="true" aria-label="Trip photo gallery">
+        <button class="trip-lightbox-close" aria-label="Close gallery"><i class="fas fa-times"></i></button>
+        <button class="trip-lightbox-prev" aria-label="Previous photo"><i class="fas fa-chevron-left"></i></button>
+        <img id="trip-lightbox-img" src="" alt="Trip photo">
+        <button class="trip-lightbox-next" aria-label="Next photo"><i class="fas fa-chevron-right"></i></button>
+        <p id="trip-lightbox-counter" class="trip-lightbox-counter"></p>
+    </div>
+
+    <footer>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-12">
+            <div class="mb-4"><a href="index.html" class="brand-logo" style="color: var(--gold);">flywithpeggs.com</a></div>
+            <nav class="mb-4 space-x-4 text-sm"><a href="about.html">About</a><a href="wellness.html">Wellness</a><a href="travel-services.html">Travel</a><a href="ai-consulting.html">AI Consulting</a><a href="my-trips.html">My Trips</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="schedule.html">Book Time</a></nav>
+            <p class="mb-4 text-sm">Empowering your journey through wellness, innovation, and transformative experiences.</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://facebook.com/flywithpeggs" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f fa-lg"></i></a>
+                <a href="https://instagram.com/flywithpeggs" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="https://linkedin.com/in/peggensaltidor" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                <a href="https://www.youtube.com/@peggensaltidor" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube fa-lg"></i></a>
+                <a href="https://pinterest.com/flywithpeggs" aria-label="Pinterest" target="_blank" rel="noopener noreferrer"><i class="fab fa-pinterest-p fa-lg"></i></a>
+            </div>
+            <p class="text-sm">&copy; <span id="currentYear"></span> Peggens Altidor / Altidor Wellness LLC. All Rights Reserved.</p>
+            <p class="text-xs mt-1">Phone: <a href="tel:516-984-3733">(516) 984-3733</a></p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+        /*
+        =========================================================================================
+        TRIPS DATA
+        =========================================================================================
+        To add a new trip, copy a block below and update the fields.
+        - id: unique slug
+        - destination: place name
+        - dates: when you went
+        - region: "caribbean", "domestic", or "international"
+        - regionLabel: display text for the tag
+        - highlight: one-liner about the trip
+        - story: a short paragraph about the experience
+        - tip: Peggens' travel tip from this trip
+        - coverImage: main photo URL
+        - coverAlt: image alt text
+        - gallery: array of additional image URLs (shown in lightbox)
+        - featured: set ONE trip to true to spotlight it
+        =========================================================================================
+        */
+        const tripsData = [
+            {
+                id: 'montego-bay-2025',
+                destination: 'Montego Bay, Jamaica',
+                dates: 'March 2025',
+                region: 'caribbean',
+                regionLabel: 'Caribbean',
+                highlight: 'Beachside resort vibes with the best jerk chicken of my life.',
+                story: 'This trip was a mix of total relaxation and cultural discovery. From the hip strip to the hidden beach coves, every day brought something new. The resort staff treated us like family, and the sunset views were unreal.',
+                tip: 'Book the catamaran cruise — the snorkeling stops are worth it alone.',
+                coverImage: 'https://placehold.co/900x600/00B4D8/FFFFFF?text=Montego+Bay',
+                coverAlt: 'Beach view in Montego Bay, Jamaica',
+                gallery: [
+                    'https://placehold.co/800x600/00B4D8/FFFFFF?text=Jamaica+1',
+                    'https://placehold.co/800x600/0096C7/FFFFFF?text=Jamaica+2',
+                    'https://placehold.co/800x600/0077B6/FFFFFF?text=Jamaica+3'
+                ],
+                featured: true
+            },
+            {
+                id: 'punta-cana-2024',
+                destination: 'Punta Cana, Dominican Republic',
+                dates: 'December 2024',
+                region: 'caribbean',
+                regionLabel: 'Caribbean',
+                highlight: 'All-inclusive paradise with turquoise water and warm hospitality.',
+                story: 'Punta Cana delivered on every level — the all-inclusive resort made everything effortless, the beach was pristine, and the excursions gave us a real taste of Dominican culture.',
+                tip: 'Get up early for the beach — golden hour light plus an empty shoreline is unbeatable.',
+                coverImage: 'https://placehold.co/600x400/48CAE4/FFFFFF?text=Punta+Cana',
+                coverAlt: 'Resort beach in Punta Cana',
+                gallery: [
+                    'https://placehold.co/800x600/48CAE4/FFFFFF?text=DR+1',
+                    'https://placehold.co/800x600/00B4D8/FFFFFF?text=DR+2'
+                ],
+                featured: false
+            },
+            {
+                id: 'miami-2024',
+                destination: 'Miami, Florida',
+                dates: 'October 2024',
+                region: 'domestic',
+                regionLabel: 'Domestic',
+                highlight: 'Art Deco, ocean breeze, and the best Cuban coffee in the country.',
+                story: 'Miami is always a vibe. This time I explored Wynwood Walls, ate my way through Little Havana, and spent golden hour on South Beach. It felt like a mini international trip without leaving the U.S.',
+                tip: 'Skip the tourist traps on Ocean Drive — walk one block inland for better food and half the price.',
+                coverImage: 'https://placehold.co/600x400/FF6B6B/FFFFFF?text=Miami',
+                coverAlt: 'South Beach, Miami at sunset',
+                gallery: [
+                    'https://placehold.co/800x600/FF6B6B/FFFFFF?text=Miami+1',
+                    'https://placehold.co/800x600/EE5A5A/FFFFFF?text=Miami+2'
+                ],
+                featured: false
+            },
+            {
+                id: 'nassau-2024',
+                destination: 'Nassau, Bahamas',
+                dates: 'August 2024',
+                region: 'caribbean',
+                regionLabel: 'Caribbean',
+                highlight: 'Crystal clear water and colorful streets that photograph themselves.',
+                story: 'Nassau surprised me with how much culture there is beyond the cruise port. We visited the Queen\'s Staircase, explored the local fish fry, and took a ferry to Rose Island for one of the best beach days of my life.',
+                tip: 'Take the ferry to Rose Island instead of the tourist-heavy Atlantis beach. You\'ll thank me.',
+                coverImage: 'https://placehold.co/600x400/00C9A7/FFFFFF?text=Nassau',
+                coverAlt: 'Colorful streets of Nassau, Bahamas',
+                gallery: [
+                    'https://placehold.co/800x600/00C9A7/FFFFFF?text=Nassau+1',
+                    'https://placehold.co/800x600/00B896/FFFFFF?text=Nassau+2'
+                ],
+                featured: false
+            },
+            {
+                id: 'nyc-2024',
+                destination: 'New York City, NY',
+                dates: 'June 2024',
+                region: 'domestic',
+                regionLabel: 'Domestic',
+                highlight: 'A quick city reset — food, art, and rooftop energy.',
+                story: 'Even though it\'s close to home, NYC always feels like a trip. Caught a Broadway show, explored a pop-up market in SoHo, and found a rooftop bar in Brooklyn with an unreal Manhattan skyline view.',
+                tip: 'Download the MTA app and grab a 7-day unlimited pass. You\'ll save a fortune on rides.',
+                coverImage: 'https://placehold.co/600x400/845EC2/FFFFFF?text=NYC',
+                coverAlt: 'Manhattan skyline from Brooklyn',
+                gallery: [
+                    'https://placehold.co/800x600/845EC2/FFFFFF?text=NYC+1',
+                    'https://placehold.co/800x600/6B4EBF/FFFFFF?text=NYC+2'
+                ],
+                featured: false
+            },
+            {
+                id: 'aruba-2023',
+                destination: 'Aruba',
+                dates: 'November 2023',
+                region: 'caribbean',
+                regionLabel: 'Caribbean',
+                highlight: 'One happy island — and they mean it. Constant sunshine and zero stress.',
+                story: 'Aruba was everything I needed. White sand, warm water, and the most consistent sunshine in the Caribbean. We rented a Jeep to explore the north coast and found natural pools that felt like a secret.',
+                tip: 'Rent a Jeep and drive to the Natural Pool (Conchi). It\'s bumpy but absolutely worth it.',
+                coverImage: 'https://placehold.co/600x400/FFC75F/1A0033?text=Aruba',
+                coverAlt: 'Eagle Beach in Aruba',
+                gallery: [
+                    'https://placehold.co/800x600/FFC75F/1A0033?text=Aruba+1',
+                    'https://placehold.co/800x600/F9B529/1A0033?text=Aruba+2'
+                ],
+                featured: false
+            }
+        ];
+
+        const tripGrid = document.getElementById('trip-grid');
+        const tripFeatured = document.getElementById('trip-featured');
+        const tripFilterContainer = document.querySelector('#trip-filters');
+
+        /* --- Render helpers --- */
+        const renderTripCard = (trip) => `
+            <article class="trip-card" data-category="${trip.region}">
+                <div class="trip-card-media-wrap">
+                    <img src="${trip.coverImage}" alt="${trip.coverAlt}" class="trip-card-media" loading="lazy">
+                    <span class="trip-region-tag">${trip.regionLabel}</span>
+                </div>
+                <div class="trip-card-body">
+                    <p class="trip-card-dates"><i class="far fa-calendar-alt mr-1"></i> ${trip.dates}</p>
+                    <h3 class="trip-card-destination">${trip.destination}</h3>
+                    <p class="trip-card-highlight">${trip.highlight}</p>
+                    <p class="trip-card-tip"><i class="fas fa-lightbulb mr-1"></i> ${trip.tip}</p>
+                    ${trip.gallery && trip.gallery.length > 0 ? `<button class="btn btn-outline text-sm w-full trip-gallery-btn" data-trip-id="${trip.id}"><i class="fas fa-images mr-1"></i> View ${trip.gallery.length} Photo${trip.gallery.length > 1 ? 's' : ''}</button>` : ''}
+                </div>
+            </article>
+        `;
+
+        const renderFeaturedTrip = (trip) => `
+            <article class="trip-featured">
+                <div class="trip-featured-media">
+                    <img src="${trip.coverImage}" alt="${trip.coverAlt}" loading="lazy">
+                    <span class="trip-region-tag">${trip.regionLabel}</span>
+                </div>
+                <div class="trip-featured-body">
+                    <p class="trip-card-dates"><i class="far fa-calendar-alt mr-1"></i> ${trip.dates}</p>
+                    <h3>${trip.destination}</h3>
+                    <p class="trip-card-highlight">${trip.story}</p>
+                    <p class="trip-card-tip"><i class="fas fa-lightbulb mr-1"></i> ${trip.tip}</p>
+                    ${trip.gallery && trip.gallery.length > 0 ? `<button class="btn btn-primary text-sm trip-gallery-btn" data-trip-id="${trip.id}"><i class="fas fa-images mr-1"></i> View ${trip.gallery.length} Photo${trip.gallery.length > 1 ? 's' : ''}</button>` : ''}
+                </div>
+            </article>
+        `;
+
+        /* --- Initial render --- */
+        if (tripGrid) {
+            const featured = tripsData.find(t => t.featured);
+            if (featured && tripFeatured) {
+                tripFeatured.innerHTML = renderFeaturedTrip(featured);
+            }
+
+            const gridTrips = tripsData.filter(t => !t.featured);
+            tripGrid.innerHTML = gridTrips.map(renderTripCard).join('');
+        }
+
+        /* --- Category filter --- */
+        const applyTripFilter = (filter) => {
+            const buttons = tripFilterContainer?.querySelectorAll('button') || [];
+            buttons.forEach(btn => {
+                const isActive = btn.dataset.category === filter;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+
+            document.querySelectorAll('#trip-grid .trip-card').forEach(card => {
+                const match = filter === 'all' || card.dataset.category === filter;
+                card.style.display = match ? 'flex' : 'none';
+            });
+
+            if (tripFeatured) {
+                const featured = tripsData.find(t => t.featured);
+                const show = !featured || filter === 'all' || featured.region === filter;
+                tripFeatured.style.display = show ? 'block' : 'none';
+            }
+        };
+
+        if (tripFilterContainer) {
+            tripFilterContainer.addEventListener('click', (e) => {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                applyTripFilter(btn.dataset.category);
+            });
+        }
+
+        /* --- Lightbox --- */
+        const lightbox = document.getElementById('trip-lightbox');
+        const lbImg = document.getElementById('trip-lightbox-img');
+        const lbCounter = document.getElementById('trip-lightbox-counter');
+        let lbPhotos = [];
+        let lbIndex = 0;
+
+        const openLightbox = (tripId) => {
+            const trip = tripsData.find(t => t.id === tripId);
+            if (!trip || !trip.gallery || trip.gallery.length === 0) return;
+            lbPhotos = [trip.coverImage, ...trip.gallery];
+            lbIndex = 0;
+            updateLightbox();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeLightbox = () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        const updateLightbox = () => {
+            lbImg.src = lbPhotos[lbIndex];
+            lbImg.alt = `Photo ${lbIndex + 1}`;
+            lbCounter.textContent = `${lbIndex + 1} / ${lbPhotos.length}`;
+        };
+
+        document.addEventListener('click', (e) => {
+            const galleryBtn = e.target.closest('.trip-gallery-btn');
+            if (galleryBtn) {
+                openLightbox(galleryBtn.dataset.tripId);
+                return;
+            }
+        });
+
+        lightbox.querySelector('.trip-lightbox-close').addEventListener('click', closeLightbox);
+        lightbox.querySelector('.trip-lightbox-prev').addEventListener('click', () => {
+            lbIndex = (lbIndex - 1 + lbPhotos.length) % lbPhotos.length;
+            updateLightbox();
+        });
+        lightbox.querySelector('.trip-lightbox-next').addEventListener('click', () => {
+            lbIndex = (lbIndex + 1) % lbPhotos.length;
+            updateLightbox();
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + lbPhotos.length) % lbPhotos.length; updateLightbox(); }
+            if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbPhotos.length; updateLightbox(); }
+        });
+    </script>
+</body>
+</html>

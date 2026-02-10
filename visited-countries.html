@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Track your visited countries around the world with this interactive travel map — a gift from flywithpeggs.com.">
+    <title>Visited Countries Tracker | flywithpeggs.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+    <style>
+        /* ── Travel Tracker Custom Styles ── */
+        .tracker-hero {
+            background: linear-gradient(135deg, var(--header-bg) 0%, #1a0050 25%, var(--royal) 50%, var(--velvet) 75%, var(--amethyst) 100%);
+            background-size: 300% 300%;
+            animation: gradient-shift 12s ease infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Progress Ring */
+        .progress-ring-container { position: relative; width: 140px; height: 140px; }
+        .progress-ring-container svg { transform: rotate(-90deg); }
+        .progress-ring-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 8; }
+        .progress-ring-fill { fill: none; stroke: url(#ring-gradient); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .progress-ring-text {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1.75rem; color: var(--gold); line-height: 1;
+        }
+        .progress-ring-text small {
+            font-size: 0.65rem; color: var(--amethyst); font-weight: 400;
+            text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px;
+        }
+
+        /* Map */
+        .map-wrap { position: relative; }
+        .map-wrap svg { width: 100%; height: auto; cursor: grab; }
+        .map-wrap svg:active { cursor: grabbing; }
+        .country-path {
+            stroke: rgba(153,102,204,0.25); stroke-width: 0.5;
+            transition: fill 0.3s, opacity 0.2s; cursor: pointer;
+        }
+        .country-path:hover { opacity: 0.75; filter: brightness(1.2); }
+        .country-path.unvisited { fill: var(--card-bg); }
+        .country-path.visited { fill: var(--gold); }
+
+        .map-tooltip {
+            position: fixed; background: var(--header-bg); border: 1px solid rgba(153,102,204,0.3);
+            padding: 8px 14px; border-radius: 10px; font-size: 0.8rem; color: #F8F8FF;
+            pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+        .map-tooltip.show { opacity: 1; }
+        .map-tooltip .tt-status { font-size: 0.65rem; color: var(--amethyst); }
+        .map-tooltip .tt-status.is-visited { color: var(--gold); }
+
+        /* Tabs */
+        .tracker-tabs { display: flex; gap: 0.3rem; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+        .tracker-tabs::-webkit-scrollbar { display: none; }
+        .tracker-tab {
+            padding: 0.6rem 1rem; font-size: 0.8rem; font-weight: 500; color: var(--amethyst);
+            background: none; border: none; cursor: pointer;
+            border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap;
+        }
+        .tracker-tab:hover { color: var(--velvet); }
+        .tracker-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+        .tracker-tab .tab-count {
+            display: inline-block; background: var(--card-bg); border-radius: 10px;
+            padding: 1px 7px; font-size: 0.65rem; margin-left: 4px; color: var(--amethyst);
+        }
+        .tracker-tab.active .tab-count { background: rgba(255,215,0,0.15); color: var(--gold); }
+
+        /* Search */
+        .tracker-search {
+            width: 100%; padding: 0.7rem 1rem 0.7rem 2.5rem;
+            background: var(--card-bg); border: 2px solid rgba(153,102,204,0.2);
+            border-radius: 10px; color: var(--text-dark); font-size: 0.85rem;
+            font-family: inherit; outline: none; transition: border-color 0.2s;
+        }
+        .tracker-search::placeholder { color: var(--amethyst); }
+        .tracker-search:focus { border-color: var(--royal); }
+
+        /* Country Grid */
+        .country-card {
+            display: flex; align-items: center; gap: 0.6rem;
+            padding: 0.65rem 0.85rem; background: var(--card-bg);
+            border: 2px solid transparent; border-radius: 10px;
+            cursor: pointer; transition: all 0.2s; user-select: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .country-card:hover { border-color: var(--amethyst); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .country-card.visited { border-color: var(--gold); background: rgba(255,215,0,0.06); }
+        .country-check {
+            width: 22px; height: 22px; border-radius: 6px;
+            border: 2px solid var(--amethyst); display: flex; align-items: center;
+            justify-content: center; flex-shrink: 0; transition: all 0.2s; font-size: 0.7rem; color: transparent;
+        }
+        .country-card.visited .country-check {
+            background: var(--gold); border-color: var(--gold); color: var(--header-bg);
+        }
+        .country-name { font-size: 0.82rem; font-weight: 500; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-dark); }
+        .country-emoji { font-size: 1.1rem; flex-shrink: 0; }
+
+        /* Continent progress bar */
+        .continent-bar { height: 6px; background: var(--card-bg); border-radius: 3px; overflow: hidden; }
+        .continent-bar-fill {
+            height: 100%; border-radius: 3px;
+            background: linear-gradient(90deg, var(--royal), var(--gold));
+            transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        /* Stat card for tracker */
+        .tracker-stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem; font-weight: 700; line-height: 1;
+        }
+
+        /* Reset */
+        .reset-btn {
+            padding: 0.5rem 1.5rem; background: transparent; border: 1px solid rgba(153,102,204,0.3);
+            border-radius: 8px; color: var(--amethyst); font-size: 0.75rem; font-family: inherit;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .reset-btn:hover { border-color: #ef4444; color: #ef4444; }
+
+        .empty-state { text-align: center; padding: 2rem 1rem; color: var(--amethyst); font-size: 0.85rem; }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+
+    <!-- ===================== HEADER ===================== -->
+    <header>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="brand-logo">flywithpeggs.com</a>
+                </div>
+                <nav class="hidden md:flex space-x-1 items-center">
+                    <a href="index.html">Home</a>
+                    <div class="relative dropdown-wrap">
+                        <button class="dropdown-trigger px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                            Services <i class="fas fa-chevron-down ml-1 text-xs transition-transform"></i>
+                        </button>
+                        <div class="dropdown-menu hidden opacity-0 translate-y-2 absolute left-0 top-full pt-2 w-52 z-20">
+                            <div class="rounded-lg shadow-xl py-2" style="background-color: var(--header-bg); border: 1px solid rgba(153, 102, 204, 0.2);">
+                                <a href="wellness.html" class="block px-4 py-2.5 text-sm hover:bg-white/10" style="color: var(--amethyst);"><i class="fas fa-spa mr-2 w-5 text-center"></i> Wellness</a>
+                                <a href="travel-services.html" class="block px-4 py-2.5 text-sm hover:bg-white/10" style="color: var(--amethyst);"><i class="fas fa-plane-departure mr-2 w-5 text-center"></i> Travel Services</a>
+                                <a href="ai-consulting.html" class="block px-4 py-2.5 text-sm hover:bg-white/10" style="color: var(--amethyst);"><i class="fas fa-robot mr-2 w-5 text-center"></i> AI Consulting</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="peggens-favorites.html">Favorites</a>
+                    <a href="meet-the-team.html">Meet the Team</a>
+                    <a href="about.html">About</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="visited-countries.html" class="active"><i class="fas fa-globe-americas mr-1"></i> Travel Map</a>
+                    <a href="schedule.html" class="btn btn-accent text-xs ml-2">Book Time</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="focus:outline-none text-white"><i class="fas fa-bars text-2xl"></i></button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden shadow-lg" style="background-color: var(--header-bg);">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Peggens</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Services</strong>
+            <a href="wellness.html" class="pl-6">Wellness</a>
+            <a href="travel-services.html" class="pl-6">Travel Services</a>
+            <a href="ai-consulting.html" class="pl-6">AI Consulting</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Explore</strong>
+            <a href="peggens-favorites.html">Peggens Favorites</a>
+            <a href="meet-the-team.html">Meet the AI Team</a>
+            <a href="visited-countries.html" class="active"><i class="fas fa-globe-americas mr-1"></i> Travel Map</a>
+            <a href="blog.html">Blog</a>
+            <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Connect</strong>
+            <a href="schedule.html">Book a Consultation</a>
+            <a href="contact.html">Contact Me</a>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ===================== HERO ===================== -->
+        <section class="tracker-hero text-white py-20 md:py-28 relative">
+            <div class="hero-orb float" style="width: 250px; height: 250px; top: -50px; left: -60px; background: var(--amethyst);"></div>
+            <div class="hero-orb float float-delay-1" style="width: 180px; height: 180px; bottom: -30px; right: -40px; background: var(--gold);"></div>
+
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="max-w-4xl mx-auto text-center">
+                    <p class="text-sm font-semibold tracking-widest uppercase mb-3" style="color: var(--gold);">
+                        <i class="fas fa-plane-departure mr-1"></i> Interactive Travel Tracker
+                    </p>
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight" style="font-family: 'Playfair Display', serif; color: var(--text-light);">
+                        Visited Countries of the World
+                    </h1>
+                    <p class="text-base md:text-lg mb-6 max-w-2xl mx-auto leading-relaxed" style="color: var(--text-light); opacity: 0.9;">
+                        Track your global adventures. Click any country on the map or the list below to mark it as visited. Your progress saves automatically.
+                    </p>
+                </div>
+
+                <!-- Progress Ring + Stats -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-8 mt-4">
+                    <div class="progress-ring-container">
+                        <svg viewBox="0 0 140 140" width="140" height="140">
+                            <defs>
+                                <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#4A00E0"/>
+                                    <stop offset="100%" stop-color="#FFD700"/>
+                                </linearGradient>
+                            </defs>
+                            <circle class="progress-ring-bg" cx="70" cy="70" r="60"/>
+                            <circle class="progress-ring-fill" cx="70" cy="70" r="60" stroke-dasharray="376.99" stroke-dashoffset="376.99"/>
+                        </svg>
+                        <div class="progress-ring-text">
+                            <span id="ring-pct">0%</span>
+                            <small>Explored</small>
+                        </div>
+                    </div>
+                    <div class="flex gap-8 text-center">
+                        <div>
+                            <div class="tracker-stat-value" style="color: var(--gold);" id="stat-visited">0</div>
+                            <p class="text-xs mt-1" style="color: var(--amethyst);">Visited</p>
+                        </div>
+                        <div>
+                            <div class="tracker-stat-value" style="color: var(--text-light);" id="stat-remaining">0</div>
+                            <p class="text-xs mt-1" style="color: var(--amethyst);">Remaining</p>
+                        </div>
+                        <div>
+                            <div class="tracker-stat-value" style="color: var(--gold);" id="stat-continents">0/7</div>
+                            <p class="text-xs mt-1" style="color: var(--amethyst);">Continents</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 left-0 right-0">
+                <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-12 md:h-20">
+                    <path d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z" fill="white"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- ===================== MAP ===================== -->
+        <section class="py-8" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="map-wrap max-w-5xl mx-auto" id="map"></div>
+                <div class="map-tooltip" id="tooltip"></div>
+            </div>
+        </section>
+
+        <!-- ===================== COUNTRY LIST ===================== -->
+        <section class="py-10" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+
+                <!-- Tabs -->
+                <div class="border-b mb-4" style="border-color: rgba(153,102,204,0.15);">
+                    <div class="tracker-tabs" id="tabs"></div>
+                </div>
+
+                <!-- Continent Progress -->
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="continent-bar flex-1">
+                        <div class="continent-bar-fill" id="continent-progress-fill" style="width:0%"></div>
+                    </div>
+                    <span class="text-xs font-medium" style="color: var(--amethyst);" id="continent-progress-label">0 / 0 visited</span>
+                </div>
+
+                <!-- Search -->
+                <div class="relative mb-5">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-sm" style="color: var(--amethyst);"></i>
+                    <input type="text" class="tracker-search" id="search" placeholder="Search countries...">
+                </div>
+
+                <!-- Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" id="grid"></div>
+
+                <!-- Reset -->
+                <div class="text-center mt-10 mb-4">
+                    <button class="reset-btn" id="reset-btn">
+                        <i class="fas fa-undo mr-1"></i> Reset All Progress
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================== CTA ===================== -->
+        <section class="py-16 relative overflow-hidden" style="background-color: var(--royal);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 fade-in-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white" style="font-family: 'Playfair Display', serif;">Ready to Add More Countries?</h2>
+                <p class="text-lg mb-8 max-w-xl mx-auto text-white opacity-90">Let Peggens plan your next unforgettable trip. Custom itineraries, curated experiences, and stress-free travel.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="travel-services.html" class="btn btn-accent btn-lg font-semibold">
+                        Explore Travel Services <i class="fas fa-plane-departure ml-2"></i>
+                    </a>
+                    <a href="schedule.html" class="btn btn-outline-white btn-lg">
+                        Book a Free Call <i class="fas fa-calendar-alt ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid md:grid-cols-4 gap-10 mb-10">
+                <div class="md:col-span-1">
+                    <a href="index.html" class="brand-logo" style="color: var(--gold);">flywithpeggs.com</a>
+                    <p class="text-sm mt-4 leading-relaxed" style="color: var(--amethyst);">Empowering your journey through wellness, innovation, and transformative experiences.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-sm uppercase tracking-wider mb-4" style="color: var(--gold);">Services</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="ai-consulting.html">AI Consulting</a></li>
+                        <li><a href="wellness.html">Wellness</a></li>
+                        <li><a href="travel-services.html">Travel</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-sm uppercase tracking-wider mb-4" style="color: var(--gold);">Explore</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="meet-the-team.html">AI Team</a></li>
+                        <li><a href="peggens-favorites.html">Favorites</a></li>
+                        <li><a href="visited-countries.html">Travel Map</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-sm uppercase tracking-wider mb-4" style="color: var(--gold);">Connect</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="schedule.html">Book a Call</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="partners.html">Partners</a></li>
+                        <li><a href="support.html">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t pt-8" style="border-color: rgba(153, 102, 204, 0.2);">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex space-x-5">
+                        <a href="https://facebook.com/flywithpeggs" aria-label="Facebook" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-lg"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/flywithpeggs" aria-label="Instagram" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-lg"><i class="fab fa-instagram"></i></a>
+                        <a href="https://linkedin.com/in/peggensaltidor" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-lg"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.youtube.com/@peggensaltidor" aria-label="YouTube" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-lg"><i class="fab fa-youtube"></i></a>
+                        <a href="https://pinterest.com/flywithpeggs" aria-label="Pinterest" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-lg"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                    <div class="text-center md:text-right">
+                        <p class="text-sm">&copy; <span id="currentYear"></span> Peggens Altidor / Altidor Wellness LLC. All Rights Reserved.</p>
+                        <p class="text-xs mt-1">Phone: <a href="tel:516-984-3733">(516) 984-3733</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    // ─── Country Data ───
+    const COUNTRIES = [
+      {name:"Afghanistan",continent:"Asia",emoji:"🇦🇫",code:"AFG"},
+      {name:"Albania",continent:"Europe",emoji:"🇦🇱",code:"ALB"},
+      {name:"Algeria",continent:"Africa",emoji:"🇩🇿",code:"DZA"},
+      {name:"Andorra",continent:"Europe",emoji:"🇦🇩",code:"AND"},
+      {name:"Angola",continent:"Africa",emoji:"🇦🇴",code:"AGO"},
+      {name:"Antarctica",continent:"Antarctica",emoji:"🇦🇶",code:"ATA"},
+      {name:"Anguilla",continent:"Caribbean",emoji:"🇦🇮",code:"AIA"},
+      {name:"Antigua and Barbuda",continent:"Caribbean",emoji:"🇦🇬",code:"ATG"},
+      {name:"Argentina",continent:"South America",emoji:"🇦🇷",code:"ARG"},
+      {name:"Armenia",continent:"Asia",emoji:"🇦🇲",code:"ARM"},
+      {name:"Australia",continent:"Oceania",emoji:"🇦🇺",code:"AUS"},
+      {name:"Austria",continent:"Europe",emoji:"🇦🇹",code:"AUT"},
+      {name:"Azerbaijan",continent:"Asia",emoji:"🇦🇿",code:"AZE"},
+      {name:"Aruba",continent:"Caribbean",emoji:"🇦🇼",code:"ABW"},
+      {name:"Bahamas",continent:"Caribbean",emoji:"🇧🇸",code:"BHS"},
+      {name:"Bahrain",continent:"Asia",emoji:"🇧🇭",code:"BHR"},
+      {name:"Bangladesh",continent:"Asia",emoji:"🇧🇩",code:"BGD"},
+      {name:"Barbados",continent:"Caribbean",emoji:"🇧🇧",code:"BRB"},
+      {name:"Bermuda",continent:"Caribbean",emoji:"🇧🇲",code:"BMU"},
+      {name:"Bonaire",continent:"Caribbean",emoji:"🇧🇶",code:"BES"},
+      {name:"British Virgin Islands",continent:"Caribbean",emoji:"🇻🇬",code:"VGB"},
+      {name:"Belarus",continent:"Europe",emoji:"🇧🇾",code:"BLR"},
+      {name:"Belgium",continent:"Europe",emoji:"🇧🇪",code:"BEL"},
+      {name:"Belize",continent:"North America",emoji:"🇧🇿",code:"BLZ"},
+      {name:"Benin",continent:"Africa",emoji:"🇧🇯",code:"BEN"},
+      {name:"Bhutan",continent:"Asia",emoji:"🇧🇹",code:"BTN"},
+      {name:"Bolivia",continent:"South America",emoji:"🇧🇴",code:"BOL"},
+      {name:"Bosnia",continent:"Europe",emoji:"🇧🇦",code:"BIH"},
+      {name:"Brazil",continent:"South America",emoji:"🇧🇷",code:"BRA"},
+      {name:"Brunei",continent:"Asia",emoji:"🇧🇳",code:"BRN"},
+      {name:"Bulgaria",continent:"Europe",emoji:"🇧🇬",code:"BGR"},
+      {name:"Burkina Faso",continent:"Africa",emoji:"🇧🇫",code:"BFA"},
+      {name:"Burundi",continent:"Africa",emoji:"🇧🇮",code:"BDI"},
+      {name:"Cambodia",continent:"Asia",emoji:"🇰🇭",code:"KHM"},
+      {name:"Cameroon",continent:"Africa",emoji:"🇨🇲",code:"CMR"},
+      {name:"Canada",continent:"North America",emoji:"🇨🇦",code:"CAN"},
+      {name:"Cayman Islands",continent:"Caribbean",emoji:"🇰🇾",code:"CYM"},
+      {name:"Central African Republic",continent:"Africa",emoji:"🇨🇫",code:"CAF"},
+      {name:"Chad",continent:"Africa",emoji:"🇹🇩",code:"TCD"},
+      {name:"Chile",continent:"South America",emoji:"🇨🇱",code:"CHL"},
+      {name:"China",continent:"Asia",emoji:"🇨🇳",code:"CHN"},
+      {name:"Colombia",continent:"South America",emoji:"🇨🇴",code:"COL"},
+      {name:"Comoros",continent:"Africa",emoji:"🇰🇲",code:"COM"},
+      {name:"Congo DR",continent:"Africa",emoji:"🇨🇩",code:"COD"},
+      {name:"Congo Republic",continent:"Africa",emoji:"🇨🇬",code:"COG"},
+      {name:"Cook Islands",continent:"Oceania",emoji:"🇨🇰",code:"COK"},
+      {name:"Costa Rica",continent:"North America",emoji:"🇨🇷",code:"CRI"},
+      {name:"Cote D'Ivoire",continent:"Africa",emoji:"🇨🇮",code:"CIV"},
+      {name:"Croatia",continent:"Europe",emoji:"🇭🇷",code:"HRV"},
+      {name:"Cuba",continent:"Caribbean",emoji:"🇨🇺",code:"CUB"},
+      {name:"Curacao",continent:"Caribbean",emoji:"🇨🇼",code:"CUW"},
+      {name:"Cyprus",continent:"Asia",emoji:"🇨🇾",code:"CYP"},
+      {name:"Czech Republic",continent:"Europe",emoji:"🇨🇿",code:"CZE"},
+      {name:"Denmark",continent:"Europe",emoji:"🇩🇰",code:"DNK"},
+      {name:"Djibouti",continent:"Africa",emoji:"🇩🇯",code:"DJI"},
+      {name:"Dominica",continent:"Caribbean",emoji:"🇩🇲",code:"DMA"},
+      {name:"Dominican Republic",continent:"Caribbean",emoji:"🇩🇴",code:"DOM"},
+      {name:"East Timor",continent:"Asia",emoji:"🇹🇱",code:"TLS"},
+      {name:"Ecuador",continent:"South America",emoji:"🇪🇨",code:"ECU"},
+      {name:"Egypt",continent:"Africa",emoji:"🇪🇬",code:"EGY"},
+      {name:"El Salvador",continent:"North America",emoji:"🇸🇻",code:"SLV"},
+      {name:"Equatorial Guinea",continent:"Africa",emoji:"🇬🇶",code:"GNQ"},
+      {name:"Eritrea",continent:"Africa",emoji:"🇪🇷",code:"ERI"},
+      {name:"Estonia",continent:"Europe",emoji:"🇪🇪",code:"EST"},
+      {name:"Eswatini",continent:"Africa",emoji:"🇸🇿",code:"SWZ"},
+      {name:"Ethiopia",continent:"Africa",emoji:"🇪🇹",code:"ETH"},
+      {name:"Fiji",continent:"Oceania",emoji:"🇫🇯",code:"FJI"},
+      {name:"Finland",continent:"Europe",emoji:"🇫🇮",code:"FIN"},
+      {name:"France",continent:"Europe",emoji:"🇫🇷",code:"FRA"},
+      {name:"Gabon",continent:"Africa",emoji:"🇬🇦",code:"GAB"},
+      {name:"Gambia",continent:"Africa",emoji:"🇬🇲",code:"GMB"},
+      {name:"Georgia",continent:"Asia",emoji:"🇬🇪",code:"GEO"},
+      {name:"Germany",continent:"Europe",emoji:"🇩🇪",code:"DEU"},
+      {name:"Ghana",continent:"Africa",emoji:"🇬🇭",code:"GHA"},
+      {name:"Greece",continent:"Europe",emoji:"🇬🇷",code:"GRC"},
+      {name:"Greenland",continent:"North America",emoji:"🇬🇱",code:"GRL"},
+      {name:"Grenada",continent:"Caribbean",emoji:"🇬🇩",code:"GRD"},
+      {name:"Guadeloupe",continent:"Caribbean",emoji:"🇬🇵",code:"GLP"},
+      {name:"Guatemala",continent:"North America",emoji:"🇬🇹",code:"GTM"},
+      {name:"Guinea",continent:"Africa",emoji:"🇬🇳",code:"GIN"},
+      {name:"Guinea-Bissau",continent:"Africa",emoji:"🇬🇼",code:"GNB"},
+      {name:"Guyana",continent:"South America",emoji:"🇬🇾",code:"GUY"},
+      {name:"Haiti",continent:"Caribbean",emoji:"🇭🇹",code:"HTI"},
+      {name:"Honduras",continent:"North America",emoji:"🇭🇳",code:"HND"},
+      {name:"Hungary",continent:"Europe",emoji:"🇭🇺",code:"HUN"},
+      {name:"Iceland",continent:"Europe",emoji:"🇮🇸",code:"ISL"},
+      {name:"India",continent:"Asia",emoji:"🇮🇳",code:"IND"},
+      {name:"Indonesia",continent:"Asia",emoji:"🇮🇩",code:"IDN"},
+      {name:"Iran",continent:"Asia",emoji:"🇮🇷",code:"IRN"},
+      {name:"Iraq",continent:"Asia",emoji:"🇮🇶",code:"IRQ"},
+      {name:"Ireland",continent:"Europe",emoji:"🇮🇪",code:"IRL"},
+      {name:"Israel",continent:"Asia",emoji:"🇮🇱",code:"ISR"},
+      {name:"Italy",continent:"Europe",emoji:"🇮🇹",code:"ITA"},
+      {name:"Jamaica",continent:"Caribbean",emoji:"🇯🇲",code:"JAM"},
+      {name:"Japan",continent:"Asia",emoji:"🇯🇵",code:"JPN"},
+      {name:"Jordan",continent:"Asia",emoji:"🇯🇴",code:"JOR"},
+      {name:"Kazakhstan",continent:"Asia",emoji:"🇰🇿",code:"KAZ"},
+      {name:"Kenya",continent:"Africa",emoji:"🇰🇪",code:"KEN"},
+      {name:"Kiribati",continent:"Oceania",emoji:"🇰🇮",code:"KIR"},
+      {name:"Kosovo",continent:"Europe",emoji:"🇽🇰",code:"XKX"},
+      {name:"Kuwait",continent:"Asia",emoji:"🇰🇼",code:"KWT"},
+      {name:"Kyrgyzstan",continent:"Asia",emoji:"🇰🇬",code:"KGZ"},
+      {name:"Laos",continent:"Asia",emoji:"🇱🇦",code:"LAO"},
+      {name:"Latvia",continent:"Europe",emoji:"🇱🇻",code:"LVA"},
+      {name:"Lebanon",continent:"Asia",emoji:"🇱🇧",code:"LBN"},
+      {name:"Lesotho",continent:"Africa",emoji:"🇱🇸",code:"LSO"},
+      {name:"Liberia",continent:"Africa",emoji:"🇱🇷",code:"LBR"},
+      {name:"Libya",continent:"Africa",emoji:"🇱🇾",code:"LBY"},
+      {name:"Liechtenstein",continent:"Europe",emoji:"🇱🇮",code:"LIE"},
+      {name:"Lithuania",continent:"Europe",emoji:"🇱🇹",code:"LTU"},
+      {name:"Luxembourg",continent:"Europe",emoji:"🇱🇺",code:"LUX"},
+      {name:"Madagascar",continent:"Africa",emoji:"🇲🇬",code:"MDG"},
+      {name:"Malaysia",continent:"Asia",emoji:"🇲🇾",code:"MYS"},
+      {name:"Maldives",continent:"Asia",emoji:"🇲🇻",code:"MDV"},
+      {name:"Mali",continent:"Africa",emoji:"🇲🇱",code:"MLI"},
+      {name:"Malta",continent:"Europe",emoji:"🇲🇹",code:"MLT"},
+      {name:"Marshall Islands",continent:"Oceania",emoji:"🇲🇭",code:"MHL"},
+      {name:"Martinique",continent:"Caribbean",emoji:"🇲🇶",code:"MTQ"},
+      {name:"Mauritania",continent:"Africa",emoji:"🇲🇷",code:"MRT"},
+      {name:"Mauritius",continent:"Africa",emoji:"🇲🇺",code:"MUS"},
+      {name:"Mexico",continent:"North America",emoji:"🇲🇽",code:"MEX"},
+      {name:"Moldova",continent:"Europe",emoji:"🇲🇩",code:"MDA"},
+      {name:"Monaco",continent:"Europe",emoji:"🇲🇨",code:"MCO"},
+      {name:"Mongolia",continent:"Asia",emoji:"🇲🇳",code:"MNG"},
+      {name:"Montserrat",continent:"Caribbean",emoji:"🇲🇸",code:"MSR"},
+      {name:"Montenegro",continent:"Europe",emoji:"🇲🇪",code:"MNE"},
+      {name:"Morocco",continent:"Africa",emoji:"🇲🇦",code:"MAR"},
+      {name:"Mozambique",continent:"Africa",emoji:"🇲🇿",code:"MOZ"},
+      {name:"Myanmar",continent:"Asia",emoji:"🇲🇲",code:"MMR"},
+      {name:"Namibia",continent:"Africa",emoji:"🇳🇦",code:"NAM"},
+      {name:"Nauru",continent:"Oceania",emoji:"🇳🇷",code:"NRU"},
+      {name:"Nepal",continent:"Asia",emoji:"🇳🇵",code:"NPL"},
+      {name:"Netherlands",continent:"Europe",emoji:"🇳🇱",code:"NLD"},
+      {name:"New Zealand",continent:"Oceania",emoji:"🇳🇿",code:"NZL"},
+      {name:"Nicaragua",continent:"North America",emoji:"🇳🇮",code:"NIC"},
+      {name:"Niger",continent:"Africa",emoji:"🇳🇪",code:"NER"},
+      {name:"Nigeria",continent:"Africa",emoji:"🇳🇬",code:"NGA"},
+      {name:"North Korea",continent:"Asia",emoji:"🇰🇵",code:"PRK"},
+      {name:"North Macedonia",continent:"Europe",emoji:"🇲🇰",code:"MKD"},
+      {name:"Norway",continent:"Europe",emoji:"🇳🇴",code:"NOR"},
+      {name:"Oman",continent:"Asia",emoji:"🇴🇲",code:"OMN"},
+      {name:"Pakistan",continent:"Asia",emoji:"🇵🇰",code:"PAK"},
+      {name:"Palau",continent:"Oceania",emoji:"🇵🇼",code:"PLW"},
+      {name:"Palestine",continent:"Asia",emoji:"🇵🇸",code:"PSE"},
+      {name:"Panama",continent:"North America",emoji:"🇵🇦",code:"PAN"},
+      {name:"Papua New Guinea",continent:"Oceania",emoji:"🇵🇬",code:"PNG"},
+      {name:"Paraguay",continent:"South America",emoji:"🇵🇾",code:"PRY"},
+      {name:"Peru",continent:"South America",emoji:"🇵🇪",code:"PER"},
+      {name:"Philippines",continent:"Asia",emoji:"🇵🇭",code:"PHL"},
+      {name:"Poland",continent:"Europe",emoji:"🇵🇱",code:"POL"},
+      {name:"Portugal",continent:"Europe",emoji:"🇵🇹",code:"PRT"},
+      {name:"Puerto Rico",continent:"Caribbean",emoji:"🇵🇷",code:"PRI"},
+      {name:"Qatar",continent:"Asia",emoji:"🇶🇦",code:"QAT"},
+      {name:"Romania",continent:"Europe",emoji:"🇷🇴",code:"ROU"},
+      {name:"Russia",continent:"Europe",emoji:"🇷🇺",code:"RUS"},
+      {name:"Rwanda",continent:"Africa",emoji:"🇷🇼",code:"RWA"},
+      {name:"Samoa",continent:"Oceania",emoji:"🇼🇸",code:"WSM"},
+      {name:"San Marino",continent:"Europe",emoji:"🇸🇲",code:"SMR"},
+      {name:"Sao Tome and Principe",continent:"Africa",emoji:"🇸🇹",code:"STP"},
+      {name:"Saudi Arabia",continent:"Asia",emoji:"🇸🇦",code:"SAU"},
+      {name:"Senegal",continent:"Africa",emoji:"🇸🇳",code:"SEN"},
+      {name:"Serbia",continent:"Europe",emoji:"🇷🇸",code:"SRB"},
+      {name:"Seychelles",continent:"Africa",emoji:"🇸🇨",code:"SYC"},
+      {name:"Sierra Leone",continent:"Africa",emoji:"🇸🇱",code:"SLE"},
+      {name:"Singapore",continent:"Asia",emoji:"🇸🇬",code:"SGP"},
+      {name:"Slovakia",continent:"Europe",emoji:"🇸🇰",code:"SVK"},
+      {name:"Slovenia",continent:"Europe",emoji:"🇸🇮",code:"SVN"},
+      {name:"Somalia",continent:"Africa",emoji:"🇸🇴",code:"SOM"},
+      {name:"South Africa",continent:"Africa",emoji:"🇿🇦",code:"ZAF"},
+      {name:"South Korea",continent:"Asia",emoji:"🇰🇷",code:"KOR"},
+      {name:"South Sudan",continent:"Africa",emoji:"🇸🇸",code:"SSD"},
+      {name:"Spain",continent:"Europe",emoji:"🇪🇸",code:"ESP"},
+      {name:"Sri Lanka",continent:"Asia",emoji:"🇱🇰",code:"LKA"},
+      {name:"St. Barthelemy",continent:"Caribbean",emoji:"🇧🇱",code:"BLM"},
+      {name:"St. Kitts and Nevis",continent:"Caribbean",emoji:"🇰🇳",code:"KNA"},
+      {name:"St. Lucia",continent:"Caribbean",emoji:"🇱🇨",code:"LCA"},
+      {name:"St. Maarten",continent:"Caribbean",emoji:"🇸🇽",code:"SXM"},
+      {name:"St. Vincent and the Grenadines",continent:"Caribbean",emoji:"🇻🇨",code:"VCT"},
+      {name:"Sudan",continent:"Africa",emoji:"🇸🇩",code:"SDN"},
+      {name:"Suriname",continent:"South America",emoji:"🇸🇷",code:"SUR"},
+      {name:"Sweden",continent:"Europe",emoji:"🇸🇪",code:"SWE"},
+      {name:"Switzerland",continent:"Europe",emoji:"🇨🇭",code:"CHE"},
+      {name:"Syria",continent:"Asia",emoji:"🇸🇾",code:"SYR"},
+      {name:"Taiwan",continent:"Asia",emoji:"🇹🇼",code:"TWN"},
+      {name:"Tajikistan",continent:"Asia",emoji:"🇹🇯",code:"TJK"},
+      {name:"Tanzania",continent:"Africa",emoji:"🇹🇿",code:"TZA"},
+      {name:"Thailand",continent:"Asia",emoji:"🇹🇭",code:"THA"},
+      {name:"Togo",continent:"Africa",emoji:"🇹🇬",code:"TGO"},
+      {name:"Tonga",continent:"Oceania",emoji:"🇹🇴",code:"TON"},
+      {name:"Trinidad and Tobago",continent:"Caribbean",emoji:"🇹🇹",code:"TTO"},
+      {name:"Turks and Caicos",continent:"Caribbean",emoji:"🇹🇨",code:"TCA"},
+      {name:"Tunisia",continent:"Africa",emoji:"🇹🇳",code:"TUN"},
+      {name:"Turkey",continent:"Asia",emoji:"🇹🇷",code:"TUR"},
+      {name:"Turkmenistan",continent:"Asia",emoji:"🇹🇲",code:"TKM"},
+      {name:"Tuvalu",continent:"Oceania",emoji:"🇹🇻",code:"TUV"},
+      {name:"UAE",continent:"Asia",emoji:"🇦🇪",code:"ARE"},
+      {name:"Uganda",continent:"Africa",emoji:"🇺🇬",code:"UGA"},
+      {name:"UK",continent:"Europe",emoji:"🇬🇧",code:"GBR"},
+      {name:"Ukraine",continent:"Europe",emoji:"🇺🇦",code:"UKR"},
+      {name:"Uruguay",continent:"South America",emoji:"🇺🇾",code:"URY"},
+      {name:"US Virgin Islands",continent:"Caribbean",emoji:"🇻🇮",code:"VIR"},
+      {name:"USA",continent:"North America",emoji:"🇺🇸",code:"USA"},
+      {name:"Uzbekistan",continent:"Asia",emoji:"🇺🇿",code:"UZB"},
+      {name:"Vanuatu",continent:"Oceania",emoji:"🇻🇺",code:"VUT"},
+      {name:"Vatican",continent:"Europe",emoji:"🇻🇦",code:"VAT"},
+      {name:"Venezuela",continent:"South America",emoji:"🇻🇪",code:"VEN"},
+      {name:"Vietnam",continent:"Asia",emoji:"🇻🇳",code:"VNM"},
+      {name:"Western Sahara",continent:"Africa",emoji:"🇪🇭",code:"ESH"},
+      {name:"Yemen",continent:"Asia",emoji:"🇾🇪",code:"YEM"},
+      {name:"Zambia",continent:"Africa",emoji:"🇿🇲",code:"ZMB"},
+      {name:"Zimbabwe",continent:"Africa",emoji:"🇿🇼",code:"ZWE"},
+    ];
+
+    const CONTINENT_EMOJIS = {"All":"🗺","Asia":"🌏","Europe":"🌍","Africa":"🌍","Caribbean":"🏝️","North America":"🌎","South America":"🌎","Oceania":"🌊","Antarctica":"🧊"};
+    const CONTINENTS = ["All","Asia","Europe","Africa","Caribbean","North America","South America","Oceania","Antarctica"];
+
+    // ─── State ───
+    const STORAGE_KEY = "flywithpeggs-visited-countries-v1";
+    let visited = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+    let activeTab = "All";
+
+    function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify([...visited])); }
+
+    // ─── Stats ───
+    function updateStats() {
+      const total = COUNTRIES.length;
+      const count = visited.size;
+      const pct = Math.round((count / total) * 100);
+
+      document.getElementById("stat-visited").textContent = count;
+      document.getElementById("stat-remaining").textContent = total - count;
+      document.getElementById("ring-pct").textContent = pct + "%";
+
+      const touchedContinents = new Set();
+      visited.forEach(name => { const c = COUNTRIES.find(x => x.name === name); if (c) touchedContinents.add(c.continent); });
+      document.getElementById("stat-continents").textContent = touchedContinents.size + "/8";
+
+      const circumference = 2 * Math.PI * 60;
+      const offset = circumference - (pct / 100) * circumference;
+      document.querySelector(".progress-ring-fill").style.strokeDashoffset = offset;
+
+      const filtered = activeTab === "All" ? COUNTRIES : COUNTRIES.filter(c => c.continent === activeTab);
+      const filtVisited = filtered.filter(c => visited.has(c.name)).length;
+      const fillPct = filtered.length ? (filtVisited / filtered.length * 100) : 0;
+      document.getElementById("continent-progress-fill").style.width = fillPct + "%";
+      document.getElementById("continent-progress-label").textContent = filtVisited + " / " + filtered.length + " visited";
+
+      updateMapColors();
+    }
+
+    // ─── Tabs ───
+    function renderTabs() {
+      const el = document.getElementById("tabs");
+      el.innerHTML = "";
+      CONTINENTS.forEach(cont => {
+        const btn = document.createElement("button");
+        btn.className = "tracker-tab" + (cont === activeTab ? " active" : "");
+        const filtered = cont === "All" ? COUNTRIES : COUNTRIES.filter(c => c.continent === cont);
+        const visitedCount = filtered.filter(c => visited.has(c.name)).length;
+        btn.innerHTML = (CONTINENT_EMOJIS[cont]||"") + " " + cont + `<span class="tab-count">${visitedCount}/${filtered.length}</span>`;
+        btn.onclick = () => { activeTab = cont; renderTabs(); renderGrid(); updateStats(); };
+        el.appendChild(btn);
+      });
+    }
+
+    // ─── Grid ───
+    function renderGrid() {
+      const el = document.getElementById("grid");
+      const query = document.getElementById("search").value.toLowerCase();
+      let filtered = activeTab === "All" ? [...COUNTRIES] : COUNTRIES.filter(c => c.continent === activeTab);
+      if (query) filtered = filtered.filter(c => c.name.toLowerCase().includes(query));
+      if (!filtered.length) { el.innerHTML = '<div class="empty-state col-span-full">No countries found</div>'; return; }
+      filtered.sort((a, b) => { const av = visited.has(a.name)?1:0, bv = visited.has(b.name)?1:0; if(av!==bv) return av-bv; return a.name.localeCompare(b.name); });
+      el.innerHTML = "";
+      filtered.forEach(c => {
+        const card = document.createElement("div");
+        card.className = "country-card" + (visited.has(c.name) ? " visited" : "");
+        card.innerHTML = `<div class="country-check">${visited.has(c.name)?"✓":""}</div><div class="country-name">${c.name}</div><div class="country-emoji">${c.emoji}</div>`;
+        card.onclick = () => toggleCountry(c.name);
+        el.appendChild(card);
+      });
+    }
+
+    function toggleCountry(name) {
+      if (visited.has(name)) visited.delete(name); else visited.add(name);
+      save(); renderTabs(); renderGrid(); updateStats();
+    }
+
+    // ─── Map ───
+    let countryPaths = {};
+    const NAME_MAP = {
+      "United States of America":"USA","United Kingdom":"UK","United Arab Emirates":"UAE",
+      "Dem. Rep. Congo":"Congo DR","Democratic Republic of the Congo":"Congo DR",
+      "Republic of the Congo":"Congo Republic","Congo":"Congo Republic",
+      "Bosnia and Herzegovina":"Bosnia","Bosnia and Herz.":"Bosnia",
+      "Central African Republic":"Central African Republic","Central African Rep.":"Central African Republic",
+      "S. Sudan":"South Sudan","South Sudan":"South Sudan",
+      "Dem. Rep. Korea":"North Korea","North Korea":"North Korea",
+      "Republic of Korea":"South Korea","South Korea":"South Korea",
+      "Timor-Leste":"East Timor","Brunei Darussalam":"Brunei","Brunei":"Brunei",
+      "Lao PDR":"Laos","Laos":"Laos","Viet Nam":"Vietnam",
+      "Eswatini":"Eswatini","Swaziland":"Eswatini",
+      "North Macedonia":"North Macedonia","Macedonia":"North Macedonia",
+      "Russian Federation":"Russia","Russia":"Russia",
+      "Iran (Islamic Republic of)":"Iran","Iran":"Iran",
+      "Syrian Arab Republic":"Syria","Syria":"Syria",
+      "Venezuela (Bolivarian Republic of)":"Venezuela","Venezuela":"Venezuela",
+      "Bolivia (Plurinational State of)":"Bolivia","Bolivia":"Bolivia",
+      "Tanzania, United Republic of":"Tanzania","United Republic of Tanzania":"Tanzania","Tanzania":"Tanzania",
+      "Moldova (Republic of)":"Moldova","Republic of Moldova":"Moldova","Moldova":"Moldova",
+      "Côte d'Ivoire":"Cote D'Ivoire","Ivory Coast":"Cote D'Ivoire",
+      "Eq. Guinea":"Equatorial Guinea","Guinea-Bissau":"Guinea-Bissau",
+      "São Tomé and Príncipe":"Sao Tome and Principe",
+      "Antigua and Barb.":"Antigua and Barbuda",
+      "St. Vin. and Gren.":"St. Vincent and the Grenadines",
+      "Dominican Rep.":"Dominican Republic",
+      "W. Sahara":"Western Sahara","Western Sahara":"Western Sahara",
+    };
+
+    function resolveCountryName(geoName) {
+      if (NAME_MAP[geoName]) return NAME_MAP[geoName];
+      const found = COUNTRIES.find(c => c.name === geoName || c.name.toLowerCase() === geoName.toLowerCase());
+      return found ? found.name : null;
+    }
+
+    function initMap() {
+      const container = document.getElementById("map");
+      const width = container.clientWidth;
+      const height = width * 0.5;
+      const projection = d3.geoNaturalEarth1().scale(width / 5.8).translate([width / 2, height / 2]);
+      const path = d3.geoPath().projection(projection);
+      const svg = d3.select("#map").append("svg").attr("viewBox", `0 0 ${width} ${height}`).attr("preserveAspectRatio", "xMidYMid meet");
+      const g = svg.append("g");
+      const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", (e) => g.attr("transform", e.transform));
+      svg.call(zoom);
+      const tooltip = document.getElementById("tooltip");
+
+      d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
+        const countries = topojson.feature(world, world.objects.countries).features;
+        g.selectAll("path").data(countries).enter().append("path")
+          .attr("d", path).attr("class", "country-path unvisited")
+          .each(function(d) {
+            const resolved = resolveCountryName(d.properties.name);
+            if (resolved) { countryPaths[resolved] = this; d._resolvedName = resolved; }
+          })
+          .on("mouseover", function(event, d) {
+            const name = d._resolvedName || d.properties.name;
+            const iv = visited.has(name);
+            tooltip.innerHTML = `<strong>${name}</strong><br><span class="tt-status ${iv?'is-visited':''}">${iv?'✓ Visited':'Not visited'}</span>`;
+            tooltip.classList.add("show");
+          })
+          .on("mousemove", function(event) {
+            tooltip.style.left = (event.clientX + 14) + "px";
+            tooltip.style.top = (event.clientY - 32) + "px";
+          })
+          .on("mouseout", () => tooltip.classList.remove("show"))
+          .on("click", function(event, d) { if (d._resolvedName) toggleCountry(d._resolvedName); });
+        updateMapColors();
+      });
+    }
+
+    function updateMapColors() {
+      Object.entries(countryPaths).forEach(([name, el]) => {
+        if (visited.has(name)) { el.classList.remove("unvisited"); el.classList.add("visited"); }
+        else { el.classList.remove("visited"); el.classList.add("unvisited"); }
+      });
+    }
+
+    // ─── Init ───
+    document.getElementById("search").addEventListener("input", renderGrid);
+    document.getElementById("reset-btn").addEventListener("click", () => {
+      if (confirm("Reset all progress? This cannot be undone.")) { visited.clear(); save(); renderTabs(); renderGrid(); updateStats(); }
+    });
+    renderTabs(); renderGrid(); updateStats(); initMap();
+    </script>
+</body>
+</html>

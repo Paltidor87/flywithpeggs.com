@@ -3,31 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="flywithpeggs.com — AI consulting, wellness coaching, and travel planning by Peggens Altidor. Building systems that prioritize the human element.">
+    <meta name="description" content="flywithpeggs.com — AI consulting, wellness coaching, and travel planning by Peggens Altidor. Live Well, Travel Far, Build Bold.">
     <title>flywithpeggs.com | AI Consulting, Wellness & Travel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-white text-gray-800">
 
+    <!-- ===================== HEADER ===================== -->
     <header>
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0">
                     <a href="index.html" class="brand-logo">flywithpeggs.com</a>
                 </div>
-                <nav class="hidden md:flex space-x-2 items-center">
+                <nav class="hidden md:flex space-x-1 items-center">
                     <a href="index.html" class="active">Home</a>
-                    <div class="relative group">
-                        <button class="px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
-                            Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                    <div class="relative dropdown-wrap">
+                        <button class="dropdown-trigger px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                            Services <i class="fas fa-chevron-down ml-1 text-xs transition-transform"></i>
                         </button>
-                        <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg z-20 hidden group-hover:block" style="background-color: var(--card-bg);">
-                            <a href="wellness.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Wellness</a>
-                            <a href="travel-services.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Travel Services</a>
-                            <a href="ai-consulting.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">AI Consulting</a>
+                        <div class="dropdown-menu hidden opacity-0 translate-y-2 absolute left-0 top-full pt-2 w-52 z-20">
+                            <div class="rounded-lg shadow-xl py-2" style="background-color: var(--header-bg); border: 1px solid rgba(153, 102, 204, 0.2);">
+                                <a href="wellness.html" class="block px-4 py-2.5 text-sm hover:bg-white/10" style="color: var(--amethyst);">
+                                    <i class="fas fa-spa mr-2 w-5 text-center"></i> Wellness
+                                </a>
+                                <a href="travel-services.html" class="block px-4 py-2.5 text-sm hover:bg-white/10" style="color: var(--amethyst);">
+                                    <i class="fas fa-plane-departure mr-2 w-5 text-center"></i> Travel Services
+                                </a>
+                                <a href="ai-consulting.html" class="block px-4 py-2.5 text-sm hover:bg-white/10" style="color: var(--amethyst);">
+                                    <i class="fas fa-robot mr-2 w-5 text-center"></i> AI Consulting
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <a href="peggens-favorites.html">Favorites</a>
@@ -35,7 +45,8 @@
                     <a href="about.html">About</a>
                     <a href="blog.html">Blog</a>
                     <a href="contact.html">Contact</a>
-                    <a href="schedule.html" class="btn btn-accent text-xs">Book Time</a>
+                    <a href="visited-countries.html"><i class="fas fa-globe-americas mr-1"></i> Travel Map</a>
+                    <a href="schedule.html" class="btn btn-accent text-xs ml-2">Book Time</a>
                 </nav>
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="focus:outline-none text-white"><i class="fas fa-bars text-2xl"></i></button>
@@ -52,6 +63,7 @@
             <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Explore</strong>
             <a href="peggens-favorites.html">Peggens Favorites</a>
             <a href="meet-the-team.html">Meet the AI Team</a>
+            <a href="visited-countries.html"><i class="fas fa-globe-americas mr-1"></i> Travel Map</a>
             <a href="blog.html">Blog</a>
             <a href="news.html">News</a>
             <strong class="block px-4 py-2 text-xs uppercase" style="color: var(--amethyst);">Connect</strong>
@@ -63,136 +75,422 @@
     </header>
 
     <main>
-        <!-- Hero -->
-        <section id="home-hero" class="hero-bg text-white py-24 md:py-40">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight" style="color: var(--text-light);">Live Well, Travel Far, Build Bold</h1>
-                <p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto" style="color: var(--text-light); opacity: 0.9;">AI consulting, wellness coaching, and travel planning by Peggens Altidor. Building systems that prioritize the human element.</p>
-                <div class="space-y-4 sm:space-y-0 sm:space-x-4">
-                    <a href="schedule.html" class="btn btn-accent text-lg">Book a Consultation</a>
-                    <a href="about.html" class="btn btn-outline-white text-lg">My Story</a>
+
+        <!-- ===================== HERO ===================== -->
+        <section class="hero-landing text-white py-28 md:py-44 relative">
+            <!-- Floating decorative orbs -->
+            <div class="hero-orb float" style="width: 300px; height: 300px; top: -60px; left: -80px; background: var(--teal);"></div>
+            <div class="hero-orb float float-delay-1" style="width: 200px; height: 200px; bottom: -40px; right: -50px; background: var(--bright-yellow);"></div>
+            <div class="hero-orb float float-delay-2" style="width: 120px; height: 120px; top: 30%; right: 15%; background: var(--coral);"></div>
+
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="max-w-4xl mx-auto text-center">
+                    <p class="text-sm md:text-base font-semibold tracking-widest uppercase mb-4" style="color: var(--gold);">AI Consulting &middot; Wellness &middot; Travel</p>
+                    <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 leading-tight" style="font-family: 'Playfair Display', serif; color: var(--text-light);">
+                        <span id="typing-text">Live Well.</span>
+                    </h1>
+                    <p class="text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed" style="color: var(--text-light); opacity: 0.9;">
+                        I'm <strong>Peggens Altidor</strong> -- and I help people harness AI, invest in their wellness, and see the world. Let's build something meaningful together.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="schedule.html" class="btn btn-accent btn-lg pulse-ring">
+                            Book a Free Consultation <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                        <a href="#services" class="btn btn-outline-white btn-lg">
+                            Explore What I Do
+                        </a>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Bottom wave divider -->
+            <div class="absolute bottom-0 left-0 right-0">
+                <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-12 md:h-20">
+                    <path d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z" fill="#F5F5F5"/>
+                </svg>
             </div>
         </section>
 
-        <!-- Three Service Pillars -->
-        <section id="home-services" class="py-16 md:py-24" style="background-color: var(--page-bg);">
+        <!-- ===================== TRUST BAR ===================== -->
+        <section class="py-6 border-b" style="border-color: #eee;">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="section-title">What I Do</h2>
-                <p class="section-subtitle">Three disciplines, one philosophy: precision, empathy, and story.</p>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="card p-8 text-center">
-                        <div class="text-5xl mb-6" style="color: var(--velvet);"><i class="fas fa-robot"></i></div>
-                        <h3 class="text-2xl font-bold mb-3" style="color: var(--royal);">AI Consulting</h3>
-                        <p class="mb-5">Custom AI agents, vibe-coded websites, and practical AI training for businesses and communities.</p>
-                        <a href="ai-consulting.html" class="btn btn-outline w-full">Explore AI Services</a>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 text-center">
+                    <div class="stat-card fade-in-up">
+                        <div class="stat-number" data-count="7" data-suffix="+">0</div>
+                        <p class="text-sm mt-1" style="color: var(--velvet);">AI Agents Built</p>
                     </div>
-                    <div class="card p-8 text-center">
-                        <div class="text-5xl mb-6" style="color: var(--amethyst);"><i class="fas fa-spa"></i></div>
-                        <h3 class="text-2xl font-bold mb-3" style="color: var(--royal);">Wellness Coaching</h3>
-                        <p class="mb-5">Holistic health strategies blending fitness, mental wellness, and Haitian herbal traditions.</p>
-                        <a href="wellness.html" class="btn btn-outline w-full">Explore Wellness</a>
+                    <div class="stat-card fade-in-up">
+                        <div class="stat-number" data-count="3">0</div>
+                        <p class="text-sm mt-1" style="color: var(--velvet);">Service Pillars</p>
                     </div>
-                    <div class="card p-8 text-center">
-                        <div class="text-5xl mb-6" style="color: var(--royal);"><i class="fas fa-plane-departure"></i></div>
-                        <h3 class="text-2xl font-bold mb-3" style="color: var(--royal);">Travel Services</h3>
-                        <p class="mb-5">Curated travel experiences -- from relaxing getaways to cultural immersions, planned with care.</p>
-                        <a href="travel-services.html" class="btn btn-outline w-full">Plan Your Adventure</a>
+                    <div class="stat-card fade-in-up">
+                        <div class="stat-number" data-count="100" data-suffix="%">0</div>
+                        <p class="text-sm mt-1" style="color: var(--velvet);">Human-Centered</p>
+                    </div>
+                    <div class="stat-card fade-in-up">
+                        <div class="stat-number" data-count="1">0</div>
+                        <p class="text-sm mt-1" style="color: var(--velvet);">Mission</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Meet the AI Team Teaser -->
-        <section class="py-16" style="background-color: var(--velvet); color: var(--text-light);">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-3xl font-bold mb-4">Meet the Digital Dream Team</h2>
-                <p class="text-lg mb-6 max-w-2xl mx-auto opacity-90">Seven AI-powered specialists -- from wellness coaching to travel planning to AI strategy -- each with a unique personality and purpose. Built by Peggens as a living proof of concept.</p>
-                <a href="meet-the-team.html" class="btn btn-accent text-lg font-semibold">
+        <!-- ===================== SERVICES ===================== -->
+        <section id="services" class="py-20 md:py-28" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in-up">
+                    <p class="text-sm font-semibold tracking-widest uppercase mb-3" style="color: var(--amethyst);">What I Do</p>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--royal); font-family: 'Playfair Display', serif;">Three Disciplines. One Philosophy.</h2>
+                    <p class="text-lg max-w-2xl mx-auto" style="color: var(--velvet);">Precision, empathy, and story -- brought to every project, every plan, every journey.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 stagger-children">
+                    <!-- AI Consulting -->
+                    <div class="card p-8 text-center fade-in-up" style="border-top: 3px solid var(--teal);">
+                        <div class="icon-circle mx-auto gradient-ai">
+                            <i class="fas fa-robot text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="color: var(--royal);">AI Consulting</h3>
+                        <p class="text-gray-600 mb-5 text-sm leading-relaxed">Custom AI agents, vibe-coded websites, and practical AI training for businesses and communities.</p>
+                        <ul class="text-left text-sm mb-6 space-y-2">
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle mt-0.5" style="color: var(--teal);"></i> Custom AI agent development</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle mt-0.5" style="color: var(--teal);"></i> Website design & build</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle mt-0.5" style="color: var(--teal);"></i> AI literacy workshops</li>
+                        </ul>
+                        <a href="ai-consulting.html" class="btn btn-secondary w-full">Explore AI Services</a>
+                    </div>
+                    <!-- Wellness -->
+                    <div class="card p-8 text-center fade-in-up" style="border-top: 3px solid var(--sage);">
+                        <div class="icon-circle mx-auto gradient-wellness">
+                            <i class="fas fa-spa text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="color: var(--sage);">Wellness Coaching</h3>
+                        <p class="text-gray-600 mb-5 text-sm leading-relaxed">Holistic health strategies blending fitness, mental wellness, and Haitian herbal traditions.</p>
+                        <ul class="text-left text-sm mb-6 space-y-2">
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle mt-0.5" style="color: var(--sage);"></i> Personalized wellness plans</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle mt-0.5" style="color: var(--sage);"></i> Herbal traditions & nutrition</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle mt-0.5" style="color: var(--sage);"></i> Mind-body balance coaching</li>
+                        </ul>
+                        <a href="wellness.html" class="btn btn-wellness w-full">Explore Wellness</a>
+                    </div>
+                    <!-- Travel -->
+                    <div class="card p-8 text-center fade-in-up" style="border-top: 3px solid var(--coral);">
+                        <div class="icon-circle mx-auto gradient-travel">
+                            <i class="fas fa-plane-departure text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3" style="color: var(--coral);">Travel Services</h3>
+                        <p class="text-gray-600 mb-5 text-sm leading-relaxed">Curated travel experiences -- from relaxing getaways to cultural immersions, planned with care.</p>
+                        <ul class="text-left text-sm mb-6 space-y-2">
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle mt-0.5" style="color: var(--coral);"></i> Custom trip planning</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle mt-0.5" style="color: var(--coral);"></i> Resort & cruise packages</li>
+                            <li class="flex items-start gap-2"><i class="fas fa-check-circle mt-0.5" style="color: var(--coral);"></i> Group & cultural experiences</li>
+                        </ul>
+                        <a href="travel-services.html" class="btn btn-travel w-full">Plan Your Adventure</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== ABOUT PEGGENS ===================== -->
+        <section class="py-20 md:py-28" style="background-color: var(--card-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+                    <div class="fade-in-up">
+                        <div class="relative">
+                            <img src="https://placehold.co/600x700/4A00E0/F8F8FF?text=Peggens" alt="A professional portrait of Peggens Altidor." class="rounded-2xl shadow-2xl w-full" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x700/cccccc/FFFFFF?text=P.A.';">
+                            <!-- Decorative accent -->
+                            <div class="absolute -bottom-4 -right-4 w-24 h-24 rounded-xl -z-10" style="background-color: var(--gold); opacity: 0.3;"></div>
+                            <div class="absolute -top-4 -left-4 w-16 h-16 rounded-xl -z-10" style="background-color: var(--amethyst); opacity: 0.3;"></div>
+                        </div>
+                    </div>
+                    <div class="fade-in-up">
+                        <p class="text-sm font-semibold tracking-widest uppercase mb-3" style="color: var(--amethyst);">About Me</p>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--royal); font-family: 'Playfair Display', serif;">The Human Behind the Systems</h2>
+                        <p class="text-lg mb-4" style="color: var(--velvet);">AI consultant. Travel professional. Wellness advocate.</p>
+                        <p class="mb-4 leading-relaxed">My background in production and hospitality trained me to value precision and cultural nuances -- skills I now bring to my work as an AI architect. I engineer digital spaces and travel narratives that are technically robust, empathetic, and deeply story-driven.</p>
+                        <p class="mb-6 leading-relaxed">I created <strong>flywithpeggs.com</strong> as a resource for those who, like me, believe in living a vibrant, multifaceted life -- where technology serves people, not the other way around.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="about.html" class="btn btn-primary">Read My Full Story</a>
+                            <a href="meet-the-team.html" class="btn btn-outline">Meet My AI Team</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== DIGITAL DREAM TEAM ===================== -->
+        <section class="py-20 md:py-28 relative overflow-hidden" style="background: linear-gradient(135deg, var(--header-bg) 0%, var(--royal) 50%, var(--velvet) 100%);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <div class="fade-in-up">
+                    <p class="text-sm font-semibold tracking-widest uppercase mb-3" style="color: var(--gold);">Proof of Concept</p>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white" style="font-family: 'Playfair Display', serif;">Meet the Digital Dream Team</h2>
+                    <p class="text-lg mb-10 max-w-2xl mx-auto text-white opacity-90">Seven AI-powered specialists -- from wellness coaching to travel planning to AI strategy -- each with a unique personality and purpose. Built by Peggens as a living proof of concept.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-10">
+                    <div class="fade-in-up text-center">
+                        <div class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl" style="background: rgba(255,255,255,0.1); border: 2px solid var(--gold);">
+                            <i class="fas fa-spa" style="color: var(--gold);"></i>
+                        </div>
+                        <p class="text-white text-xs font-medium">Wellness</p>
+                    </div>
+                    <div class="fade-in-up text-center">
+                        <div class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl" style="background: rgba(255,255,255,0.1); border: 2px solid var(--gold);">
+                            <i class="fas fa-plane" style="color: var(--gold);"></i>
+                        </div>
+                        <p class="text-white text-xs font-medium">Travel</p>
+                    </div>
+                    <div class="fade-in-up text-center">
+                        <div class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl" style="background: rgba(255,255,255,0.1); border: 2px solid var(--gold);">
+                            <i class="fas fa-robot" style="color: var(--gold);"></i>
+                        </div>
+                        <p class="text-white text-xs font-medium">AI Strategy</p>
+                    </div>
+                    <div class="fade-in-up text-center">
+                        <div class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl" style="background: rgba(255,255,255,0.1); border: 2px solid var(--gold);">
+                            <i class="fas fa-hashtag" style="color: var(--gold);"></i>
+                        </div>
+                        <p class="text-white text-xs font-medium">Social</p>
+                    </div>
+                    <div class="fade-in-up text-center">
+                        <div class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl" style="background: rgba(255,255,255,0.1); border: 2px solid var(--gold);">
+                            <i class="fas fa-pen-nib" style="color: var(--gold);"></i>
+                        </div>
+                        <p class="text-white text-xs font-medium">Content</p>
+                    </div>
+                    <div class="fade-in-up text-center">
+                        <div class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl" style="background: rgba(255,255,255,0.1); border: 2px solid var(--gold);">
+                            <i class="fas fa-chart-line" style="color: var(--gold);"></i>
+                        </div>
+                        <p class="text-white text-xs font-medium">Analytics</p>
+                    </div>
+                    <div class="fade-in-up text-center">
+                        <div class="w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl" style="background: rgba(255,255,255,0.1); border: 2px solid var(--gold);">
+                            <i class="fas fa-heart" style="color: var(--gold);"></i>
+                        </div>
+                        <p class="text-white text-xs font-medium">Engagement</p>
+                    </div>
+                </div>
+                <a href="meet-the-team.html" class="btn btn-accent btn-lg font-semibold fade-in-up">
                     Meet the Team <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
         </section>
 
-        <!-- About Peggens Preview -->
-        <section id="home-about" class="py-16 md:py-24" style="background-color: var(--page-bg);">
+        <!-- ===================== HOW IT WORKS ===================== -->
+        <section class="py-20 md:py-28" style="background-color: var(--page-bg);">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <img src="https://placehold.co/600x700/4A00E0/F8F8FF?text=Peggens" alt="A professional portrait of Peggens Altidor." class="rounded-lg shadow-2xl" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x700/cccccc/FFFFFF?text=P.A.';">
+                <div class="text-center mb-16 fade-in-up">
+                    <p class="text-sm font-semibold tracking-widest uppercase mb-3" style="color: var(--amethyst);">How It Works</p>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--royal); font-family: 'Playfair Display', serif;">Simple. Personal. Effective.</h2>
+                    <p class="text-lg max-w-2xl mx-auto" style="color: var(--velvet);">Three steps to getting started with any of my services.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto stagger-children">
+                    <div class="text-center fade-in-up">
+                        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 text-2xl font-bold" style="background-color: var(--gold); color: var(--header-bg); font-family: 'Playfair Display', serif;">1</div>
+                        <h3 class="text-lg font-bold mb-2" style="color: var(--royal);">Book a Call</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Schedule a free discovery call so I can understand your needs, goals, and vision.</p>
                     </div>
-                    <div>
-                        <h2 class="text-3xl md:text-4xl font-bold" style="color: var(--royal);">The Human Behind the Systems</h2>
-                        <p class="text-lg mt-4 mb-4" style="color: var(--velvet);">AI consultant. Travel professional. Wellness advocate.</p>
-                        <p class="mb-4">My background in production and hospitality trained me to value precision and cultural nuances -- skills I now bring to my work as an AI architect. I engineer digital spaces and travel narratives that are technically robust, empathetic, and deeply story-driven.</p>
-                        <p class="mb-6">I created flywithpeggs.com as a resource for those who, like me, believe in living a vibrant, multifaceted life -- where technology serves people, not the other way around.</p>
-                        <a href="about.html" class="btn btn-primary">Read My Full Story</a>
+                    <div class="text-center fade-in-up">
+                        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 text-2xl font-bold" style="background-color: var(--gold); color: var(--header-bg); font-family: 'Playfair Display', serif;">2</div>
+                        <h3 class="text-lg font-bold mb-2" style="color: var(--royal);">Get a Plan</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">I craft a personalized strategy -- whether it's an AI solution, wellness program, or travel itinerary.</p>
+                    </div>
+                    <div class="text-center fade-in-up">
+                        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 text-2xl font-bold" style="background-color: var(--gold); color: var(--header-bg); font-family: 'Playfair Display', serif;">3</div>
+                        <h3 class="text-lg font-bold mb-2" style="color: var(--royal);">See Results</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">We execute together, iterate, and watch your vision come to life with ongoing support.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Peggens Favorites Teaser -->
-        <section class="py-16" style="background-color: var(--card-bg);">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="section-title">Peggens' Favorites</h2>
-                <p class="section-subtitle">Things I love -- UGC videos, hand-picked finds from Amazon, TikTok, Temu, and more.</p>
-                <a href="peggens-favorites.html" class="btn btn-primary text-lg">Browse My Picks</a>
+        <!-- ===================== TESTIMONIALS ===================== -->
+        <section class="py-20 md:py-28" style="background-color: var(--card-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in-up">
+                    <p class="text-sm font-semibold tracking-widest uppercase mb-3" style="color: var(--amethyst);">Kind Words</p>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--royal); font-family: 'Playfair Display', serif;">What People Are Saying</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 stagger-children">
+                    <div class="testimonial-card fade-in-up">
+                        <p class="text-gray-700 mb-4 leading-relaxed italic">"Peggens helped me understand how AI could actually help my small business. Not hype -- real, practical solutions I use every day."</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold" style="background-color: var(--teal); color: #fff;">M</div>
+                            <div>
+                                <p class="text-sm font-semibold" style="color: var(--navy);">Maria S.</p>
+                                <p class="text-xs" style="color: var(--teal);">Small Business Owner</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card fade-in-up">
+                        <p class="text-gray-700 mb-4 leading-relaxed italic">"Our trip to the Caribbean was flawless. Every detail was covered, and we felt truly cared for the entire time."</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold" style="background-color: var(--coral); color: #fff;">J</div>
+                            <div>
+                                <p class="text-sm font-semibold" style="color: var(--navy);">Jasmine & Kyle</p>
+                                <p class="text-xs" style="color: var(--coral);">Travel Clients</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card fade-in-up">
+                        <p class="text-gray-700 mb-4 leading-relaxed italic">"The wellness coaching changed my perspective on health. The blend of modern science and traditional Haitian practices was eye-opening."</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold" style="background-color: var(--sage); color: #fff;">D</div>
+                            <div>
+                                <p class="text-sm font-semibold" style="color: var(--navy);">Danielle R.</p>
+                                <p class="text-xs" style="color: var(--sage);">Wellness Client</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Travel Booking CTA -->
-        <section class="py-16" style="background-color: var(--royal); color: var(--text-light);">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-3xl font-bold mb-4">Ready for Your Next Journey?</h2>
-                <p class="text-lg mb-6 max-w-xl mx-auto opacity-90">For direct travel bookings and exclusive deals, visit my partner site:</p>
-                <a href="http://superiortravel.info" target="_blank" rel="noopener noreferrer" class="btn btn-accent text-lg font-semibold">
+        <!-- ===================== FAVORITES TEASER ===================== -->
+        <section class="py-20 md:py-28" style="background-color: var(--page-bg);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in-up">
+                        <p class="text-sm font-semibold tracking-widest uppercase mb-3" style="color: var(--amethyst);">Curated By Peggens</p>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: var(--royal); font-family: 'Playfair Display', serif;">Peggens' Favorites</h2>
+                        <p class="text-lg mb-4" style="color: var(--velvet);">Things I genuinely love and use.</p>
+                        <p class="mb-6 leading-relaxed text-gray-600">UGC videos, hand-picked finds from Amazon, TikTok, Temu, and beyond. Products and experiences I believe in -- curated with the same care I bring to everything.</p>
+                        <a href="peggens-favorites.html" class="btn btn-primary btn-lg">Browse My Picks <i class="fas fa-arrow-right ml-2"></i></a>
+                    </div>
+                    <div class="fade-in-up">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="card p-6 text-center">
+                                <i class="fab fa-amazon text-3xl mb-3" style="color: var(--royal);"></i>
+                                <p class="text-sm font-semibold" style="color: var(--navy);">Amazon Finds</p>
+                            </div>
+                            <div class="card p-6 text-center">
+                                <i class="fab fa-tiktok text-3xl mb-3" style="color: var(--coral);"></i>
+                                <p class="text-sm font-semibold" style="color: var(--navy);">TikTok Picks</p>
+                            </div>
+                            <div class="card p-6 text-center">
+                                <i class="fas fa-leaf text-3xl mb-3" style="color: var(--sage);"></i>
+                                <p class="text-sm font-semibold" style="color: var(--navy);">Wellness Must-Haves</p>
+                            </div>
+                            <div class="card p-6 text-center">
+                                <i class="fas fa-suitcase text-3xl mb-3" style="color: var(--gold-premium);"></i>
+                                <p class="text-sm font-semibold" style="color: var(--navy);">Travel Essentials</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== TRAVEL BOOKING CTA ===================== -->
+        <section class="py-16 relative overflow-hidden" style="background-color: var(--royal);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 fade-in-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-white" style="font-family: 'Playfair Display', serif;">Ready for Your Next Journey?</h2>
+                <p class="text-lg mb-8 max-w-xl mx-auto text-white opacity-90">For direct travel bookings and exclusive deals, visit my partner site:</p>
+                <a href="http://superiortravel.info" target="_blank" rel="noopener noreferrer" class="btn btn-accent btn-lg font-semibold">
                     Book via SuperiorTravel.info <i class="fas fa-external-link-alt ml-2"></i>
                 </a>
             </div>
         </section>
 
-        <!-- Newsletter -->
-        <section id="home-newsletter" class="py-16" style="background-color: var(--header-bg);">
+        <!-- ===================== NEWSLETTER ===================== -->
+        <section class="py-20 md:py-28" style="background-color: var(--header-bg);">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="max-w-xl mx-auto text-center">
-                    <h2 class="text-3xl font-bold mb-3" style="color: var(--text-light);">Stay Connected</h2>
-                    <p class="text-lg mb-6" style="color: var(--text-light); opacity: 0.9;">Get exclusive tips, travel deals, and updates from Peggens delivered to your inbox.</p>
-                    <form action="#" method="POST" class="flex flex-col sm:flex-row gap-3">
-                        <input type="email" name="email_signup" placeholder="Enter your email" required
-                               class="w-full px-4 py-3 rounded-md focus:outline-none sm:flex-1"
+                <div class="max-w-xl mx-auto text-center fade-in-up">
+                    <i class="fas fa-envelope text-3xl mb-4" style="color: var(--gold);"></i>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-3" style="color: var(--text-light); font-family: 'Playfair Display', serif;">Stay Connected</h2>
+                    <p class="text-lg mb-8" style="color: var(--text-light); opacity: 0.9;">Get exclusive tips, travel deals, and updates from Peggens delivered to your inbox.</p>
+                    <!--
+                    n8n WEBHOOK — NEWSLETTER SIGNUP
+                    Replace YOUR_N8N_NEWSLETTER_WEBHOOK_URL below with your n8n webhook URL.
+                    In n8n: Webhook node (POST) → Google Sheets / Mailchimp / Email node
+                    -->
+                    <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" name="email" id="newsletter-email" placeholder="Enter your email" required
+                               class="w-full px-5 py-4 rounded-lg focus:outline-none sm:flex-1 text-base"
                                style="color: var(--text-dark); background-color: var(--page-bg);" aria-label="Email for newsletter">
-                        <button type="submit" class="btn btn-accent font-semibold">Subscribe</button>
+                        <button type="submit" id="newsletter-btn" class="btn btn-accent btn-lg font-semibold whitespace-nowrap">
+                            <span id="newsletter-btn-text">Subscribe</span>
+                            <i class="fas fa-paper-plane ml-2"></i>
+                            <i id="newsletter-spinner" class="fas fa-circle-notch fa-spin ml-2 hidden"></i>
+                        </button>
                     </form>
+                    <p id="newsletter-result" class="text-sm mt-4 hidden" style="color: var(--amethyst);"></p>
+                    <p id="newsletter-disclaimer" class="text-xs mt-4" style="color: var(--amethyst);">No spam, ever. Unsubscribe anytime.</p>
                 </div>
             </div>
         </section>
+
+        <!-- ===================== FINAL CTA ===================== -->
+        <section class="py-20 md:py-28" style="background: linear-gradient(135deg, var(--velvet) 0%, var(--royal) 100%);">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-up">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6 text-white" style="font-family: 'Playfair Display', serif;">Let's Build Something<br>Meaningful Together</h2>
+                <p class="text-lg mb-8 max-w-2xl mx-auto text-white opacity-90">Whether you need an AI strategy, a wellness roadmap, or a dream vacation planned -- I'm here for it. Let's talk.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="schedule.html" class="btn btn-accent btn-lg pulse-ring">
+                        Book a Free Consultation <i class="fas fa-calendar-alt ml-2"></i>
+                    </a>
+                    <a href="contact.html" class="btn btn-outline-white btn-lg">
+                        Send a Message <i class="fas fa-envelope ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
+    <!-- ===================== FOOTER ===================== -->
     <footer>
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center py-12">
-            <div class="mb-4">
-                <a href="index.html" class="brand-logo" style="color: var(--gold);">flywithpeggs.com</a>
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid md:grid-cols-4 gap-10 mb-10">
+                <!-- Brand -->
+                <div class="md:col-span-1">
+                    <a href="index.html" class="brand-logo" style="color: var(--gold);">flywithpeggs.com</a>
+                    <p class="text-sm mt-4 leading-relaxed" style="color: var(--amethyst);">Empowering your journey through wellness, innovation, and transformative experiences.</p>
+                </div>
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="font-semibold text-sm uppercase tracking-wider mb-4" style="color: var(--gold);">Services</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="ai-consulting.html">AI Consulting</a></li>
+                        <li><a href="wellness.html">Wellness</a></li>
+                        <li><a href="travel-services.html">Travel</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-sm uppercase tracking-wider mb-4" style="color: var(--gold);">Explore</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="meet-the-team.html">AI Team</a></li>
+                        <li><a href="peggens-favorites.html">Favorites</a></li>
+                        <li><a href="visited-countries.html">Travel Map</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-sm uppercase tracking-wider mb-4" style="color: var(--gold);">Connect</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="schedule.html">Book a Call</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="partners.html">Partners</a></li>
+                        <li><a href="support.html">Support</a></li>
+                    </ul>
+                </div>
             </div>
-            <nav class="mb-4 space-x-4 text-sm">
-                <a href="about.html">About</a>
-                <a href="wellness.html">Wellness</a>
-                <a href="travel-services.html">Travel</a>
-                <a href="ai-consulting.html">AI Consulting</a>
-                <a href="blog.html">Blog</a>
-                <a href="contact.html">Contact</a>
-                <a href="schedule.html">Book Time</a>
-            </nav>
-            <p class="mb-4 text-sm">Empowering your journey through wellness, innovation, and transformative experiences.</p>
-            <div class="flex justify-center space-x-6 mb-6">
-                <a href="https://facebook.com/flywithpeggs" aria-label="Facebook" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400"><i class="fab fa-facebook-f fa-lg"></i></a>
-                <a href="https://instagram.com/flywithpeggs" aria-label="Instagram" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400"><i class="fab fa-instagram fa-lg"></i></a>
-                <a href="https://linkedin.com/in/peggensaltidor" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400"><i class="fab fa-linkedin-in fa-lg"></i></a>
-                <a href="https://www.youtube.com/@peggensaltidor" aria-label="YouTube" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400"><i class="fab fa-youtube fa-lg"></i></a>
-                <a href="https://pinterest.com/flywithpeggs" aria-label="Pinterest" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400"><i class="fab fa-pinterest-p fa-lg"></i></a>
+            <!-- Divider -->
+            <div class="border-t pt-8" style="border-color: rgba(153, 102, 204, 0.2);">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex space-x-5">
+                        <a href="https://facebook.com/flywithpeggs" aria-label="Facebook" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-lg"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/flywithpeggs" aria-label="Instagram" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-lg"><i class="fab fa-instagram"></i></a>
+                        <a href="https://linkedin.com/in/peggensaltidor" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-lg"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.youtube.com/@peggensaltidor" aria-label="YouTube" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-lg"><i class="fab fa-youtube"></i></a>
+                        <a href="https://pinterest.com/flywithpeggs" aria-label="Pinterest" target="_blank" rel="noopener noreferrer" class="hover:text-yellow-400 text-lg"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                    <div class="text-center md:text-right">
+                        <p class="text-sm">&copy; <span id="currentYear"></span> Peggens Altidor / Altidor Wellness LLC. All Rights Reserved.</p>
+                        <p class="text-xs mt-1">Phone: <a href="tel:516-984-3733">(516) 984-3733</a></p>
+                    </div>
+                </div>
             </div>
-            <p class="text-sm">&copy; <span id="currentYear"></span> Peggens Altidor / Altidor Wellness LLC. All Rights Reserved.</p>
-            <p class="text-xs mt-1">Phone: <a href="tel:516-984-3733">(516) 984-3733</a></p>
         </div>
     </footer>
 

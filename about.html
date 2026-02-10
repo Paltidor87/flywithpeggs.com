@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-white text-gray-800">
@@ -18,12 +19,14 @@
                 <div class="flex-shrink-0"><a href="index.html" class="brand-logo">flywithpeggs.com</a></div>
                 <nav class="hidden md:flex space-x-2 items-center">
                     <a href="index.html">Home</a>
-                    <div class="relative group">
-                        <button class="px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">Services <i class="fas fa-chevron-down ml-1 text-xs"></i></button>
-                        <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg z-20 hidden group-hover:block" style="background-color: var(--card-bg);">
-                            <a href="wellness.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Wellness</a>
-                            <a href="travel-services.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">Travel Services</a>
-                            <a href="ai-consulting.html" class="block px-4 py-2 text-sm hover:bg-white" style="color: var(--text-dark);">AI Consulting</a>
+                    <div class="relative dropdown-wrap">
+                        <button class="dropdown-trigger px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">Services <i class="fas fa-chevron-down ml-1 text-xs"></i></button>
+                        <div class="dropdown-menu hidden opacity-0 translate-y-2 absolute left-0 top-full pt-2 w-52 z-20">
+                            <div class="rounded-lg shadow-xl py-2" style="background-color: var(--header-bg); border: 1px solid rgba(153, 102, 204, 0.2);">
+                                <a href="wellness.html" class="block px-4 py-2.5 text-sm hover:bg-white/10" style="color: var(--amethyst);"><i class="fas fa-spa mr-2 w-5 text-center"></i> Wellness</a>
+                                <a href="travel-services.html" class="block px-4 py-2.5 text-sm hover:bg-white/10" style="color: var(--amethyst);"><i class="fas fa-plane-departure mr-2 w-5 text-center"></i> Travel Services</a>
+                                <a href="ai-consulting.html" class="block px-4 py-2.5 text-sm hover:bg-white/10" style="color: var(--amethyst);"><i class="fas fa-robot mr-2 w-5 text-center"></i> AI Consulting</a>
+                            </div>
                         </div>
                     </div>
                     <a href="peggens-favorites.html">Favorites</a>

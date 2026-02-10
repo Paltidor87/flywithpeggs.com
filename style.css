@@ -1,30 +1,61 @@
 /* ==========================================================================
    FLYWITHPEGGS.COM — Unified Stylesheet
    Altidor Wellness LLC / flywithpeggs
+   Brand Color Palette Guide Applied
    ========================================================================== */
 
 /* ==========================================================================
    1. BRAND PALETTE & CSS VARIABLES
    ========================================================================== */
 :root {
-    --royal: #4A00E0;
-    --velvet: #5D3FD3;
-    --amethyst: #9966CC;
-    --gold: #FFD700;
-    --text-light: #F8F8FF;
-    --text-dark: #2E2E2E;
-    --card-bg: #FAF5FF;
-    --header-bg: #1A0033;
-    --page-bg: #FFFFFF;
+    /* --- Core Brand Colors --- */
+    --royal:        #5D3FD3;  /* Primary: headings, CTAs, main UI */
+    --bright-yellow:#FFC000;  /* Action accents, highlight buttons, "Book Time" */
+    --teal:         #00BCD4;  /* Tech features, secondary buttons, AI sections */
+
+    /* --- Secondary Colors --- */
+    --sage:         #9CAF88;  /* Wellness section headers, health content */
+    --coral:        #FF6B6B;  /* Travel adventure highlights, energy */
+    --gold-premium: #D4AF37;  /* Premium travel packages, luxury accents */
+
+    /* --- Supporting Colors --- */
+    --navy:         #1A1A3E;  /* Body text, borders, structural elements */
+    --blush:        #FFB3BA;  /* Subtle hover states, delicate accents */
+    --lavender-bg:  #F0E6FF;  /* Background cards, subtle section dividers */
+    --cream:        #F5F5F5;  /* Main backgrounds */
+
+    /* --- Service-Specific Backgrounds --- */
+    --bg-ai:        #F0E6FF;  /* AI Consulting sections */
+    --bg-wellness:  #E8F5E9;  /* Wellness sections */
+    --bg-travel:    #FFF5E6;  /* Travel sections */
+
+    /* --- Semantic Aliases (backward compat) --- */
+    --velvet:       #4A00E0;  /* Darker purple shade for hover states */
+    --amethyst:     #9966CC;  /* Lighter purple accent */
+    --gold:         #FFC000;  /* Maps to bright-yellow for legacy refs */
+    --text-light:   #F8F8FF;
+    --text-dark:    #1A1A3E;  /* Now navy for better readability */
+    --card-bg:      #F0E6FF;  /* Lavender cards */
+    --header-bg:    #1A1A3E;  /* Deep navy header */
+    --page-bg:      #F5F5F5;  /* Off-white/cream */
 }
 
 /* ==========================================================================
    2. BASE / RESET
    ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--page-bg);
     color: var(--text-dark);
+    overflow-x: hidden;
 }
 
 /* ==========================================================================
@@ -32,11 +63,24 @@ body {
    ========================================================================== */
 header {
     background-color: var(--header-bg);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    transition: background-color 300ms ease, box-shadow 300ms ease, backdrop-filter 300ms ease;
+}
+
+header.header-scrolled {
+    background-color: rgba(26, 26, 62, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .brand-logo {
     font-family: 'Playfair Display', serif;
-    color: var(--gold);
+    color: var(--bright-yellow);
     font-weight: 700;
     font-size: 1.5rem;
     line-height: 2rem;
@@ -49,17 +93,33 @@ header {
 header nav a,
 header nav button {
     color: var(--amethyst);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 200ms ease, background-color 200ms ease;
 }
 
 header nav a:hover,
 header nav button:hover {
-    color: var(--gold);
+    color: var(--bright-yellow);
 }
 
 header nav a.active,
 header nav button.active {
-    color: var(--gold);
+    color: var(--bright-yellow);
     font-weight: 600;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    transition: opacity 200ms ease, transform 200ms ease;
+    /* The pt-2 padding acts as an invisible hover bridge between button and panel */
+}
+
+.dropdown-wrap {
+    /* Ensure the wrapper is tall enough so mouseleave doesn't fire in the gap */
+    position: relative;
 }
 
 /* Mobile menu */
@@ -69,16 +129,17 @@ header nav button.active {
     padding: 0.75rem 1rem;
     font-size: 0.875rem;
     line-height: 1.25rem;
+    transition: background-color 200ms ease, color 200ms ease;
 }
 
 #mobile-menu a:hover {
-    background-color: var(--velvet);
-    color: var(--gold);
+    background-color: var(--royal);
+    color: var(--bright-yellow);
 }
 
 #mobile-menu a.active {
     background-color: var(--royal);
-    color: var(--gold);
+    color: var(--bright-yellow);
     font-weight: 600;
 }
 
@@ -92,10 +153,11 @@ footer {
 
 footer a {
     color: var(--amethyst);
+    transition: color 200ms ease;
 }
 
 footer a:hover {
-    color: var(--gold);
+    color: var(--bright-yellow);
 }
 
 footer .brand-name {
@@ -109,32 +171,75 @@ footer .brand-name {
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     font-weight: 600;
-    transition-property: color, background-color, border-color, box-shadow;
+    transition-property: color, background-color, border-color, box-shadow, transform;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 300ms;
     display: inline-block;
+    cursor: pointer;
 }
 
+.btn:active {
+    transform: scale(0.97);
+}
+
+/* Primary: Purple bg + Yellow text */
 .btn-primary {
     background-color: var(--royal);
-    color: var(--text-light);
+    color: var(--bright-yellow);
 }
 
 .btn-primary:hover {
     background-color: var(--velvet);
+    box-shadow: 0 8px 25px rgba(93, 63, 211, 0.35);
 }
 
+/* Accent: Bright Yellow bg + navy text */
 .btn-accent {
-    background-color: var(--gold);
-    color: var(--text-dark);
+    background-color: var(--bright-yellow);
+    color: var(--navy);
     position: relative;
     overflow: hidden;
 }
 
 .btn-accent:hover {
-    background-color: #e6c200;
+    background-color: #e6ac00;
+    box-shadow: 0 8px 25px rgba(255, 192, 0, 0.35);
 }
 
+/* Secondary: Teal bg + white text */
+.btn-secondary {
+    background-color: var(--teal);
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #00a5bb;
+    box-shadow: 0 8px 25px rgba(0, 188, 212, 0.3);
+}
+
+/* Wellness: Sage Green bg + white text */
+.btn-wellness {
+    background-color: var(--sage);
+    color: #fff;
+}
+
+.btn-wellness:hover {
+    background-color: #8a9e76;
+    box-shadow: 0 8px 25px rgba(156, 175, 136, 0.3);
+}
+
+/* Travel: Coral bg + white text */
+.btn-travel {
+    background-color: var(--coral);
+    color: #fff;
+}
+
+.btn-travel:hover {
+    background-color: #e85c5c;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+}
+
+/* Outline: Purple border + purple text */
 .btn-outline {
     border: 2px solid var(--royal);
     color: var(--royal);
@@ -155,6 +260,11 @@ footer .brand-name {
 .btn-outline-white:hover {
     background-color: var(--text-light);
     color: var(--royal);
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
 }
 
 /* ==========================================================================
@@ -181,25 +291,31 @@ footer .brand-name {
     line-height: 1.75rem;
     text-align: center;
     margin-bottom: 3rem;
-    color: var(--velvet);
+    color: var(--royal);
+    opacity: 0.75;
 }
 
 .page-header-bg {
-    background-color: var(--card-bg);
+    background-color: var(--lavender-bg);
 }
+
+/* Service-specific section backgrounds */
+.bg-ai       { background-color: var(--bg-ai); }
+.bg-wellness { background-color: var(--bg-wellness); }
+.bg-travel   { background-color: var(--bg-travel); }
 
 /* ==========================================================================
    7. CARDS (General)
    ========================================================================== */
 .card {
-    background-color: var(--card-bg);
+    background-color: #fff;
     border-radius: 0.75rem;
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
     transition: box-shadow 300ms ease, transform 300ms ease;
 }
 
 .card:hover {
-    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.2);
     transform: translateY(-0.25rem);
 }
 
@@ -207,9 +323,9 @@ footer .brand-name {
    8. BLOG STYLES
    ========================================================================== */
 .blog-card {
-    background-color: var(--card-bg);
+    background-color: #fff;
     border-radius: 0.75rem;
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
     overflow: hidden;
     transition: box-shadow 300ms ease, transform 300ms ease;
     display: flex;
@@ -217,7 +333,7 @@ footer .brand-name {
 }
 
 .blog-card:hover {
-    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.2);
     transform: translateY(-0.25rem);
 }
 
@@ -241,7 +357,7 @@ footer .brand-name {
 }
 
 .blog-card-read-more {
-    color: var(--velvet);
+    color: var(--teal);
 }
 
 .blog-card-read-more:hover {
@@ -255,7 +371,7 @@ footer .brand-name {
     font-weight: 600;
     border-radius: 9999px;
     border: 2px solid var(--amethyst);
-    color: var(--velvet);
+    color: var(--royal);
     background-color: transparent;
     cursor: pointer;
     transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease;
@@ -263,18 +379,18 @@ footer .brand-name {
 
 .category-button:hover,
 .category-button.active {
-    background-color: var(--velvet);
+    background-color: var(--royal);
     color: var(--text-light);
-    border-color: var(--velvet);
+    border-color: var(--royal);
 }
 
 /* ==========================================================================
    9. NEWS STYLES
    ========================================================================== */
 .news-item {
-    background-color: var(--card-bg);
+    background-color: #fff;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
@@ -310,13 +426,13 @@ footer .brand-name {
 }
 
 .prose a {
-    color: var(--velvet);
+    color: var(--teal);
     font-weight: 600;
     text-decoration: underline;
 }
 
 .prose a:hover {
-    color: var(--amethyst);
+    color: var(--royal);
 }
 
 .prose img {
@@ -330,15 +446,15 @@ footer .brand-name {
    11. MEET THE TEAM STYLES
    ========================================================================== */
 .agent-card {
-    background-color: var(--card-bg);
+    background-color: #fff;
     border-radius: 0.75rem;
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
     overflow: hidden;
     transition: box-shadow 300ms ease, transform 300ms ease;
 }
 
 .agent-card:hover {
-    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.2);
     transform: translateY(-0.25rem);
 }
 
@@ -361,14 +477,14 @@ footer .brand-name {
 
 .agent-card .agent-role {
     font-size: 0.875rem;
-    color: var(--amethyst);
+    color: var(--teal);
     font-weight: 600;
     margin-bottom: 0.75rem;
 }
 
 .agent-card .agent-signature {
     font-style: italic;
-    color: var(--velvet);
+    color: var(--amethyst);
     margin-bottom: 1rem;
     font-size: 0.95rem;
 }
@@ -392,13 +508,13 @@ footer .brand-name {
 }
 
 .agent-card .agent-strengths li::before {
-    content: '✦';
+    content: '\2726';
     position: absolute;
     left: 0;
-    color: var(--gold);
+    color: var(--bright-yellow);
 }
 
-/* Small agent cards (behind-the-scenes team) */
+/* Small agent cards */
 .agent-card-small .agent-image {
     height: 12rem;
 }
@@ -411,9 +527,9 @@ footer .brand-name {
    12. FAVORITES / AFFILIATE STYLES
    ========================================================================== */
 .fav-card {
-    background-color: var(--card-bg);
+    background-color: #fff;
     border-radius: 0.75rem;
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
     overflow: hidden;
     transition: box-shadow 300ms ease, transform 300ms ease;
     display: flex;
@@ -421,7 +537,7 @@ footer .brand-name {
 }
 
 .fav-card:hover {
-    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.2);
     transform: translateY(-0.25rem);
 }
 
@@ -440,14 +556,14 @@ footer .brand-name {
     letter-spacing: 0.05em;
     padding: 0.2rem 0.6rem;
     border-radius: 9999px;
-    background-color: var(--velvet);
+    background-color: var(--royal);
     color: var(--text-light);
     margin-bottom: 0.5rem;
 }
 
 .affiliate-disclosure {
-    background-color: var(--card-bg);
-    border-left: 4px solid var(--gold);
+    background-color: var(--lavender-bg);
+    border-left: 4px solid var(--bright-yellow);
     padding: 1rem 1.5rem;
     font-size: 0.8rem;
     color: var(--amethyst);
@@ -458,12 +574,12 @@ footer .brand-name {
    13. AI CONSULTING STYLES
    ========================================================================== */
 .service-feature {
-    background-color: var(--card-bg);
+    background-color: #fff;
     border-radius: 0.75rem;
     padding: 2rem;
     text-align: center;
     transition: box-shadow 300ms ease, transform 300ms ease;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07);
 }
 
 .service-feature:hover {
@@ -473,7 +589,7 @@ footer .brand-name {
 
 .service-feature .feature-icon {
     font-size: 2.5rem;
-    color: var(--velvet);
+    color: var(--teal);
     margin-bottom: 1rem;
 }
 
@@ -488,33 +604,27 @@ footer .brand-name {
    14. HERO BACKGROUNDS
    ========================================================================== */
 .hero-bg {
-    background: linear-gradient(135deg, var(--header-bg) 0%, var(--royal) 50%, var(--velvet) 100%);
+    background: linear-gradient(135deg, var(--navy) 0%, var(--royal) 50%, var(--amethyst) 100%);
 }
 
 .hero-bg-travel {
-    background-image: linear-gradient(rgba(26, 0, 51, 0.7), rgba(26, 0, 51, 0.7)),
-        url('https://placehold.co/1600x600/5D3FD3/F8F8FF?text=Travel+With+Peggens');
-    background-size: cover;
-    background-position: center;
+    background: linear-gradient(135deg, var(--coral) 0%, #e85c5c 50%, var(--gold-premium) 100%);
 }
 
 .hero-bg-wellness {
-    background: linear-gradient(135deg, var(--velvet) 0%, var(--amethyst) 100%);
+    background: linear-gradient(135deg, var(--sage) 0%, #7a9a66 50%, #5a8a46 100%);
 }
 
 .hero-bg-ai {
-    background: linear-gradient(135deg, var(--header-bg) 0%, #1a0050 50%, var(--royal) 100%);
+    background: linear-gradient(135deg, var(--navy) 0%, var(--royal) 40%, var(--teal) 100%);
 }
 
 .hero-bg-team {
-    background: linear-gradient(135deg, var(--royal) 0%, var(--velvet) 50%, var(--amethyst) 100%);
+    background: linear-gradient(135deg, var(--royal) 0%, var(--amethyst) 50%, var(--teal) 100%);
 }
 
 .hero-bg-news {
-    background-image: linear-gradient(rgba(26, 0, 51, 0.6), rgba(26, 0, 51, 0.6)),
-        url('https://placehold.co/1600x500/5D3FD3/F8F8FF?text=Latest+News');
-    background-size: cover;
-    background-position: center;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--royal) 100%);
 }
 
 /* ==========================================================================
@@ -525,7 +635,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-    outline: 3px solid var(--gold);
+    outline: 3px solid var(--bright-yellow);
     outline-offset: 2px;
     border-radius: 2px;
 }
@@ -550,11 +660,148 @@ textarea:focus-visible {
     animation: shine 1.2s ease;
 }
 
+/* Scroll-triggered fade-in */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.fade-in-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered children */
+.stagger-children .fade-in-up:nth-child(1) { transition-delay: 0ms; }
+.stagger-children .fade-in-up:nth-child(2) { transition-delay: 120ms; }
+.stagger-children .fade-in-up:nth-child(3) { transition-delay: 240ms; }
+.stagger-children .fade-in-up:nth-child(4) { transition-delay: 360ms; }
+
+/* Floating animation for hero elements */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+.float {
+    animation: float 4s ease-in-out infinite;
+}
+
+.float-delay-1 { animation-delay: 0.5s; }
+.float-delay-2 { animation-delay: 1s; }
+.float-delay-3 { animation-delay: 1.5s; }
+
+/* Pulse ring for CTA */
+@keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(255, 192, 0, 0.5); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 192, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 192, 0, 0); }
+}
+
+.pulse-ring {
+    animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+/* Hero gradient shimmer */
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.hero-landing {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--royal) 30%, var(--teal) 60%, var(--amethyst) 100%);
+    background-size: 300% 300%;
+    animation: gradient-shift 12s ease infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hero floating orbs */
+.hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.12;
+}
+
+/* Typing cursor */
+#typing-text::after {
+    content: '|';
+    animation: blink 0.8s step-end infinite;
+    color: var(--bright-yellow);
+    font-weight: 300;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Service card icon circle */
+.icon-circle {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.card:hover .icon-circle {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(93, 63, 211, 0.2);
+}
+
+/* Stat card */
+.stat-card {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--royal);
+    line-height: 1;
+}
+
+@media (min-width: 768px) {
+    .stat-number {
+        font-size: 3rem;
+    }
+}
+
+/* Testimonial card */
+.testimonial-card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    position: relative;
+    border-left: 4px solid var(--bright-yellow);
+}
+
+.testimonial-card::before {
+    content: '\201C';
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    color: var(--amethyst);
+    opacity: 0.2;
+    position: absolute;
+    top: -0.5rem;
+    left: 1rem;
+    line-height: 1;
+}
+
 /* Coming soon badge */
 .badge-coming-soon {
     display: inline-block;
-    background-color: var(--gold);
-    color: var(--header-bg);
+    background-color: var(--bright-yellow);
+    color: var(--navy);
     font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -570,24 +817,24 @@ textarea:focus-visible {
     width: 100%;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
-    border: 2px solid var(--amethyst);
-    background-color: var(--page-bg);
+    border: 2px solid #ddd;
+    background-color: #fff;
     color: var(--text-dark);
     font-size: 0.95rem;
-    transition: border-color 200ms ease;
+    transition: border-color 200ms ease, box-shadow 200ms ease;
 }
 
 .form-input:focus {
     border-color: var(--royal);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(74, 0, 224, 0.15);
+    box-shadow: 0 0 0 3px rgba(93, 63, 211, 0.15);
 }
 
 .form-label {
     display: block;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: var(--velvet);
+    color: var(--royal);
     font-size: 0.9rem;
 }
 
@@ -595,7 +842,7 @@ textarea:focus-visible {
    18. PARTNER LOGO GRID
    ========================================================================== */
 .partner-logo-card {
-    background-color: var(--card-bg);
+    background-color: #fff;
     border-radius: 0.75rem;
     padding: 2rem;
     display: flex;
@@ -603,7 +850,7 @@ textarea:focus-visible {
     align-items: center;
     justify-content: center;
     text-align: center;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07);
     transition: box-shadow 300ms ease;
 }
 
@@ -615,4 +862,58 @@ textarea:focus-visible {
     max-height: 6rem;
     object-fit: contain;
     margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   19. MARQUEE / SCROLLING TEXT
+   ========================================================================== */
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+    display: flex;
+    animation: marquee 30s linear infinite;
+    width: max-content;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+/* ==========================================================================
+   20. RESPONSIVE HELPERS
+   ========================================================================== */
+/* Fix for fixed header spacing — applied globally */
+main {
+    padding-top: 5rem;
+}
+
+/* ==========================================================================
+   21. SERVICE-SPECIFIC GRADIENTS
+   ========================================================================== */
+/* Purple-to-Lavender: Hero sections & primary CTAs */
+.gradient-primary {
+    background: linear-gradient(135deg, var(--royal) 0%, var(--lavender-bg) 100%);
+}
+
+/* Yellow-to-Amber: Featured content blocks */
+.gradient-featured {
+    background: linear-gradient(135deg, var(--bright-yellow) 0%, #FF9800 100%);
+}
+
+/* Teal-to-Cyan: Tech/AI feature cards */
+.gradient-ai {
+    background: linear-gradient(135deg, var(--teal) 0%, #00E5FF 100%);
+}
+
+/* Green-to-Light Green: Wellness content cards */
+.gradient-wellness {
+    background: linear-gradient(135deg, var(--sage) 0%, #C8E6C9 100%);
+}
+
+/* Coral-to-warm: Travel content */
+.gradient-travel {
+    background: linear-gradient(135deg, var(--coral) 0%, var(--gold-premium) 100%);
 }

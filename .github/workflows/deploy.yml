@@ -1,0 +1,50 @@
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy flywithpeggs.com
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER: ${{ secrets.SERVER_IP }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H $SERVER >> ~/.ssh/known_hosts
+
+      - name: Deploy via rsync
+        env:
+          SERVER: ${{ secrets.SERVER_IP }}
+        run: |
+          rsync -avz --delete \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '.gitignore' \
+            --exclude '.DS_Store' \
+            --exclude 'node_modules' \
+            --exclude '*.docx' \
+            --exclude '*.pdf' \
+            --exclude 'hetzner-setup.sh' \
+            --exclude 'deploy.sh' \
+            --exclude 'README.md' \
+            -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" \
+            ./ deploy@${SERVER}:/home/deploy/flywithpeggs.com/
+
+      - name: Build and restart containers
+        env:
+          SERVER: ${{ secrets.SERVER_IP }}
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no \
+            deploy@${SERVER} \
+            "cd /home/deploy/flywithpeggs.com && docker compose up -d --build --remove-orphans"
