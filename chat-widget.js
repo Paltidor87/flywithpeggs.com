@@ -7,7 +7,7 @@
 
   // === Configuration ===
   const CONFIG = {
-    supabaseUrl: 'https://nuyetiyvsecohudqzdno.supabase.co',
+    supabaseUrl: 'https://cvfkqqfcsfjcanzffvnv.supabase.co',
     functionName: 'clawdbot',
     maxMessages: 50,
   };
