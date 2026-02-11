@@ -1,4 +1,4 @@
-name: Deploy to Hetzner
+name: Deploy to Hostinger VPS
 
 on:
   push:
@@ -35,11 +35,20 @@ jobs:
             --exclude 'node_modules' \
             --exclude '*.docx' \
             --exclude '*.pdf' \
+            --exclude 'hostinger-setup.sh' \
             --exclude 'hetzner-setup.sh' \
             --exclude 'deploy.sh' \
             --exclude 'README.md' \
             -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" \
             ./ deploy@${SERVER}:/home/deploy/flywithpeggs.com/
+
+      - name: Ensure shared Docker network exists
+        env:
+          SERVER: ${{ secrets.SERVER_IP }}
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no \
+            deploy@${SERVER} \
+            "docker network inspect web >/dev/null 2>&1 || docker network create web"
 
       - name: Build and restart containers
         env:
