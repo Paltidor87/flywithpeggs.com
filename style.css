@@ -917,3 +917,317 @@ main {
 .gradient-travel {
     background: linear-gradient(135deg, var(--coral) 0%, var(--gold-premium) 100%);
 }
+
+/* ==========================================================================
+   22. CLAWDBOT CHAT WIDGET
+   ========================================================================== */
+#clawdbot-container {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    z-index: 9999;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Floating Action Button */
+#clawdbot-fab {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--royal) 0%, var(--velvet) 100%);
+    color: var(--bright-yellow);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 4px 20px rgba(93, 63, 211, 0.4);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+#clawdbot-fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 28px rgba(93, 63, 211, 0.5);
+}
+
+#clawdbot-fab.clawdbot-fab-hidden {
+    display: none;
+}
+
+/* Chat Panel */
+#clawdbot-panel {
+    width: 370px;
+    max-width: calc(100vw - 2rem);
+    height: 540px;
+    max-height: calc(100vh - 6rem);
+    border-radius: 1rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    transition: opacity 200ms ease, transform 200ms ease;
+}
+
+#clawdbot-panel.clawdbot-hidden {
+    display: none;
+}
+
+/* Header */
+#clawdbot-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, var(--royal) 0%, var(--velvet) 100%);
+    color: var(--text-light);
+}
+
+#clawdbot-header-info {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+#clawdbot-header-info > i {
+    font-size: 1.5rem;
+}
+
+#clawdbot-header-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+#clawdbot-header-status {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+#clawdbot-header-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#clawdbot-header-actions button {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem;
+    opacity: 0.8;
+    transition: opacity 200ms ease;
+}
+
+#clawdbot-header-actions button:hover {
+    opacity: 1;
+}
+
+/* Agent Picker */
+#clawdbot-agent-picker {
+    background-color: var(--lavender-bg);
+    border-bottom: 1px solid #e0d4f5;
+    padding: 0.75rem;
+}
+
+#clawdbot-agent-picker.clawdbot-hidden {
+    display: none;
+}
+
+.clawdbot-agent-picker-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--amethyst);
+    margin-bottom: 0.5rem;
+}
+
+#clawdbot-agent-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.clawdbot-agent-option {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 9999px;
+    border: 1.5px solid var(--amethyst);
+    background: #fff;
+    color: var(--text-dark);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 200ms ease, color 200ms ease;
+}
+
+.clawdbot-agent-option:hover {
+    background-color: var(--royal);
+    color: var(--text-light);
+    border-color: var(--royal);
+}
+
+.clawdbot-agent-option i {
+    font-size: 0.8rem;
+}
+
+/* Messages Area */
+#clawdbot-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    background-color: #fafafe;
+}
+
+.clawdbot-msg {
+    max-width: 85%;
+    padding: 0.6rem 0.9rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    animation: clawdbot-fade-in 200ms ease;
+}
+
+.clawdbot-msg-user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, var(--royal) 0%, var(--velvet) 100%);
+    color: var(--text-light);
+    border-bottom-right-radius: 0.25rem;
+}
+
+.clawdbot-msg-bot {
+    align-self: flex-start;
+    background-color: var(--lavender-bg);
+    color: var(--text-dark);
+    border-bottom-left-radius: 0.25rem;
+}
+
+.clawdbot-msg-error {
+    background-color: #fff0f0;
+    color: var(--coral);
+}
+
+@keyframes clawdbot-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Typing indicator */
+.clawdbot-typing {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0;
+}
+
+.clawdbot-typing span {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background-color: var(--amethyst);
+    animation: clawdbot-bounce 1.2s infinite ease-in-out;
+}
+
+.clawdbot-typing span:nth-child(2) { animation-delay: 0.15s; }
+.clawdbot-typing span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes clawdbot-bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+}
+
+/* Input Area */
+#clawdbot-input-area {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    border-top: 1px solid #eee;
+    background-color: #fff;
+}
+
+#clawdbot-input {
+    flex: 1;
+    border: 1.5px solid #ddd;
+    border-radius: 1.5rem;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 200ms ease;
+    font-family: 'Inter', sans-serif;
+}
+
+#clawdbot-input:focus {
+    border-color: var(--royal);
+}
+
+#clawdbot-input:disabled {
+    opacity: 0.5;
+}
+
+#clawdbot-send {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, var(--royal) 0%, var(--velvet) 100%);
+    color: var(--text-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    transition: transform 200ms ease, opacity 200ms ease;
+    flex-shrink: 0;
+}
+
+#clawdbot-send:hover {
+    transform: scale(1.08);
+}
+
+#clawdbot-send:disabled {
+    opacity: 0.5;
+    cursor: default;
+    transform: none;
+}
+
+/* Footer */
+#clawdbot-footer {
+    text-align: center;
+    font-size: 0.6rem;
+    padding: 0.3rem;
+    color: var(--amethyst);
+    background-color: #fff;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+    #clawdbot-container {
+        bottom: 0;
+        right: 0;
+        left: 0;
+    }
+
+    #clawdbot-panel {
+        width: 100%;
+        max-width: 100%;
+        height: calc(100vh - 1rem);
+        max-height: 100vh;
+        border-radius: 1rem 1rem 0 0;
+    }
+
+    #clawdbot-fab {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+    }
+}
