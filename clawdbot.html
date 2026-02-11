@@ -481,7 +481,10 @@
             let fullResponse = '';
 
             try {
-                const apiMsgs = msgs.filter(m => m.role === 'user' || m.role === 'assistant').slice(-30);
+                // Skip the initial greeting — Perplexity requires user message first after system prompt
+                const allMsgs = msgs.filter(m => m.role === 'user' || m.role === 'assistant');
+                const firstUserIdx = allMsgs.findIndex(m => m.role === 'user');
+                const apiMsgs = firstUserIdx >= 0 ? allMsgs.slice(firstUserIdx).slice(-30) : [];
                 const res = await fetch(`${CONFIG.supabaseUrl}/functions/v1/${CONFIG.functionName}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

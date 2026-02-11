@@ -240,9 +240,10 @@
     let fullResponse = '';
 
     try {
-      const apiMessages = messages
-        .filter((m) => m.role === 'user' || m.role === 'assistant')
-        .slice(-CONFIG.maxMessages);
+      // Skip the initial greeting — Perplexity requires user message first after system prompt
+      const allFiltered = messages.filter((m) => m.role === 'user' || m.role === 'assistant');
+      const firstUserIdx = allFiltered.findIndex((m) => m.role === 'user');
+      const apiMessages = firstUserIdx >= 0 ? allFiltered.slice(firstUserIdx).slice(-CONFIG.maxMessages) : [];
 
       const response = await fetch(`${CONFIG.supabaseUrl}/functions/v1/${CONFIG.functionName}`, {
         method: 'POST',
