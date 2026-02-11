@@ -7,8 +7,7 @@
 
   // === Configuration ===
   const CONFIG = {
-    supabaseUrl: 'https://cvfkqqfcsfjcanzffvnv.supabase.co',
-    functionName: 'clawdbot',
+    apiUrl: 'https://clawd.flywithpeggs.com',
     maxMessages: 50,
   };
 
@@ -240,58 +239,22 @@
     let fullResponse = '';
 
     try {
-      // Skip the initial greeting — Perplexity requires user message first after system prompt
-      const allFiltered = messages.filter((m) => m.role === 'user' || m.role === 'assistant');
-      const firstUserIdx = allFiltered.findIndex((m) => m.role === 'user');
-      const apiMessages = firstUserIdx >= 0 ? allFiltered.slice(firstUserIdx).slice(-CONFIG.maxMessages) : [];
-
-      const response = await fetch(`${CONFIG.supabaseUrl}/functions/v1/${CONFIG.functionName}`, {
+      const response = await fetch(`${CONFIG.apiUrl}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          agent: currentAgent,
-          messages: apiMessages,
-          conversation_id: conversationId,
-          visitor_id: visitorId,
-        }),
+        body: JSON.stringify({ message: text }),
       });
 
       if (!response.ok) {
         const err = await response.json().catch(() => ({}));
-        throw new Error(err.error || 'Something went wrong');
+        throw new Error(err.detail || 'Something went wrong');
       }
 
-      // Parse SSE stream
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || '';
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6);
-            if (data === '[DONE]') continue;
-            try {
-              const parsed = JSON.parse(data);
-              if (parsed.text) {
-                if (botBubble.querySelector('.clawdbot-typing')) {
-                  botBubble.innerHTML = '';
-                }
-                fullResponse += parsed.text;
-                botBubble.textContent = fullResponse;
-                scrollToBottom();
-              }
-            } catch (e) { /* skip */ }
-          }
-        }
-      }
+      const data = await response.json();
+      fullResponse = data.response || 'No response received.';
+      botBubble.innerHTML = '';
+      botBubble.textContent = fullResponse;
+      scrollToBottom();
     } catch (error) {
       fullResponse = 'Sorry, I had trouble connecting. Please try again in a moment.';
       botBubble.innerHTML = '';
