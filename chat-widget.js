@@ -9,6 +9,7 @@
   const CONFIG = {
     apiUrl: 'https://clawd.flywithpeggs.com',
     maxMessages: 50,
+    maxHistory: 10,
   };
 
   const AGENTS = {
@@ -239,10 +240,14 @@
     let fullResponse = '';
 
     try {
+      const recentMessages = messages
+        .filter(m => m.role === 'user' || m.role === 'assistant')
+        .slice(-CONFIG.maxHistory);
+
       const response = await fetch(`${CONFIG.apiUrl}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({ message: text, messages: recentMessages, agent: currentAgent }),
       });
 
       if (!response.ok) {
