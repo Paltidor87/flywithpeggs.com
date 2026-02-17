@@ -31,6 +31,12 @@ _site/
 # Don't commit PDFs (store in Google Drive / Notion)
 *.pdf
 
+# Cursor / AI tooling
+.leann/
+
+# Supabase local state
+supabase/.temp/
+
 # Hetzner / deployment
 caddy_data/
 caddy_config/
