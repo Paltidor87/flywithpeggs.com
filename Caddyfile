@@ -16,8 +16,30 @@ flywithpeggs.com {
 }
 
 clawd.flywithpeggs.com {
-    reverse_proxy clawdbot:8090
+    reverse_proxy openbot:8090
     encode gzip zstd
+
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    }
+}
+
+openbot.flywithpeggs.com {
+    @openbot_allowed remote_ip 127.0.0.1/32 ::1 {$OPENBOT_ALLOWLIST}
+
+    handle @openbot_allowed {
+        basic_auth {
+            {$OPENBOT_BASIC_AUTH_USER} {$OPENBOT_BASIC_AUTH_HASH}
+        }
+
+        reverse_proxy openbot:8090
+        encode gzip zstd
+    }
+
+    respond "Forbidden" 403
 
     header {
         X-Content-Type-Options "nosniff"

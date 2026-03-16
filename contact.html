@@ -120,6 +120,46 @@
                                 <label for="message" class="form-label">Your Message</label>
                                 <textarea id="message" name="message" rows="5" required class="form-input" placeholder="Tell me what's on your mind..."></textarea>
                             </div>
+                            <div>
+                                <label for="goal" class="form-label">Primary Goal</label>
+                                <select id="goal" name="goal" class="form-input">
+                                    <option value="">Select one...</option>
+                                    <option value="AI Strategy & Automation">AI Strategy & Automation</option>
+                                    <option value="Travel Planning">Travel Planning</option>
+                                    <option value="Wellness Coaching">Wellness Coaching</option>
+                                    <option value="Partnership / Collaboration">Partnership / Collaboration</option>
+                                    <option value="General Guidance">General Guidance</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="timeline" class="form-label">Timeline</label>
+                                <select id="timeline" name="timeline" class="form-input">
+                                    <option value="">Select one...</option>
+                                    <option value="ASAP">ASAP</option>
+                                    <option value="Within 2 Weeks">Within 2 Weeks</option>
+                                    <option value="Within 30 Days">Within 30 Days</option>
+                                    <option value="Flexible">Flexible</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="preferred_contact" class="form-label">Preferred Contact Method</label>
+                                <select id="preferred_contact" name="preferred_contact" class="form-input">
+                                    <option value="">Select one...</option>
+                                    <option value="Email">Email</option>
+                                    <option value="Phone">Phone</option>
+                                    <option value="Either">Either</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="preferred_contact_details" class="form-label">Preferred Contact Details (optional)</label>
+                                <input
+                                    type="text"
+                                    id="preferred_contact_details"
+                                    name="preferred_contact_details"
+                                    class="form-input"
+                                    placeholder="Best number/email and best time window"
+                                >
+                            </div>
                             <button type="submit" id="contact-submit-btn" class="btn btn-primary w-full text-lg">
                                 <span id="contact-btn-text">Send Message</span>
                                 <i id="contact-btn-spinner" class="fas fa-circle-notch fa-spin ml-2 hidden"></i>
@@ -131,7 +171,13 @@
                         (function() {
                             // ============================================================
                             // REPLACE THIS with your n8n Webhook production URL:
-                            const N8N_CONTACT_WEBHOOK = 'YOUR_N8N_CONTACT_FORM_WEBHOOK_URL';
+                            const N8N_CONTACT_WEBHOOK = window.CONTACT_WEBHOOK_URL || (
+                                ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname)
+                                    ? 'http://localhost:5001/new-lead'
+                                    : 'YOUR_N8N_CONTACT_FORM_WEBHOOK_URL'
+                            );
+                            // Optional secondary lead endpoint (leave blank to disable):
+                            const SECONDARY_LEAD_WEBHOOK = '';
                             // ============================================================
 
                             const form = document.getElementById('contact-form');
@@ -139,19 +185,41 @@
                             const submitBtn = document.getElementById('contact-submit-btn');
                             const btnText = document.getElementById('contact-btn-text');
                             const btnSpinner = document.getElementById('contact-btn-spinner');
+                            // #region agent log
+                            fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H9',location:'contact.html:169',message:'script_loaded',data:{formFound:Boolean(form),resultFound:Boolean(resultEl)},timestamp:Date.now()})}).catch(()=>{});
+                            // #endregion
+
+                            form.addEventListener('invalid', function(e) {
+                                // #region agent log
+                                fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H11',location:'contact.html:175',message:'form_validation_blocked',data:{fieldName:e.target&&e.target.name?e.target.name:'unknown',fieldType:e.target&&e.target.type?e.target.type:'unknown',validationMessage:e.target&&e.target.validationMessage?e.target.validationMessage:'unknown'},timestamp:Date.now()})}).catch(()=>{});
+                                // #endregion
+                            }, true);
 
                             form.addEventListener('submit', async function(e) {
+                                // #region agent log
+                                fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H10',location:'contact.html:175',message:'submit_handler_invoked',data:{currentUrl:window.location.href},timestamp:Date.now()})}).catch(()=>{});
+                                // #endregion
                                 e.preventDefault();
+                                // #region agent log
+                                fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H1',location:'contact.html:176',message:'submit_start_config',data:{webhookHost:(new URL(N8N_CONTACT_WEBHOOK, window.location.origin)).host,webhookProtocol:(new URL(N8N_CONTACT_WEBHOOK, window.location.origin)).protocol,usesLocalhost:/localhost|127\\.0\\.0\\.1/.test(N8N_CONTACT_WEBHOOK),secondaryWebhookConfigured:Boolean(SECONDARY_LEAD_WEBHOOK)},timestamp:Date.now()})}).catch(()=>{});
+                                // #endregion
 
                                 // Honeypot check — bots fill hidden fields
                                 if (form.querySelector('[name="website"]').value) return;
 
-                                // Gather form data as a clean JSON object
+                                // Gather all fields so new question inputs stay captured
+                                const allData = Object.fromEntries(new FormData(form).entries());
                                 const payload = {
-                                    name: form.name.value.trim(),
-                                    email: form.email.value.trim(),
-                                    inquiry_type: form.inquiry_type.value,
-                                    message: form.message.value.trim(),
+                                    name: (allData.name || '').trim(),
+                                    email: (allData.email || '').trim(),
+                                    inquiry_type: allData.inquiry_type || 'General Inquiry',
+                                    message: (allData.message || '').trim(),
+                                    goal: allData.goal || '',
+                                    timeline: allData.timeline || '',
+                                    preferred_contact: allData.preferred_contact || '',
+                                    preferred_contact_details: (allData.preferred_contact_details || '').trim(),
+                                    significance: (allData.message || allData.goal || '').trim(),
+                                    full_details: allData,
                                     source: 'flywithpeggs.com/contact',
                                     submitted_at: new Date().toISOString()
                                 };
@@ -163,13 +231,42 @@
                                 resultEl.classList.add('hidden');
 
                                 try {
+                                    // #region agent log
+                                    fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H4',location:'contact.html:204',message:'before_primary_fetch',data:{endpoint:N8N_CONTACT_WEBHOOK,payloadFields:Object.keys(allData),messageLength:(payload.message||'').length},timestamp:Date.now()})}).catch(()=>{});
+                                    // #endregion
                                     const response = await fetch(N8N_CONTACT_WEBHOOK, {
                                         method: 'POST',
                                         headers: { 'Content-Type': 'application/json' },
                                         body: JSON.stringify(payload)
                                     });
+                                    // #region agent log
+                                    fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H2',location:'contact.html:209',message:'after_primary_fetch',data:{status:response.status,ok:response.ok,url:response.url},timestamp:Date.now()})}).catch(()=>{});
+                                    // #endregion
 
                                     if (response.ok) {
+                                        // #region agent log
+                                        fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H3',location:'contact.html:210',message:'entered_success_branch',data:{guardLiteral:'if(true)',responseOk:response.ok,status:response.status},timestamp:Date.now()})}).catch(()=>{});
+                                        // #endregion
+                                        if (SECONDARY_LEAD_WEBHOOK) {
+                                            // #region agent log
+                                            fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H6',location:'contact.html:223',message:'secondary_webhook_attempt',data:{enabled:true,targetHost:(new URL(SECONDARY_LEAD_WEBHOOK, window.location.origin)).host,hasSignificance:Boolean(payload.significance),detailsKeys:Object.keys(payload.full_details||{})},timestamp:Date.now()})}).catch(()=>{});
+                                            // #endregion
+                                            fetch(SECONDARY_LEAD_WEBHOOK, {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({
+                                                    significance: payload.significance,
+                                                    full_details: payload.full_details,
+                                                    source: payload.source,
+                                                    submitted_at: payload.submitted_at
+                                                })
+                                            }).catch((secondaryError) => {
+                                                console.warn('Secondary lead webhook failed:', secondaryError);
+                                                // #region agent log
+                                                fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H7',location:'contact.html:234',message:'secondary_webhook_failed',data:{errorName:secondaryError&&secondaryError.name?secondaryError.name:'unknown',errorMessage:secondaryError&&secondaryError.message?String(secondaryError.message):'unknown'},timestamp:Date.now()})}).catch(()=>{});
+                                                // #endregion
+                                            });
+                                        }
                                         // Success
                                         resultEl.classList.remove('hidden');
                                         resultEl.style.backgroundColor = '#f0fdf4';
@@ -188,6 +285,9 @@
                                     resultEl.style.border = '1px solid #fecaca';
                                     resultEl.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i> Something went wrong. Please try again or call me at <a href="tel:516-984-3733" style="color:#991b1b;font-weight:600;">(516) 984-3733</a>.';
                                     console.error('Contact form error:', error);
+                                    // #region agent log
+                                    fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H5',location:'contact.html:242',message:'entered_error_branch',data:{errorName:error&&error.name?error.name:'unknown',errorMessage:error&&error.message?String(error.message):'unknown'},timestamp:Date.now()})}).catch(()=>{});
+                                    // #endregion
                                 } finally {
                                     // Reset button
                                     submitBtn.disabled = false;

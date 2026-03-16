@@ -305,6 +305,67 @@ footer .brand-name {
 .bg-travel   { background-color: var(--bg-travel); }
 
 /* ==========================================================================
+   6B. TRAVEL ARCHITECT SECTION
+   ========================================================================== */
+#travel-architect {
+    background: linear-gradient(135deg, rgba(93, 63, 211, 0.06) 0%, rgba(0, 188, 212, 0.06) 100%);
+}
+
+#travel-architect h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--royal);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#travel-architect .bio-intro {
+    max-width: 48rem;
+    margin: 0 auto 2.25rem;
+    text-align: center;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--velvet);
+}
+
+#travel-architect .expertise-grid {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+    #travel-architect .expertise-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+#travel-architect .expertise-card {
+    background-color: #fff;
+    border: 1px solid rgba(93, 63, 211, 0.12);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 20px -14px rgba(26, 26, 62, 0.45);
+}
+
+#travel-architect .expertise-card h3 {
+    color: var(--royal);
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+#travel-architect .expertise-card p {
+    color: var(--text-dark);
+    line-height: 1.65;
+}
+
+#travel-architect .cta-block {
+    text-align: center;
+}
+
+/* ==========================================================================
    7. CARDS (General)
    ========================================================================== */
 .card {
@@ -919,9 +980,9 @@ main {
 }
 
 /* ==========================================================================
-   22. CLAWDBOT CHAT WIDGET
+   22. OPENBOT CHAT WIDGET
    ========================================================================== */
-#clawdbot-container {
+#openbot-container {
     position: fixed;
     bottom: 1.25rem;
     right: 1.25rem;
@@ -930,7 +991,7 @@ main {
 }
 
 /* Floating Action Button */
-#clawdbot-fab {
+#openbot-fab {
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 50%;
@@ -946,17 +1007,17 @@ main {
     transition: transform 200ms ease, box-shadow 200ms ease;
 }
 
-#clawdbot-fab:hover {
+#openbot-fab:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 28px rgba(93, 63, 211, 0.5);
 }
 
-#clawdbot-fab.clawdbot-fab-hidden {
+#openbot-fab.openbot-fab-hidden {
     display: none;
 }
 
 /* Chat Panel */
-#clawdbot-panel {
+#openbot-panel {
     width: 370px;
     max-width: calc(100vw - 2rem);
     height: 540px;
@@ -970,12 +1031,12 @@ main {
     transition: opacity 200ms ease, transform 200ms ease;
 }
 
-#clawdbot-panel.clawdbot-hidden {
+#openbot-panel.openbot-hidden {
     display: none;
 }
 
 /* Header */
-#clawdbot-header {
+#openbot-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -984,32 +1045,32 @@ main {
     color: var(--text-light);
 }
 
-#clawdbot-header-info {
+#openbot-header-info {
     display: flex;
     align-items: center;
     gap: 0.6rem;
 }
 
-#clawdbot-header-info > i {
+#openbot-header-info > i {
     font-size: 1.5rem;
 }
 
-#clawdbot-header-name {
+#openbot-header-name {
     font-weight: 700;
     font-size: 0.95rem;
 }
 
-#clawdbot-header-status {
+#openbot-header-status {
     font-size: 0.7rem;
     opacity: 0.8;
 }
 
-#clawdbot-header-actions {
+#openbot-header-actions {
     display: flex;
     gap: 0.5rem;
 }
 
-#clawdbot-header-actions button {
+#openbot-header-actions button {
     background: none;
     border: none;
     color: var(--text-light);
@@ -1020,22 +1081,22 @@ main {
     transition: opacity 200ms ease;
 }
 
-#clawdbot-header-actions button:hover {
+#openbot-header-actions button:hover {
     opacity: 1;
 }
 
 /* Agent Picker */
-#clawdbot-agent-picker {
+#openbot-agent-picker {
     background-color: var(--lavender-bg);
     border-bottom: 1px solid #e0d4f5;
     padding: 0.75rem;
 }
 
-#clawdbot-agent-picker.clawdbot-hidden {
+#openbot-agent-picker.openbot-hidden {
     display: none;
 }
 
-.clawdbot-agent-picker-title {
+.openbot-agent-picker-title {
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -1044,13 +1105,13 @@ main {
     margin-bottom: 0.5rem;
 }
 
-#clawdbot-agent-list {
+#openbot-agent-list {
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
 }
 
-.clawdbot-agent-option {
+.openbot-agent-option {
     display: flex;
     align-items: center;
     gap: 0.35rem;
@@ -1065,18 +1126,18 @@ main {
     transition: background-color 200ms ease, color 200ms ease;
 }
 
-.clawdbot-agent-option:hover {
+.openbot-agent-option:hover {
     background-color: var(--royal);
     color: var(--text-light);
     border-color: var(--royal);
 }
 
-.clawdbot-agent-option i {
+.openbot-agent-option i {
     font-size: 0.8rem;
 }
 
 /* Messages Area */
-#clawdbot-messages {
+#openbot-messages {
     flex: 1;
     overflow-y: auto;
     padding: 1rem;
@@ -1086,66 +1147,66 @@ main {
     background-color: #fafafe;
 }
 
-.clawdbot-msg {
+.openbot-msg {
     max-width: 85%;
     padding: 0.6rem 0.9rem;
     border-radius: 1rem;
     font-size: 0.875rem;
     line-height: 1.5;
     word-wrap: break-word;
-    animation: clawdbot-fade-in 200ms ease;
+    animation: openbot-fade-in 200ms ease;
 }
 
-.clawdbot-msg-user {
+.openbot-msg-user {
     align-self: flex-end;
     background: linear-gradient(135deg, var(--royal) 0%, var(--velvet) 100%);
     color: var(--text-light);
     border-bottom-right-radius: 0.25rem;
 }
 
-.clawdbot-msg-bot {
+.openbot-msg-bot {
     align-self: flex-start;
     background-color: var(--lavender-bg);
     color: var(--text-dark);
     border-bottom-left-radius: 0.25rem;
 }
 
-.clawdbot-msg-error {
+.openbot-msg-error {
     background-color: #fff0f0;
     color: var(--coral);
 }
 
-@keyframes clawdbot-fade-in {
+@keyframes openbot-fade-in {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 /* Typing indicator */
-.clawdbot-typing {
+.openbot-typing {
     display: flex;
     align-items: center;
     gap: 0.3rem;
     padding: 0.2rem 0;
 }
 
-.clawdbot-typing span {
+.openbot-typing span {
     width: 0.45rem;
     height: 0.45rem;
     border-radius: 50%;
     background-color: var(--amethyst);
-    animation: clawdbot-bounce 1.2s infinite ease-in-out;
+    animation: openbot-bounce 1.2s infinite ease-in-out;
 }
 
-.clawdbot-typing span:nth-child(2) { animation-delay: 0.15s; }
-.clawdbot-typing span:nth-child(3) { animation-delay: 0.3s; }
+.openbot-typing span:nth-child(2) { animation-delay: 0.15s; }
+.openbot-typing span:nth-child(3) { animation-delay: 0.3s; }
 
-@keyframes clawdbot-bounce {
+@keyframes openbot-bounce {
     0%, 60%, 100% { transform: translateY(0); }
     30% { transform: translateY(-5px); }
 }
 
 /* Input Area */
-#clawdbot-input-area {
+#openbot-input-area {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -1154,7 +1215,7 @@ main {
     background-color: #fff;
 }
 
-#clawdbot-input {
+#openbot-input {
     flex: 1;
     border: 1.5px solid #ddd;
     border-radius: 1.5rem;
@@ -1165,15 +1226,15 @@ main {
     font-family: 'Inter', sans-serif;
 }
 
-#clawdbot-input:focus {
+#openbot-input:focus {
     border-color: var(--royal);
 }
 
-#clawdbot-input:disabled {
+#openbot-input:disabled {
     opacity: 0.5;
 }
 
-#clawdbot-send {
+#openbot-send {
     width: 2.2rem;
     height: 2.2rem;
     border-radius: 50%;
@@ -1189,18 +1250,18 @@ main {
     flex-shrink: 0;
 }
 
-#clawdbot-send:hover {
+#openbot-send:hover {
     transform: scale(1.08);
 }
 
-#clawdbot-send:disabled {
+#openbot-send:disabled {
     opacity: 0.5;
     cursor: default;
     transform: none;
 }
 
 /* Footer */
-#clawdbot-footer {
+#openbot-footer {
     text-align: center;
     font-size: 0.6rem;
     padding: 0.3rem;
@@ -1211,13 +1272,13 @@ main {
 
 /* Mobile responsive */
 @media (max-width: 480px) {
-    #clawdbot-container {
+    #openbot-container {
         bottom: 0;
         right: 0;
         left: 0;
     }
 
-    #clawdbot-panel {
+    #openbot-panel {
         width: 100%;
         max-width: 100%;
         height: calc(100vh - 1rem);
@@ -1225,9 +1286,47 @@ main {
         border-radius: 1rem 1rem 0 0;
     }
 
-    #clawdbot-fab {
+    #openbot-fab {
         position: fixed;
         bottom: 1rem;
         right: 1rem;
     }
+}
+
+/* Consultative UI - J'Son Signature Style */
+.consultative-intake {
+    background: #1a1a1a;
+    border-left: 4px solid #D4AF37; /* Creole Gold Accent */
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    color: #f4f4f4;
+}
+
+.consultative-intake h3 {
+    font-size: 1.5rem;
+    letter-spacing: 0.1rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    color: #D4AF37;
+}
+
+.consultative-intake label {
+    font-weight: 300;
+    color: #cccccc;
+}
+
+.consultative-intake select, 
+.consultative-intake textarea {
+    background: #262626;
+    border: 1px solid #404040;
+    color: #ffffff;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.consultative-intake select:focus, 
+.consultative-intake textarea:focus {
+    border-color: #D4AF37;
+    outline: none;
 }

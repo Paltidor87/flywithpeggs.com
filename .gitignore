@@ -33,6 +33,7 @@ _site/
 
 # Cursor / AI tooling
 .leann/
+.firecrawl/
 
 # Supabase local state
 supabase/.temp/

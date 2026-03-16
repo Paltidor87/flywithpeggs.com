@@ -67,9 +67,9 @@ fi
 # --- 6. Create project directories ---
 echo "[+] Creating project directories..."
 mkdir -p /home/deploy/flywithpeggs.com
-mkdir -p /home/deploy/clawdbot
+mkdir -p /home/deploy/openbot
 chown -R deploy:deploy /home/deploy/flywithpeggs.com
-chown -R deploy:deploy /home/deploy/clawdbot
+chown -R deploy:deploy /home/deploy/openbot
 echo "[OK] Directories created"
 
 # --- 7. Install rsync (needed for GitHub Actions deploy) ---
@@ -86,10 +86,10 @@ echo "=== Setup Complete ==="
 echo ""
 echo "Next steps:"
 echo "  1. Add your SSH public key to /home/deploy/.ssh/authorized_keys"
-echo "  2. Set GitHub Secrets on BOTH repos (flywithpeggs.com & clawdbot):"
+echo "  2. Set GitHub Secrets on BOTH repos (flywithpeggs.com & openbot):"
 echo "     - SSH_PRIVATE_KEY  (the private key matching the public key above)"
 echo "     - SERVER_IP        (this server's IP address)"
-echo "  3. For the clawdbot repo, also add these secrets:"
+echo "  3. For the openbot repo, also add these secrets:"
 echo "     - TELEGRAM_BOT_TOKEN"
 echo "     - TELEGRAM_ALLOWED_CHATS (optional, comma-separated chat IDs)"
 echo "     - ESSENCEM_URL (e.g. http://100.114.113.70:11445 if using Tailscale)"
@@ -97,6 +97,7 @@ echo "     - OLLAMA_MODEL (default: llama3.2:3b)"
 echo "  4. Set DNS A records pointing to this server:"
 echo "     - flywithpeggs.com      → $(curl -s ifconfig.me || echo 'YOUR_IP')"
 echo "     - www.flywithpeggs.com  → $(curl -s ifconfig.me || echo 'YOUR_IP')"
-echo "     - clawd.flywithpeggs.com → $(curl -s ifconfig.me || echo 'YOUR_IP')"
+echo "     - openbot.flywithpeggs.com → $(curl -s ifconfig.me || echo 'YOUR_IP')"
+echo "     - clawd.flywithpeggs.com (legacy fallback) → $(curl -s ifconfig.me || echo 'YOUR_IP')"
 echo "  5. Push to main on both repos to trigger deployment!"
 echo ""
