@@ -17,6 +17,7 @@
 
 - The workspace centers on `flywithpeggs.com` and related self-hosted infrastructure operations.
 - The active replacement host for Citadelle routing is `breathless-macbook-air.tail030c2b.ts.net`.
+- The VPN network now includes a Raspberry Pi node named `altidor-pi`.
 - Local AI orchestration relies on shell commands in `.zshrc` including `bugscan`, `find-code`, `mem-index`, and `zreload`.
 - Local model tooling includes Ollama with `qwen3:8b` for audits and `nomic-embed-text` for embeddings.
 - Incremental continual-learning state is tracked at `.cursor/hooks/state/continual-learning-index.json`.
@@ -26,4 +27,3 @@
 - The active Openbot web endpoint is `https://openbot.flywithpeggs.com`.
 - Finance capability for myOshee (budget/debt/savings/stocks/crypto/credit) is an active build focus.
 - The Telegram myOshee runtime codebase is under `/Users/peggs/Projects/openbot`.
-- `openbot` is expected to run on the same VPS stack, fronted by `openbot.flywithpeggs.com`.

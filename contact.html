@@ -59,6 +59,32 @@
             </div>
         </section>
 
+        <section id="travel-architect" aria-labelledby="architect-title" class="py-16 md:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 id="architect-title">The Travel Architect: Peggens Altidor</h2>
+                <p class="bio-intro">
+                    Fusing the precision of <strong>AI Architecture</strong> with the curated
+                    vibrancy of <strong>International Travel Consulting</strong>.
+                </p>
+
+                <div class="expertise-grid">
+                    <article class="expertise-card">
+                        <h3>Systemic Integration</h3>
+                        <p>Developing local RAG environments and custom LLM personas for high-level business intelligence.</p>
+                    </article>
+
+                    <article class="expertise-card">
+                        <h3>Curated Experiences</h3>
+                        <p>Specializing in luxury and cultural immersion across Thailand, Jamaica, and the Caribbean.</p>
+                    </article>
+                </div>
+
+                <div class="cta-block">
+                    <a href="mailto:contact@flywithpeggs.com" class="btn btn-primary">Consult the Architect</a>
+                </div>
+            </div>
+        </section>
+
         <section class="py-16 md:py-24" style="background-color: var(--page-bg);">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid md:grid-cols-2 gap-12">
@@ -185,24 +211,12 @@
                             const submitBtn = document.getElementById('contact-submit-btn');
                             const btnText = document.getElementById('contact-btn-text');
                             const btnSpinner = document.getElementById('contact-btn-spinner');
-                            // #region agent log
-                            fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H9',location:'contact.html:169',message:'script_loaded',data:{formFound:Boolean(form),resultFound:Boolean(resultEl)},timestamp:Date.now()})}).catch(()=>{});
-                            // #endregion
-
                             form.addEventListener('invalid', function(e) {
-                                // #region agent log
-                                fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H11',location:'contact.html:175',message:'form_validation_blocked',data:{fieldName:e.target&&e.target.name?e.target.name:'unknown',fieldType:e.target&&e.target.type?e.target.type:'unknown',validationMessage:e.target&&e.target.validationMessage?e.target.validationMessage:'unknown'},timestamp:Date.now()})}).catch(()=>{});
-                                // #endregion
+                                // Preserve browser default validation handling.
                             }, true);
 
                             form.addEventListener('submit', async function(e) {
-                                // #region agent log
-                                fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H10',location:'contact.html:175',message:'submit_handler_invoked',data:{currentUrl:window.location.href},timestamp:Date.now()})}).catch(()=>{});
-                                // #endregion
                                 e.preventDefault();
-                                // #region agent log
-                                fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H1',location:'contact.html:176',message:'submit_start_config',data:{webhookHost:(new URL(N8N_CONTACT_WEBHOOK, window.location.origin)).host,webhookProtocol:(new URL(N8N_CONTACT_WEBHOOK, window.location.origin)).protocol,usesLocalhost:/localhost|127\\.0\\.0\\.1/.test(N8N_CONTACT_WEBHOOK),secondaryWebhookConfigured:Boolean(SECONDARY_LEAD_WEBHOOK)},timestamp:Date.now()})}).catch(()=>{});
-                                // #endregion
 
                                 // Honeypot check — bots fill hidden fields
                                 if (form.querySelector('[name="website"]').value) return;
@@ -210,9 +224,13 @@
                                 // Gather all fields so new question inputs stay captured
                                 const allData = Object.fromEntries(new FormData(form).entries());
                                 const payload = {
+                                    // Forward all current/future form fields for sheet + webhook compatibility.
+                                    ...allData,
                                     name: (allData.name || '').trim(),
                                     email: (allData.email || '').trim(),
                                     inquiry_type: allData.inquiry_type || 'General Inquiry',
+                                    category: allData.inquiry_type || allData.goal || 'General Inquiry',
+                                    status: 'new',
                                     message: (allData.message || '').trim(),
                                     goal: allData.goal || '',
                                     timeline: allData.timeline || '',
@@ -231,26 +249,14 @@
                                 resultEl.classList.add('hidden');
 
                                 try {
-                                    // #region agent log
-                                    fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H4',location:'contact.html:204',message:'before_primary_fetch',data:{endpoint:N8N_CONTACT_WEBHOOK,payloadFields:Object.keys(allData),messageLength:(payload.message||'').length},timestamp:Date.now()})}).catch(()=>{});
-                                    // #endregion
                                     const response = await fetch(N8N_CONTACT_WEBHOOK, {
                                         method: 'POST',
                                         headers: { 'Content-Type': 'application/json' },
                                         body: JSON.stringify(payload)
                                     });
-                                    // #region agent log
-                                    fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H2',location:'contact.html:209',message:'after_primary_fetch',data:{status:response.status,ok:response.ok,url:response.url},timestamp:Date.now()})}).catch(()=>{});
-                                    // #endregion
 
                                     if (response.ok) {
-                                        // #region agent log
-                                        fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H3',location:'contact.html:210',message:'entered_success_branch',data:{guardLiteral:'if(true)',responseOk:response.ok,status:response.status},timestamp:Date.now()})}).catch(()=>{});
-                                        // #endregion
                                         if (SECONDARY_LEAD_WEBHOOK) {
-                                            // #region agent log
-                                            fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H6',location:'contact.html:223',message:'secondary_webhook_attempt',data:{enabled:true,targetHost:(new URL(SECONDARY_LEAD_WEBHOOK, window.location.origin)).host,hasSignificance:Boolean(payload.significance),detailsKeys:Object.keys(payload.full_details||{})},timestamp:Date.now()})}).catch(()=>{});
-                                            // #endregion
                                             fetch(SECONDARY_LEAD_WEBHOOK, {
                                                 method: 'POST',
                                                 headers: { 'Content-Type': 'application/json' },
@@ -262,9 +268,6 @@
                                                 })
                                             }).catch((secondaryError) => {
                                                 console.warn('Secondary lead webhook failed:', secondaryError);
-                                                // #region agent log
-                                                fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H7',location:'contact.html:234',message:'secondary_webhook_failed',data:{errorName:secondaryError&&secondaryError.name?secondaryError.name:'unknown',errorMessage:secondaryError&&secondaryError.message?String(secondaryError.message):'unknown'},timestamp:Date.now()})}).catch(()=>{});
-                                                // #endregion
                                             });
                                         }
                                         // Success
@@ -285,9 +288,6 @@
                                     resultEl.style.border = '1px solid #fecaca';
                                     resultEl.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i> Something went wrong. Please try again or call me at <a href="tel:516-984-3733" style="color:#991b1b;font-weight:600;">(516) 984-3733</a>.';
                                     console.error('Contact form error:', error);
-                                    // #region agent log
-                                    fetch('http://127.0.0.1:7243/ingest/5c939067-da4d-448d-b6a5-e89ba8d77b23',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5fdbcb'},body:JSON.stringify({sessionId:'5fdbcb',runId:'baseline',hypothesisId:'H5',location:'contact.html:242',message:'entered_error_branch',data:{errorName:error&&error.name?error.name:'unknown',errorMessage:error&&error.message?String(error.message):'unknown'},timestamp:Date.now()})}).catch(()=>{});
-                                    // #endregion
                                 } finally {
                                     // Reset button
                                     submitBtn.disabled = false;

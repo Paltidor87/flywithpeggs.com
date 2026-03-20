@@ -222,6 +222,9 @@ def send_twilio_sms(message: str) -> None:
 def process_audit_in_background(data):
     name = data.get('name') or 'Visionary'
     narrative = data.get('message') or data.get('significance') or 'No content.'
+    category = data.get('category') or data.get('inquiry_type') or data.get('goal') or 'General Inquiry'
+    status = data.get('status') or 'new'
+    source = data.get('source') or 'unknown'
     priority = classify_priority(narrative)
     print(f"🧠 J'Son is auditing {name} in the background...")
 
@@ -252,6 +255,9 @@ def process_audit_in_background(data):
     files = {
         "lead.json": {
             "client": name,
+            "category": category,
+            "status": status,
+            "source": source,
             "priority": priority,
             "narrative": narrative,
             "submitted_at": datetime.datetime.now().isoformat(),
@@ -273,6 +279,9 @@ def process_audit_in_background(data):
 
     manifest_row = {
         "client": name,
+        "category": category,
+        "status": status,
+        "source": source,
         "priority": priority,
         "timestamp": timestamp,
         "folder": lead_folder,
