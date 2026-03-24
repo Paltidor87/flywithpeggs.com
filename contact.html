@@ -196,11 +196,11 @@
                         <script>
                         (function() {
                             // ============================================================
-                            // REPLACE THIS with your n8n Webhook production URL:
+                            // Production posts to Openbot /new-lead (override with CONTACT_WEBHOOK_URL if needed).
                             const N8N_CONTACT_WEBHOOK = window.CONTACT_WEBHOOK_URL || (
                                 ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname)
                                     ? 'http://localhost:5001/new-lead'
-                                    : 'YOUR_N8N_CONTACT_FORM_WEBHOOK_URL'
+                                    : 'https://openbot.flywithpeggs.com/new-lead'
                             );
                             // Optional secondary lead endpoint (leave blank to disable):
                             const SECONDARY_LEAD_WEBHOOK = '';
