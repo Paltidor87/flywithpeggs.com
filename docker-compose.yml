@@ -19,6 +19,8 @@ services:
       - web
     depends_on:
       - web
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   web:
     build: .

@@ -49,3 +49,8 @@ openbot.flywithpeggs.com {
         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
     }
 }
+
+bgtravelnetwork.com, www.bgtravelnetwork.com {
+    reverse_proxy host.docker.internal:8080
+    encode gzip zstd
+}
