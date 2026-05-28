@@ -122,6 +122,48 @@ header nav button.active {
     position: relative;
 }
 
+/* Contact page (and shared) utility classes */
+.dropdown-surface {
+    background-color: var(--header-bg);
+    border: 1px solid rgba(153, 102, 204, 0.2);
+}
+
+.text-amethyst {
+    color: var(--amethyst);
+}
+
+.mobile-menu-bg {
+    background-color: var(--header-bg);
+}
+
+.mobile-menu-section-title {
+    color: var(--amethyst);
+}
+
+.hero-subtitle {
+    color: var(--velvet);
+}
+
+.section-page-bg {
+    background-color: var(--page-bg);
+}
+
+.heading-royal {
+    color: var(--royal);
+}
+
+.icon-velvet {
+    color: var(--velvet);
+}
+
+.link-royal {
+    color: var(--royal);
+}
+
+.brand-logo-gold {
+    color: var(--gold);
+}
+
 /* Mobile menu */
 #mobile-menu a {
     color: var(--amethyst);

@@ -30,6 +30,7 @@ _site/
 
 # Don't commit PDFs (store in Google Drive / Notion)
 *.pdf
+!peggens_altidor_media_kit.pdf
 
 # Cursor / AI tooling
 .leann/

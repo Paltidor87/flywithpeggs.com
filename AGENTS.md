@@ -2,11 +2,11 @@
 
 - Default to running the Critical Project Risk Radar workflow first when the user says to run radar.
 - Use `openbot` as the canonical bot name; treat `clawdbot`, `clawd`, and `callbot` as legacy labels only—files or UI may still use old names, but the only active bot is openbot.
-- Keep project operations organized and consolidated rather than split across scattered locations.
+- Keep project operations organized and consolidated rather than split across scattered locations, and keep durable memory aligned between `flywithpeggs.com` and `openbot`.
 - Keep ongoing project-status updates ready for Notion sync workflows, with Trade Show contacts and UGC tracked in separate Notion targets.
 - When the user asks for a direct answer or rundown, lead with the immediate answer first, avoid extra detours, and for dashboard troubleshooting inspect the live on-screen UI state before prescribing steps.
 - When the user says "take over," execute end-to-end autonomously and only pause for true blockers.
-- Prefer Telegram-first, one-tap UX for operational workflows (contact picking, call templates, follow-up, clear in-chat call feedback, and easy status retrieval) over command-heavy flows.
+- Prefer Telegram-first, one-tap UX for operational workflows (contact picking, call templates, follow-up, clear in-chat call feedback, and easy status retrieval) over command-heavy flows, and ensure anything built works well on mobile.
 - When architecture confusion appears, explicitly confirm whether capabilities are the same runtime or a separate project, and map myOshee voice work to the Telegram `openbot` runtime.
 - Before implementing new work, confirm what is already implemented and avoid re-implementing completed measures.
 - When the user asks to hold off or avoid changes, provide verification or status checks without making code edits, and prioritize confirming work is saved and not regressed.

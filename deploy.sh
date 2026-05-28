@@ -26,7 +26,6 @@ rsync -avz --delete \
   --exclude '.DS_Store' \
   --exclude 'node_modules' \
   --exclude '*.docx' \
-  --exclude '*.pdf' \
   --exclude 'hetzner-setup.sh' \
   --exclude 'deploy.sh' \
   --exclude 'README.md' \

@@ -1,4 +1,5 @@
 www.flywithpeggs.com {
+    redir /mediakit /peggens_altidor_media_kit.pdf permanent
     reverse_proxy web:80
     encode gzip zstd
 
