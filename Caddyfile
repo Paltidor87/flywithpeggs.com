@@ -21,3 +21,9 @@ bgtravelnetwork.com, www.bgtravelnetwork.com {
     encode gzip zstd
 }
 
+http://n8n.flywithpeggs.com {
+    reverse_proxy host.docker.internal:32771
+    encode gzip zstd
+}
+
+
