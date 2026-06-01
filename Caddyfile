@@ -32,7 +32,7 @@ newsletter.flywithpeggs.com {
 }
 
 sanctum.flywithpeggs.com {
-    reverse_proxy host.docker.internal:3737
+    reverse_proxy host.docker.internal:8000
     encode gzip zstd
 }
 
