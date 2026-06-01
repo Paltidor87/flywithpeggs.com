@@ -47,3 +47,5 @@ supabase/.temp/
 # Hetzner / deployment
 caddy_data/
 caddy_config/
+sanctum-app/
+
