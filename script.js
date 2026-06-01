@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
     (function initNewsletterForm() {
         // ============================================================
         // REPLACE THIS with your n8n Webhook production URL:
-        const N8N_NEWSLETTER_WEBHOOK = 'YOUR_N8N_NEWSLETTER_WEBHOOK_URL';
+        const N8N_NEWSLETTER_WEBHOOK = 'https://n8n.flywithpeggs.com/webhook/subscribe';
         // ============================================================
 
         const form = document.getElementById('newsletter-form');

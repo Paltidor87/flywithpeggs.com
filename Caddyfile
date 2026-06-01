@@ -26,4 +26,9 @@ http://n8n.flywithpeggs.com {
     encode gzip zstd
 }
 
+newsletter.flywithpeggs.com {
+    reverse_proxy 100.113.187.38:9000
+    encode gzip zstd
+}
+
 
