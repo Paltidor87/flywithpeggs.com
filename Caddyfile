@@ -31,7 +31,7 @@ newsletter.flywithpeggs.com {
     encode gzip zstd
 }
 
-sanctum.flywithpeggs.com {
+http://sanctum.flywithpeggs.com {
     reverse_proxy host.docker.internal:8000
     encode gzip zstd
 }
