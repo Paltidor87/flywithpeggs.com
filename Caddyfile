@@ -1,40 +1,37 @@
 http://flywithpeggs.com {
-    redir /mediakit /peggens_altidor_media_kit_v2.pdf
-    reverse_proxy web:80
-    encode gzip zstd
+	redir /mediakit /peggens_altidor_media_kit_v2.pdf
+	reverse_proxy web:80
+	encode gzip zstd
 
-    header {
-        # Security headers
-        X-Content-Type-Options "nosniff"
-        X-Frame-Options "DENY"
-        Referrer-Policy "strict-origin-when-cross-origin"
-        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-    }
+	header {
+		# Security headers
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+	}
 }
 
 http://www.flywithpeggs.com {
-    redir https://flywithpeggs.com{uri} permanent
+	redir https://flywithpeggs.com{uri} permanent
 }
 
 bgtravelnetwork.com, www.bgtravelnetwork.com {
-    reverse_proxy host.docker.internal:8080
-    encode gzip zstd
+	reverse_proxy host.docker.internal:8080
+	encode gzip zstd
 }
 
 http://n8n.flywithpeggs.com {
-    reverse_proxy host.docker.internal:32771
-    encode gzip zstd
+	reverse_proxy host.docker.internal:32771
+	encode gzip zstd
 }
 
 newsletter.flywithpeggs.com {
-    reverse_proxy 100.113.187.38:9000
-    encode gzip zstd
+	reverse_proxy 100.113.187.38:9000
+	encode gzip zstd
 }
 
-http://sanctum.flywithpeggs.com {
-    reverse_proxy host.docker.internal:8000
-    encode gzip zstd
+sanctum.flywithpeggs.com {
+	reverse_proxy host.docker.internal:8000
+	encode gzip zstd
 }
-
-
-

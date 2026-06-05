@@ -1,3 +1,5 @@
+# flywithpeggs.com Agents Context
+
 ## Learned User Preferences
 
 - Default to running the Critical Project Risk Radar workflow first when the user says to run radar.
@@ -11,18 +13,18 @@
 - Before implementing new work, confirm what is already implemented and avoid re-implementing completed measures.
 - When the user asks to hold off or avoid changes, provide verification or status checks without making code edits, and prioritize confirming work is saved and not regressed.
 - When the user has stacked or partially committed local edits, prefer safe merges and explicit regression checks before committing instead of resets that drop in-progress work.
-- Prefer concise, factual responses without human roleplay, heavy emotional framing, or unnecessary apologies.
+- Prefer surgical VPS deploys for Inner Sanctum (`/root/sanctum/`): patch routes and frontend incrementally, confirm before swapping whole server or auth stacks, and when debugging login treat **Cloudflare Access** (hostname gate, common in incognito) as separate from **Sanctum** in-app auth (v3 email/password; optional Google OAuth and Stripe when configured in `.env`).
 
 ## Learned Workspace Facts
 
 - The workspace centers on `flywithpeggs.com` and related self-hosted infrastructure operations. Treat **`/Users/peggs/Projects/openbot`** as part of the same operational picture as this repo—do not treat the workspace folder as a hard boundary when answering about bots, Twilio, or infra.
-- The active replacement host for Citadelle routing is `breathless-macbook-air.tail030c2b.ts.net`. SSH **`breathlessserver`** (Tailscale `100.123.242.58`, user `breathlessserver`) is the same Mac used for Citadelle-style home infra.
-- **Production VPS (“citadelle”):** **`root@187.77.15.53`** (public). SSH config may use **`vps`** (same host) and **`vps-ts`** (Tailscale **`100.106.193.70`**). **Openbot** runs in **Docker** (`openbot` container) on host port **8090**; public **`https://openbot.flywithpeggs.com`** depends on Cloudflare Tunnel **`openbot-tunnel`** being healthy (another tunnel does not substitute). This VPS is **not** the breathless Mac and **not** the Altidor IVR Node app on port 3000.
+- The active replacement host for Citadelle routing is `breathless-macbook-air.tail030c2b.ts.net`. SSH **`breathlessserver`** (Tailscale `100.123.242.58`, user `breathlessserver`) is the same Mac used for Citadelle-style home infra; it does **not** run Docker or Portainer (both are on the citadelle VPS).
+- **Production VPS (“citadelle”):** **`root@187.77.15.53`** (public). SSH config may use **`vps`** (same host) and **`vps-ts`** (Tailscale **`100.106.193.70`**). Site repo lives at **`/home/deploy/flywithpeggs.com/`** (Docker Compose + **Caddy**); **`sanctum.flywithpeggs.com`** reverse-proxies to **`host.docker.internal:8000`**, where **Inner Sanctum** v3.0.0 (Node at **`/root/sanctum/`**, pm2 **`inner-sanctum`**, bind **`0.0.0.0:8000`**) is upstream. **`sanctum.flywithpeggs.com`** is also behind **Cloudflare Access** (hostname gate, separate from in-app login). **Portainer** also runs here (`portainer` container, `portainer_data` volume); **`portainer.flywithpeggs.com`** is behind Cloudflare Access. **Openbot** runs in **Docker** (`openbot` container) on host port **8090**; public **`https://openbot.flywithpeggs.com`** depends on Cloudflare Tunnel **`openbot-tunnel`** being healthy (another tunnel does not substitute). This VPS is **not** the breathless Mac and **not** the Altidor IVR Node app on port 3000.
 - **Twilio Altidor IVR** (welcome + press 1/2/3 menu, **not** Openbot LLM voice): Node app on **breathlessserver** at `~/twilio-voice-app/twilio-voice-app/index.js`, listens on **port 3000**; Twilio primary URL shape **`http://69.124.82.203:3000/twilio/voice`** → `/twilio/menu`. **Openbot** inbound Twilio is different: **`https://openbot.flywithpeggs.com/webhook/voice`** in `openbot/main.py`. Do not conflate the two or repoint the IVR number to Openbot without explicit intent.
 - Notion runbook page for the IVR (host, paths, restart): `https://www.notion.so/32dae7c4c41181f48a39ef9946d21d9a` (child of **PROJECT CITADELLE**).
 - The VPN network includes a Raspberry Pi **`altidor-pi`**. On the LAN it is **`peggs@altidor-pi.local`** (mDNS). That Pi runs **Altidor Sentinel** (Python under `/home/peggs/Altidor_Sentinel`) and is **not** the host for the Node Twilio IVR on port 3000—that IVR runs on **breathlessserver** as above.
 - Local AI orchestration uses `.zshrc` helpers including `bugscan`, `find-code`, `mem-index`, and `zreload`, plus Ollama with `qwen3:8b` for audits and `nomic-embed-text` for embeddings.
-- Continual-learning transcript index state for this workspace is stored at `.cursor/hooks/state/continual-learning-index.json`.
+- **Inner Sanctum** (v3.0.0) in-app auth: **email/password** registration and login; optional **Google OAuth** and **Stripe** when configured in `/root/sanctum/.env`. Migrated legacy users need **forgot password** to set an initial password. **Oracle** calls are server-side proxied via **`POST /api/oracle`** using **`ANTHROPIC_API_KEY`** (not client-side). Production source of truth is **`/root/sanctum/`** on citadelle—not the flywithpeggs.com git repo.
 - `openbot` includes separate Trade Show Intel and UGC workflows, aligning each to distinct Notion databases; it is the single preferred runtime for multi-capability behavior, with Telegram and Twilio as interfaces into the same core bot rather than parallel duplicate bots per feature.
 - Call feedback is expected both in Telegram and via call-history or status retrieval endpoints.
 - Telephony work is Twilio-first for now; deeper 3CX extension integration is deferred until it is worth revisiting.
