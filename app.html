@@ -2777,11 +2777,11 @@ async function analyzeSong(){const song=document.getElementById('freq-song')?.va
 
 // Hook showPanel to init panels
 const _spBase=showPanel;
-function showPanel(id,btn){
+showPanel = function(id,btn){
   _spBase(id,btn);
   if(id==='eft')setTimeout(initEftPanel,50);
   if(id==='frequency')setTimeout(initFrequencyPanel,50);
-}
+};
 
 // BOOT
 function signOut(){ localStorage.removeItem('sanctum_token'); window.location.href='/'; }
