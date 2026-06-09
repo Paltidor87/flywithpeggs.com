@@ -886,48 +886,310 @@ EFT_PLACEHOLDER
   </div>
 
   <div id="eft-panel-session">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
-      <div style="background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:20px;">
-        <div class="section-title">Your Issue</div>
-        <textarea id="eft-issue" placeholder="Describe what you want to tap on..." style="width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text-bright);font-family:'EB Garamond',serif;font-size:.95rem;padding:10px 13px;border-radius:2px;min-height:80px;resize:vertical;line-height:1.6;"></textarea>
-        <div style="margin-top:12px;">
-          <div style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.12em;color:var(--text-dim);margin-bottom:7px;">INTENSITY (SUD) — 0 to 10</div>
-          <div style="display:flex;gap:3px;" id="eft-sud-track"></div>
-          <div style="margin-top:3px;font-family:'Cinzel',serif;font-size:.6rem;color:var(--text-dim);text-align:right;" id="eft-sud-display">Not set</div>
-        </div>
-        <div style="margin-top:12px;background:rgba(42,175,170,.06);border:1px solid rgba(42,175,170,.2);border-left:2px solid var(--teal);border-radius:2px;padding:12px 14px;font-family:'EB Garamond',serif;font-style:italic;font-size:.95rem;color:var(--text-bright);line-height:1.6;" id="eft-setup-phrase">Enter your issue above to generate your setup phrase.</div>
-        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-          <button class="card-btn" onclick="eftGeneratePhrase()" style="flex:1;">↻ Generate Setup Phrase</button>
-          <button class="card-btn" onclick="eftStartSession()" style="flex:1;border-color:var(--teal);color:var(--teal);">◎ Begin Session</button>
+    <style>
+    .layout-eft {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      height: 600px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--panel);
+    }
+    .canvas-side-eft {
+      position: relative;
+      background: radial-gradient(ellipse 80% 80% at 50% 40%, rgba(107,63,160,.08) 0%, transparent 70%);
+      overflow: hidden;
+      height: 100%;
+    }
+    #three-canvas-eft {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+    #three-canvas-eft:active { cursor: grabbing; }
+    .canvas-controls-eft {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+    .rotate-hint-eft {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Cinzel', sans-serif;
+      font-size: .58rem;
+      letter-spacing: .15em;
+      color: var(--text-dim);
+      opacity: .5;
+      pointer-events: none;
+    }
+    .sidebar-eft {
+      background: var(--panel);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      height: 100%;
+    }
+    .sidebar-header-eft {
+      padding: 20px 22px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(107,63,160,.1), transparent);
+      flex-shrink: 0;
+    }
+    .sidebar-title-eft {
+      font-family: 'Cinzel Decorative', sans-serif;
+      font-size: .85rem;
+      color: var(--gold);
+      letter-spacing: .1em;
+      margin-bottom: 4px;
+      text-shadow: 0 0 20px rgba(200,168,75,.3);
+    }
+    .sidebar-sub-eft {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: .82rem;
+      color: var(--text-dim);
+    }
+    .idle-state-eft {
+      padding: 28px 22px;
+      text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+    .idle-icon-eft {
+      font-size: 2rem;
+      opacity: .2;
+      animation: breathe-eft 4s ease-in-out infinite;
+    }
+    @keyframes breathe-eft { 0%,100%{opacity:.15;}50%{opacity:.35;} }
+    .idle-text-eft {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: .95rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 240px;
+    }
+    .zone-info-eft {
+      display: none;
+      flex-direction: column;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .zone-info-eft::-webkit-scrollbar { width: 3px; }
+    .zone-info-eft::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .zone-hero-eft {
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .zone-hero-eft::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--zone-color, var(--teal)), transparent);
+      opacity: .7;
+    }
+    .zone-name-eft {
+      font-family: 'Cinzel', sans-serif;
+      font-size: .88rem;
+      letter-spacing: .12em;
+      margin-bottom: 4px;
+    }
+    .zone-point-eft {
+      font-family: 'Cinzel', sans-serif;
+      font-size: .62rem;
+      letter-spacing: .1em;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+    .zone-tags-eft {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .zone-tag-eft {
+      font-family: 'Cinzel', sans-serif;
+      font-size: .55rem;
+      letter-spacing: .08em;
+      padding: 2px 8px;
+      border-radius: 2px;
+      border: 1px solid;
+    }
+    .zone-section-eft {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+    .zone-section-label-eft {
+      font-family: 'Cinzel', sans-serif;
+      font-size: .58rem;
+      letter-spacing: .16em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .zone-desc-eft {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .95rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .zone-instruction-eft {
+      background: rgba(42,175,170,.05);
+      border-left: 2px solid rgba(42,175,170,.4);
+      padding: 10px 13px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: .92rem;
+      color: var(--text-bright);
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+    .oracle-section-eft {
+      padding: 14px 22px;
+      flex-shrink: 0;
+      border-top: 1px solid var(--border);
+      background: rgba(5,4,10,.4);
+    }
+    .oracle-response-eft {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .9rem;
+      color: var(--text-bright);
+      line-height: 1.7;
+      min-height: 60px;
+      margin-bottom: 10px;
+    }
+    .oracle-response-eft.loading {
+      color: var(--text-dim);
+      font-style: italic;
+      animation: breathe-eft 2s ease-in-out infinite;
+    }
+    .zones-list-eft {
+      padding: 14px 22px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .zones-list-eft::-webkit-scrollbar { width: 3px; }
+    .zones-list-eft::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .zone-list-item-eft {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all .3s;
+      border: 1px solid transparent;
+      margin-bottom: 4px;
+    }
+    .zone-list-item-eft:hover { background: rgba(255,255,255,.02); border-color: var(--border); }
+    .zone-list-item-eft.active { background: rgba(42,175,170,.05); border-color: rgba(42,175,170,.3); }
+    .zli-dot-eft {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 1px solid;
+    }
+    .zli-name-eft {
+      font-family: 'Cinzel', sans-serif;
+      font-size: .65rem;
+      letter-spacing: .07em;
+      color: var(--silver);
+      flex: 1;
+      text-align: left;
+    }
+    .zli-meridian-eft {
+      font-size: .72rem;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+    @media(max-width:700px) {
+      .layout-eft { grid-template-columns: 1fr; grid-template-rows: 60vh 1fr; height: auto; }
+      .sidebar-eft { border-left: none; border-top: 1px solid var(--border); overflow-y: auto; }
+    }
+    </style>
+
+    <div class="layout-eft">
+      <!-- THREE.JS CANVAS -->
+      <div class="canvas-side-eft">
+        <div class="rotate-hint-eft">DRAG TO ROTATE · CLICK A ZONE</div>
+        <canvas id="three-canvas-eft"></canvas>
+        <div class="canvas-controls-eft">
+          <button class="card-btn active" id="btn-front" onclick="setViewEft('front')">Front</button>
+          <button class="card-btn" id="btn-back" onclick="setViewEft('back')">Back</button>
+          <button class="card-btn" id="btn-reset" onclick="resetViewEft()">↻ Reset</button>
         </div>
       </div>
-      <div style="background:var(--panel);border:1px solid var(--border);border-radius:4px;overflow:hidden;">
-        <div style="background:linear-gradient(90deg,rgba(107,63,160,.2),transparent);padding:11px 17px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;">
-          <div style="width:6px;height:6px;border-radius:50%;background:var(--violet-bright);"></div>
-          <span style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;color:var(--silver);">Oracle — Core Issue</span>
+
+      <!-- SIDEBAR -->
+      <div class="sidebar-eft">
+        <div class="sidebar-header-eft">
+          <div class="sidebar-title-eft">Body Intelligence</div>
+          <div class="sidebar-sub-eft">Click any zone to reveal its meridian, emotion & tapping point</div>
         </div>
-        <div style="padding:16px 18px;">
-          <div style="font-size:.9rem;color:var(--text-bright);line-height:1.75;min-height:120px;" id="eft-oracle-text">Enter your issue and ask the Oracle to identify the core emotional charge beneath it.</div>
-          <button class="card-btn" id="eft-oracle-btn" onclick="eftAskOracle()" style="margin-top:12px;border-color:var(--violet);color:var(--violet-bright);">☽ Identify Core Issue</button>
+
+        <!-- Idle -->
+        <div class="idle-state-eft" id="idle-state-eft">
+          <div class="idle-icon-eft">◉</div>
+          <div class="idle-text-eft">Rotate the body. Click any glowing zone to reveal its meridian correspondence and receive tapping guidance.</div>
+          <div style="margin-top:8px; margin-bottom:8px;">
+            <div style="font-family:'Cinzel',sans-serif;font-size:.58rem;letter-spacing:.12em;color:var(--text-dim);text-align:center;">ALL ZONES</div>
+          </div>
+          <div class="zones-list-eft" id="zones-list-eft" style="width:100%;padding:8px 0;"></div>
         </div>
-      </div>
-    </div>
-    <div style="background:var(--panel);border:1px solid var(--border);border-radius:4px;overflow:hidden;">
-      <div style="background:linear-gradient(90deg,rgba(42,175,170,.15),transparent);padding:11px 17px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;">
-        <div style="width:6px;height:6px;border-radius:50%;background:var(--teal);"></div>
-        <span style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;color:var(--silver);">Tapping Sequence</span>
-        <span style="margin-left:auto;font-family:'Cinzel',serif;font-size:.6rem;color:var(--text-dim);" id="eft-step-count">0 / 12</span>
-      </div>
-      <div style="padding:14px;" id="eft-sequence"></div>
-      <div style="padding:10px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;">
-        <div style="flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;"><div style="height:100%;background:var(--teal);border-radius:2px;transition:width .4s;width:0%;" id="eft-progress"></div></div>
-        <button class="card-btn" onclick="eftPrev()" id="eft-prev" disabled style="opacity:.4;padding:5px 12px;">←</button>
-        <button class="card-btn" onclick="eftNext()" id="eft-next" disabled style="padding:5px 12px;border-color:var(--teal);color:var(--teal);">Next →</button>
-        <button class="card-btn" onclick="eftReset()" id="eft-reset" style="display:none;padding:5px 10px;">↻</button>
+
+        <!-- Active zone -->
+        <div class="zone-info-eft" id="zone-info-eft">
+
+          <div class="zone-hero-eft" id="zone-hero-eft">
+            <div class="zone-name-eft" id="zone-name-eft">—</div>
+            <div class="zone-point-eft" id="zone-point-eft">—</div>
+            <div class="zone-tags-eft" id="zone-tags-eft"></div>
+          </div>
+
+          <div class="zone-section-eft">
+            <div class="zone-section-label-eft">Emotional Domain</div>
+            <div class="zone-desc-eft" id="zone-emotion-eft"></div>
+          </div>
+
+          <div class="zone-section-eft">
+            <div class="zone-section-label-eft">Tapping Instruction</div>
+            <div class="zone-instruction-eft" id="zone-instruction-eft"></div>
+          </div>
+
+          <div class="zone-section-eft">
+            <div class="zone-section-label-eft">Setup Phrase</div>
+            <div class="zone-instruction-eft" id="zone-phrase-eft" style="border-color:rgba(200,168,75,.4);background:rgba(200,168,75,.04);color:var(--gold);"></div>
+          </div>
+
+          <div style="padding:10px 22px;border-bottom:1px solid var(--border);">
+            <button class="card-btn" onclick="showIdleEft()" style="width:100%;">← All Zones</button>
+          </div>
+
+          <div class="oracle-section-eft">
+            <div class="zone-section-label-eft" style="margin-bottom:8px;">Oracle Reading</div>
+            <div class="oracle-response-eft" id="oracle-response-eft">Ask the Oracle what this body region is holding for you.</div>
+            <button class="card-btn" id="ask-btn-eft" onclick="askOracleEft()" style="width:100%; border-color:var(--violet); color:var(--violet-bright);">☽ Ask the Oracle</button>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
-
   <div id="eft-panel-meridians" style="display:none;">
     <p style="font-style:italic;color:var(--text-dim);font-size:.88rem;margin-bottom:18px;line-height:1.7;">Each tapping point activates a meridian. Each meridian governs an emotional domain. Each domain corresponds to a zodiac house — the same twelve-domain map underlying the binding wheel and geomantic houses.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;" id="eft-meridian-grid"></div>
@@ -1907,31 +2169,593 @@ async function updateUserTier(userId, tier) {
 
 
 // EFT
-const EFT_PTS=[{id:'kc',name:'Karate Chop',meridian:'Small Intestine',emotion:'Sorting, grief, vulnerability',zodiac:'Virgo',house:'6th',instruction:'Tap the side of your hand while stating your setup phrase three times.',color:'#9d6fd1'},{id:'cr',name:'Crown',meridian:'Governing Vessel',emotion:'Divine connection, integration',zodiac:'Aries',house:'1st',instruction:'Tap the crown of the head with all fingers.',color:'#c8a84b'},{id:'eb',name:'Eyebrow',meridian:'Bladder',emotion:'Trauma, fear, restlessness',zodiac:'Aquarius',house:'11th',instruction:'Tap the beginning of the eyebrow just above the nose.',color:'#4080c0'},{id:'se',name:'Side of Eye',meridian:'Gallbladder',emotion:'Resentment, rage, indecision',zodiac:'Libra',house:'7th',instruction:'Tap the outer corner of the eye on the bony ridge.',color:'#c090b8'},{id:'ue',name:'Under Eye',meridian:'Stomach',emotion:'Worry, anxiety, fear of the future',zodiac:'Cancer',house:'4th',instruction:'Tap under the eye on the orbital bone.',color:'#6090b8'},{id:'un',name:'Under Nose',meridian:'Governing Vessel',emotion:'Shame, embarrassment, self-worth',zodiac:'Leo',house:'5th',instruction:'Tap between nose and upper lip.',color:'#e09030'},{id:'ch',name:'Chin',meridian:'Central Vessel',emotion:'Shame, confusion, seeking clarity',zodiac:'Gemini',house:'3rd',instruction:'Tap in the crease of the chin.',color:'#d4b040'},{id:'cb',name:'Collarbone',meridian:'Kidney',emotion:'Fear, terror, insecurity',zodiac:'Capricorn',house:'10th',instruction:'Tap just below the collarbone on either side.',color:'#506878'},{id:'ua',name:'Under Arm',meridian:'Spleen',emotion:'Low self-esteem, anxiety, obsession',zodiac:'Taurus',house:'2nd',instruction:'Tap under the arm about 4 inches below the armpit.',color:'#5a9e5a'},{id:'wr',name:'Wrists',meridian:'Heart Protector',emotion:'Boundaries, protection, intimacy',zodiac:'Scorpio',house:'8th',instruction:'Tap the inner wrists together.',color:'#902040'},{id:'lv',name:'Liver Point',meridian:'Liver',emotion:'Anger, frustration, feeling trapped',zodiac:'Sagittarius',house:'9th',instruction:'Tap below the right breast on the rib.',color:'#c87030'},{id:'th',name:'Top of Head',meridian:'All Meridians',emotion:'Integration, completion',zodiac:'Pisces',house:'12th',instruction:'Tap the crown to complete and integrate the round.',color:'#7070c0'}];
-let eftStep=-1,eftActive=false,eftDone=new Set(),eftSUD=-1,eftIssue='',eftReminder='',eftInit=false;
-function initEftPanel(){
-  if(eftInit)return;eftInit=true;
-  const track=document.getElementById('eft-sud-track');
-  if(track&&!track.children.length){for(let i=0;i<=10;i++){const b=document.createElement('button');b.className='card-btn';b.style.cssText='flex:1;padding:5px 2px;font-size:.65rem;min-width:0;';b.textContent=i;const ii=i;b.onclick=()=>{eftSUD=ii;document.querySelectorAll('#eft-sud-track button').forEach(x=>{x.style.background='';x.style.color='';x.style.borderColor='';});b.style.background='rgba(42,175,170,.3)';b.style.color='var(--teal)';b.style.borderColor='var(--teal)';document.getElementById('eft-sud-display').textContent=ii+' / 10';eftGeneratePhrase();};track.appendChild(b);}}
-  const seq=document.getElementById('eft-sequence');
-  if(seq&&!seq.children.length){seq.innerHTML=EFT_PTS.map((pt,i)=>`<div id="eftsp-${pt.id}" onclick="eftJump(${i})" style="display:flex;gap:10px;align-items:flex-start;padding:9px 11px;border-radius:2px;margin-bottom:5px;border:1px solid transparent;cursor:pointer;transition:all .3s;"><span style="font-family:'Cinzel',serif;font-size:.56rem;color:var(--text-dim);width:14px;flex-shrink:0;">${i+1}</span><span style="width:7px;height:7px;border-radius:50%;border:1px solid ${pt.color};flex-shrink:0;margin-top:4px;background:transparent;transition:all .3s;" id="eftdot-${pt.id}"></span><div style="flex:1;"><div style="font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.08em;color:var(--silver);">${pt.name} <span style="opacity:.5;font-size:.58rem;">· ${pt.meridian}</span></div><div style="font-size:.83rem;color:var(--text-dim);line-height:1.5;margin-top:2px;">${pt.instruction}</div><div id="eftphr-${pt.id}" style="display:none;margin-top:5px;padding:6px 10px;background:rgba(42,175,170,.05);border-left:2px solid rgba(42,175,170,.3);font-style:italic;font-size:.86rem;color:var(--text);"></div></div></div>`).join('');}
-  const mg=document.getElementById('eft-meridian-grid');
-  if(mg&&!mg.children.length){mg.innerHTML=EFT_PTS.map(pt=>`<div style="background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:16px;transition:border-color .3s;" onmouseover="this.style.borderColor='${pt.color}'" onmouseout="this.style.borderColor=''"><div style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.09em;color:${pt.color};margin-bottom:6px;">${pt.name}</div><div style="font-size:.78rem;color:var(--text-dim);margin-bottom:4px;">${pt.meridian} Meridian</div><div style="font-size:.85rem;color:var(--text);line-height:1.6;margin-bottom:8px;">${pt.emotion}</div><div style="display:flex;gap:5px;flex-wrap:wrap;"><span style="font-family:'Cinzel',serif;font-size:.58rem;padding:2px 7px;border-radius:2px;border:1px solid var(--gold-dim);color:var(--gold-dim);">${pt.zodiac}</span><span style="font-family:'Cinzel',serif;font-size:.58rem;padding:2px 7px;border-radius:2px;border:1px solid var(--border-bright);color:var(--silver);">House ${pt.house}</span></div></div>`).join('');}
-  const ms=document.getElementById('eft-matrix-steps');
-  if(ms&&!ms.children.length){const steps=[{t:'Identify the Issue',b:'Ask: What is not working right now? Find an early memory relating to this theme. Trust what surfaces.',p:'"What is my earliest memory of feeling this way?"'},{t:'Enter the Memory — Find the ECHO',b:'Close your eyes. Step into the memory as a compassionate adult observer. Find your younger self — the ECHO. You are not reliving it. You are entering the field to help.',p:'"I can see my younger self. I am going to help them."'},{t:'Tap on the ECHO',b:'Ask permission to tap on the ECHO. Tap your own physical points while imagining tapping on the ECHO simultaneously.',p:'"Even though you felt this, you are safe now. I am here."'},{t:'Bring in Resources',b:'Ask the ECHO what they need. Bring in any resource — a person, a feeling, a color. The ECHO chooses.',p:'"What do you need right now to feel safe?"'},{t:'Transform the Scene',b:'Allow the memory to shift into something positive and true that the ECHO can genuinely believe and feel.',p:'"How would you like this memory to look?"'},{t:'Send Into the Field',b:'Take the new image and send it through your mind, into your heart, and out into the unified matrix. Breathe it in. Feel it as real.',p:'"I send this new picture into my cells and my future."'},{t:'Test the Memory',b:'Open your eyes. Attempt to access the original memory. Most people find only the new version is available.',p:'"When I try to remember the original, what do I see?"'}];ms.innerHTML=steps.map((s,i)=>`<div style="background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:2px;padding:16px 20px;margin-bottom:11px;"><div style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;color:var(--silver);margin-bottom:7px;">Step ${i+1} — ${s.t}</div><div style="font-size:.88rem;color:var(--text-dim);line-height:1.65;margin-bottom:8px;">${s.b}</div><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:var(--gold);padding:7px 11px;background:var(--surface);border-radius:2px;">${s.p}</div></div>`).join('');}
-  const qg=document.getElementById('eft-qigong-grid');
-  if(qg&&!qg.children.length){const ps=[{i:'🌬️',t:'Quiescent Sitting',d:'Sit comfortably. Regulate breath. Allow the mind to settle. Qi follows attention — where the mind goes, energy flows. Same entry state as the Silva centering exercise.',tag:'BEGINNER · 10–20 MIN'},{i:'🌊',t:'Standing Like a Stake',d:'Feet shoulder-width, knees slightly bent, arms rounded as if holding a large ball. Hold the posture. The Qi accumulates.',tag:'BEGINNER · 10–30 MIN'},{i:'🌿',t:'Eight Pieces of Brocade',d:'Eight gentle movements that regulate Qi through all twelve meridians. The most widely practiced Qigong form.',tag:'INTERMEDIATE · 20 MIN'},{i:'🔥',t:'Health Cultivation Massage',d:'Self-massage of the meridian points in sequence — the same points used in EFT tapping. Morning practice.',tag:'BEGINNER · 15 MIN'},{i:'🌙',t:'Relaxed Recumbent',d:'Lying down, regulate breath. Used for recovery, insomnia, and chronic conditions. The body heals when the mind is still.',tag:'ALL LEVELS · BEFORE SLEEP'},{i:'✨',t:'Five Animals Frolic',d:'Bear, deer, monkey, bird, and tiger movements corresponding to the five organ systems. Han dynasty physician Hua Tuo.',tag:'ADVANCED · 30 MIN'}];qg.innerHTML=ps.map(p=>`<div style="background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:16px;cursor:pointer;transition:all .3s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor=''"><div style="font-size:1.2rem;margin-bottom:7px;">${p.i}</div><div style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.09em;color:var(--teal);margin-bottom:5px;">${p.t}</div><div style="font-size:.85rem;color:var(--text-dim);line-height:1.6;margin-bottom:8px;">${p.d}</div><span style="font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.08em;padding:2px 8px;border-radius:2px;border:1px solid rgba(42,175,170,.3);color:var(--teal);">${p.tag}</span></div>`).join('');}
-}
-function switchEftTab(t){['session','meridians','matrix','qigong'].forEach(x=>{const el=document.getElementById('eft-panel-'+x);if(el)el.style.display=x===t?'block':'none';const b=document.getElementById('eft-tab-'+x);if(b){b.style.background='';b.style.borderColor='';b.style.color='';}});const ab=document.getElementById('eft-tab-'+t);if(ab){ab.style.background='rgba(42,175,170,.1)';ab.style.borderColor='var(--teal)';ab.style.color='var(--teal)';}}
-function eftGeneratePhrase(){const issue=document.getElementById('eft-issue')?.value?.trim();if(!issue)return;eftIssue=issue;eftReminder='this '+issue.split(' ').slice(0,5).join(' ').toLowerCase();const phrases=['Even though '+issue+', I deeply and completely accept myself.','Even though I have '+issue+', I choose to be free from this.','Even though '+issue+', I deserve to be without this.'];const el=document.getElementById('eft-setup-phrase');if(el)el.textContent=phrases[Math.floor(Math.random()*phrases.length)];}
-function eftStartSession(){const issue=document.getElementById('eft-issue')?.value?.trim();if(!issue){toast('Enter your issue first');return;}eftIssue=issue;eftActive=true;eftDone.clear();eftStep=0;document.getElementById('eft-prev').disabled=false;document.getElementById('eft-prev').style.opacity='1';document.getElementById('eft-next').disabled=false;document.getElementById('eft-reset').style.display='inline-block';eftActivateStep(0);}
-function eftActivateStep(i){eftStep=i;EFT_PTS.forEach((pt,j)=>{const el=document.getElementById('eftsp-'+pt.id);const dot=document.getElementById('eftdot-'+pt.id);const phr=document.getElementById('eftphr-'+pt.id);if(el){el.style.background='';el.style.borderColor='transparent';}if(dot)dot.style.background=eftDone.has(j)?'rgba(42,175,170,.4)':'transparent';if(phr)phr.style.display='none';});const pt=EFT_PTS[i];const el=document.getElementById('eftsp-'+pt.id);const dot=document.getElementById('eftdot-'+pt.id);const phr=document.getElementById('eftphr-'+pt.id);if(el){el.style.background='rgba(42,175,170,.08)';el.style.borderColor='var(--teal)';el.scrollIntoView({behavior:'smooth',block:'nearest'});}if(dot){dot.style.background='var(--teal)';dot.style.boxShadow='0 0 8px var(--teal)';}if(phr){phr.style.display='block';phr.textContent=(i===0?document.getElementById('eft-setup-phrase')?.textContent:eftReminder)||'this feeling';}const pct=Math.round((eftDone.size/EFT_PTS.length)*100);const prog=document.getElementById('eft-progress');if(prog)prog.style.width=pct+'%';const cnt=document.getElementById('eft-step-count');if(cnt)cnt.textContent=eftDone.size+' / '+EFT_PTS.length;}
-function eftNext(){if(!eftActive)return;eftDone.add(eftStep);if(eftStep<EFT_PTS.length-1){eftActivateStep(eftStep+1);}else{const prog=document.getElementById('eft-progress');if(prog)prog.style.width='100%';const cnt=document.getElementById('eft-step-count');if(cnt)cnt.textContent=EFT_PTS.length+' / '+EFT_PTS.length+' — COMPLETE';toast('Round complete. Check your SUD and begin another round if needed.');}}
-function eftPrev(){if(!eftActive||eftStep<=0)return;eftActivateStep(eftStep-1);}
-function eftJump(i){if(eftActive)eftActivateStep(i);}
-function eftReset(){eftActive=false;eftStep=-1;eftDone.clear();EFT_PTS.forEach(pt=>{const el=document.getElementById('eftsp-'+pt.id);if(el){el.style.background='';el.style.borderColor='transparent';}const phr=document.getElementById('eftphr-'+pt.id);if(phr)phr.style.display='none';const dot=document.getElementById('eftdot-'+pt.id);if(dot){dot.style.background='transparent';dot.style.boxShadow='';}});const prog=document.getElementById('eft-progress');if(prog)prog.style.width='0%';const cnt=document.getElementById('eft-step-count');if(cnt)cnt.textContent='0 / '+EFT_PTS.length;const prev=document.getElementById('eft-prev');if(prev){prev.disabled=true;prev.style.opacity='.4';}const nxt=document.getElementById('eft-next');if(nxt)nxt.disabled=true;const rst=document.getElementById('eft-reset');if(rst)rst.style.display='none';}
-async function eftAskOracle(){const issue=document.getElementById('eft-issue')?.value?.trim();if(!issue){toast('Enter your issue first');return;}const btn=document.getElementById('eft-oracle-btn');const text=document.getElementById('eft-oracle-text');btn.disabled=true;btn.textContent='Consulting...';text.textContent='Identifying the core emotional charge...';try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,system:'You are a master EFT practitioner. Identify the core emotional charge, the deeper emotion beneath it, the best tapping point to start, and a specific setup phrase. Be direct and specific.',messages:[{role:'user',content:'Person presents for EFT: "'+issue+'"'+(eftSUD>=0?' SUD: '+eftSUD+'/10':'')+'. Identify the core issue and best starting point.'}]})});const d=await r.json();text.textContent=d.content?.[0]?.text||'Cannot read the field.';btn.textContent='↻ Ask Again';btn.disabled=false;}catch(e){text.textContent='Connection disrupted.';btn.disabled=false;btn.textContent='☽ Identify Core Issue';}}
+const ZONES = [
+  {
+    id: 'crown',
+    name: 'Crown & Head',
+    point: 'Crown Point (CR) · Governing Vessel',
+    meridian: 'Governing Vessel',
+    zodiac: 'Aries ♈',
+    house: '1st — Self & Identity',
+    color: '#c8a84b',
+    emotion: 'Divine connection, integration, spiritual authority. The crown governs the relationship between the physical self and higher intelligence. When blocked: disconnection, confusion about purpose, spiritual doubt.',
+    instruction: 'Tap the crown of the head with all fingers bunched together. Use the fingertips on the very top center of the skull.',
+    phrase: 'Even though I feel disconnected from my higher self, I deeply and completely accept myself.',
+    bodyPos: { x: 0, y: 2.6, z: 0 },
+    size: 0.28
+  },
+  {
+    id: 'brow',
+    name: 'Third Eye & Brow',
+    point: 'Eyebrow Point (EB) · Bladder Meridian',
+    meridian: 'Bladder',
+    zodiac: 'Aquarius ♒',
+    house: '11th — Hopes & Future',
+    color: '#4080c0',
+    emotion: 'Trauma, fear, restlessness, frustration, impatience. The bladder meridian runs along the spine and governs the body\'s response to fear and shock. When blocked: chronic anxiety, hypervigilance, inability to rest.',
+    instruction: 'Tap the beginning of the eyebrow, just above and to the side of the nose, on the inner edge of the brow.',
+    phrase: 'Even though I carry this fear in my body, I choose to release it now.',
+    bodyPos: { x: 0, y: 2.45, z: 0.22 },
+    size: 0.18
+  },
+  {
+    id: 'throat',
+    name: 'Throat & Voice',
+    point: 'Under Nose (UN) · Governing Vessel',
+    meridian: 'Governing Vessel',
+    zodiac: 'Taurus ♉',
+    house: '2nd — Values & Expression',
+    color: '#5a9e5a',
+    emotion: 'Shame, embarrassment, self-worth, fear of speaking truth. The throat is where the inner world meets the outer world through voice. When blocked: inability to ask for what you need, swallowing emotions, speaking without power.',
+    instruction: 'Tap in the groove between the bottom of the nose and the top of the upper lip. Also tap on the chin crease.',
+    phrase: 'Even though I hold back what needs to be said, I am safe to speak my truth.',
+    bodyPos: { x: 0, y: 2.2, z: 0.18 },
+    size: 0.18
+  },
+  {
+    id: 'heart',
+    name: 'Heart & Chest',
+    point: 'Collarbone Point (CB) · Kidney Meridian',
+    meridian: 'Kidney',
+    zodiac: 'Leo ♌',
+    house: '5th — Heart & Creative Force',
+    color: '#e09030',
+    emotion: 'Fear, terror, insecurity, lack of willpower. The kidney meridian governs the body\'s deepest reserves of energy and courage. The heart center holds grief, love, and the capacity for joy. When blocked: existential fear, low life force, collapse under pressure.',
+    instruction: 'Tap just below the collarbone on either side of the sternum — the junction where collarbone, sternum and first rib meet.',
+    phrase: 'Even though I carry this fear in my chest, I am safe and I have the courage I need.',
+    bodyPos: { x: 0, y: 1.85, z: 0.2 },
+    size: 0.22
+  },
+  {
+    id: 'solar',
+    name: 'Solar Plexus',
+    point: 'Under Arm (UA) · Spleen Meridian',
+    meridian: 'Spleen',
+    zodiac: 'Virgo ♍',
+    house: '6th — Service & Health',
+    color: '#d4b040',
+    emotion: 'Low self-esteem, anxiety, insecurity, obsessive thinking, over-responsibility. The spleen meridian governs digestion of both food and experience. When blocked: chronic worry, overthinking, inability to let go of what has been processed.',
+    instruction: 'Tap under the arm, about 4 inches below the armpit — roughly where a bra strap sits.',
+    phrase: 'Even though I take on too much and worry constantly, I am doing enough and I am enough.',
+    bodyPos: { x: 0, y: 1.55, z: 0.15 },
+    size: 0.2
+  },
+  {
+    id: 'abdomen',
+    name: 'Lower Abdomen',
+    point: 'Under Eye (UE) · Stomach Meridian',
+    meridian: 'Stomach',
+    zodiac: 'Cancer ♋',
+    house: '4th — Foundation & Nourishment',
+    color: '#6090b8',
+    emotion: 'Worry, anxiety, fear of the future, undigested experience. The stomach meridian runs from the face down through the belly. Chronic worry lives here as physical tension. When blocked: digestive issues, constant mental chatter, inability to feel nourished.',
+    instruction: 'Tap under the eye on the orbital bone. Also place a hand on the lower abdomen and breathe into it while tapping.',
+    phrase: 'Even though I cannot stop worrying, I choose to feel nourished and safe in this body.',
+    bodyPos: { x: 0, y: 1.25, z: 0.16 },
+    size: 0.2
+  },
+  {
+    id: 'hands',
+    name: 'Hands & Wrists',
+    point: 'Karate Chop (KC) · Small Intestine · Wrist Point · Heart Protector',
+    meridian: 'Small Intestine / Heart Protector',
+    zodiac: 'Scorpio ♏',
+    house: '8th — Transformation & Boundaries',
+    color: '#902040',
+    emotion: 'Emotional protection, vulnerability, intimacy issues, inability to sort what serves from what harms. The hands are the instruments of creation and the point of contact with the world. When blocked: difficulty receiving, over-controlling, emotional armoring.',
+    instruction: 'Tap the karate chop point — the side of the hand between little finger and wrist. Also tap the inner wrists together.',
+    phrase: 'Even though I protect myself by keeping walls up, I am safe to be open and to receive.',
+    bodyPos: { x: 0.9, y: 1.3, z: 0 },
+    size: 0.15
+  },
+  {
+    id: 'hands_l',
+    name: 'Left Hand',
+    point: 'Karate Chop · Small Intestine',
+    meridian: 'Small Intestine',
+    zodiac: 'Scorpio ♏',
+    house: '8th',
+    color: '#902040',
+    emotion: 'Receiving, the feminine principle, what you allow in. The left hand is the receptive hand in most traditions.',
+    instruction: 'Tap the karate chop point on the left hand.',
+    phrase: 'Even though I struggle to receive, I open my left hand and I receive what is meant for me.',
+    bodyPos: { x: -0.9, y: 1.3, z: 0 },
+    size: 0.15
+  },
+  {
+    id: 'hips',
+    name: 'Hips & Sacrum',
+    point: 'Liver Point (LV) · Liver Meridian',
+    meridian: 'Liver',
+    zodiac: 'Sagittarius ♐',
+    house: '9th — Higher Purpose & Direction',
+    color: '#c87030',
+    emotion: 'Anger, frustration, resentment, feeling trapped, inability to move forward. The hips hold the body\'s forward momentum. Suppressed anger lodges here as chronic tightness. When blocked: stagnation, passive aggression, inability to change direction.',
+    instruction: 'Tap below the right breast on the ribcage, about 2 inches below the armpit. Also breathe into the hips.',
+    phrase: 'Even though I feel trapped and unable to move forward, I release the anger and I choose my direction.',
+    bodyPos: { x: 0, y: 0.9, z: 0.1 },
+    size: 0.22
+  },
+  {
+    id: 'knees',
+    name: 'Knees',
+    point: 'Bladder Meridian · Fear & Submission',
+    meridian: 'Bladder / Kidney',
+    zodiac: 'Capricorn ♑',
+    house: '10th — Authority & Structure',
+    color: '#506878',
+    emotion: 'Fear of moving forward, submission, inability to stand in one\'s authority. Knees buckle under fear. They are the joint of humility — we kneel in prayer and in defeat. When blocked: chronic fear of the future, difficulty taking a stand, back pain.',
+    instruction: 'Tap around the kneecap gently. Breathe into the knees and imagine roots growing from them into the earth.',
+    phrase: 'Even though my knees feel weak with fear, I choose to stand in my own authority.',
+    bodyPos: { x: 0, y: 0.25, z: 0.15 },
+    size: 0.2
+  },
+  {
+    id: 'feet',
+    name: 'Feet & Foundation',
+    point: 'Kidney 1 (Bubbling Spring) · Root of the Kidney Meridian',
+    meridian: 'Kidney',
+    zodiac: 'Pisces ♓',
+    house: '12th — Completion & Return',
+    color: '#7070c0',
+    emotion: 'Groundedness, safety, connection to the earth. The feet are the root — where the body meets the ground. Kidney 1 is the only acupuncture point on the sole of the foot, and it is the point of earthing. When blocked: anxiety, feeling unmoored, existential insecurity.',
+    instruction: 'Tap or massage the center of the sole of each foot. Stand barefoot on the earth when possible.',
+    phrase: 'Even though I feel ungrounded and unsafe, my feet connect me to the earth and I am held.',
+    bodyPos: { x: 0, y: -0.8, z: 0.12 },
+    size: 0.2
+  }
+];
 
+// Three.js variables
+let eftRenderer, eftScene, eftCamera, eftBodyGroup, eftHotspots = [], eftClock, eftAnimationId;
+let eftIsDragging = false, eftPrevMouse = { x: 0, y: 0 }, eftRotY = 0, eftRotX = 0, eftAutoRotate = true, eftSelectedZone = null;
+let eftInit = false;
+
+function initEftPanel(){
+  if(eftInit) return;
+  eftInit = true;
+  initThreeJs();
+  buildZoneListEft();
+  
+  // Matrix and Qigong setups remain the same
+  const ms = document.getElementById('eft-matrix-steps');
+  if(ms && !ms.children.length){
+    const steps = [
+      {t:'Identify the Issue',b:'Ask: What is not working right now? Find an early memory relating to this theme. Trust what surfaces.',p:'"What is my earliest memory of feeling this way?"'},
+      {t:'Enter the Memory — Find the ECHO',b:'Close your eyes. Step into the memory as a compassionate adult observer. Find your younger self — the ECHO. You are not reliving it. You are entering the field to help.',p:'"I can see my younger self. I am going to help them."'},
+      {t:'Tap on the ECHO',b:'Ask permission to tap on the ECHO. Tap your own physical points while imagining tapping on the ECHO simultaneously.',p:'"Even though you felt this, you are safe now. I am here."'},
+      {t:'Bring in Resources',b:'Ask the ECHO what they need. Bring in any resource — a person, a feeling, a color. The ECHO chooses.',p:'"What do you need right now to feel safe?"'},
+      {t:'Transform the Scene',b:'Allow the memory to shift into something positive and true that the ECHO can genuinely believe and feel.',p:'"How would you like this memory to look?"'},
+      {t:'Send Into the Field',b:'Take the new image and send it through your mind, into your heart, and out into the unified matrix. Breathe it in. Feel it as real.',p:'"I send this new picture into my cells and my future."'},
+      {t:'Test the Memory',b:'Open your eyes. Attempt to access the original memory. Most people find only the new version is available.',p:'"When I try to remember the original, what do I see?"'}
+    ];
+    ms.innerHTML = steps.map((s,i) => `<div style="background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:2px;padding:16px 20px;margin-bottom:11px;"><div style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;color:var(--silver);margin-bottom:7px;">Step ${i+1} — ${s.t}</div><div style="font-size:.88rem;color:var(--text-dim);line-height:1.65;margin-bottom:8px;">${s.b}</div><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:var(--gold);padding:7px 11px;background:var(--surface);border-radius:2px;">${s.p}</div></div>`).join('');
+  }
+
+  const qg = document.getElementById('eft-qigong-grid');
+  if(qg && !qg.children.length){
+    const ps = [
+      {i:'🌬️',t:'Quiescent Sitting',d:'Sit comfortably. Regulate breath. Allow the mind to settle. Qi follows attention — where the mind goes, energy flows. Same entry state as the Silva centering exercise.',tag:'BEGINNER · 10–20 MIN'},
+      {i:'🌊',t:'Standing Like a Stake',d:'Feet shoulder-width, knees slightly bent, arms rounded as if holding a large ball. Hold the posture. The Qi accumulates.',tag:'BEGINNER · 10–30 MIN'},
+      {i:'🌿',t:'Eight Pieces of Brocade',d:'Eight gentle movements that regulate Qi through all twelve meridians. The most widely practiced Qigong form.',tag:'INTERMEDIATE · 20 MIN'},
+      {i:'🔥',t:'Health Cultivation Massage',d:'Self-massage of the meridian points in sequence — the same points used in EFT tapping. Morning practice.',tag:'BEGINNER · 15 MIN'},
+      {i:'🌙',t:'Relaxed Recumbent',d:'Lying down, regulate breath. Used for recovery, insomnia, and chronic conditions. The body heals when the mind is still.',tag:'ALL LEVELS · BEFORE SLEEP'},
+      {i:'✨',t:'Five Animals Frolic',d:'Bear, deer, monkey, bird, and tiger movements corresponding to the five organ systems. Han dynasty physician Hua Tuo.',tag:'ADVANCED · 30 MIN'}
+    ];
+    qg.innerHTML = ps.map(p => `<div style="background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:16px;cursor:pointer;transition:all .3s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor=''"><div style="font-size:1.2rem;margin-bottom:7px;">${p.i}</div><div style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.09em;color:var(--teal);margin-bottom:5px;">${p.t}</div><div style="font-size:.85rem;color:var(--text-dim);line-height:1.6;margin-bottom:8px;">${p.d}</div><span style="font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.08em;padding:2px 8px;border-radius:2px;border:1px solid rgba(42,175,170,.3);color:var(--teal);">${p.tag}</span></div>`).join('');
+  }
+}
+
+function initThreeJs() {
+  const canvas = document.getElementById('three-canvas-eft');
+  if (!canvas) return;
+
+  eftRenderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  eftRenderer.setPixelRatio(window.devicePixelRatio);
+  eftRenderer.shadowMap.enabled = true;
+  eftRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  eftScene = new THREE.Scene();
+  eftCamera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  eftCamera.position.set(0, 1.2, 6);
+
+  // Resize
+  function resizeEft() {
+    const parent = canvas.parentElement;
+    const w = parent.clientWidth;
+    const h = parent.clientHeight || 600;
+    eftRenderer.setSize(w, h);
+    eftCamera.aspect = w / h;
+    eftCamera.updateProjectionMatrix();
+  }
+  resizeEft();
+  window.addEventListener('resize', resizeEft);
+
+  // Lighting
+  const ambientLight = new THREE.AmbientLight(0x1a1428, 2);
+  eftScene.add(ambientLight);
+
+  const keyLight = new THREE.DirectionalLight(0xc8a84b, 0.8);
+  keyLight.position.set(2, 4, 3);
+  eftScene.add(keyLight);
+
+  const fillLight = new THREE.DirectionalLight(0x4060c0, 0.4);
+  fillLight.position.set(-3, 2, 1);
+  eftScene.add(fillLight);
+
+  const rimLight = new THREE.DirectionalLight(0x9d6fd1, 0.3);
+  rimLight.position.set(0, -2, -3);
+  eftScene.add(rimLight);
+
+  // Body Group
+  eftBodyGroup = new THREE.Group();
+  eftScene.add(eftBodyGroup);
+
+  // Material
+  function bodyMat(opacity = 1) {
+    return new THREE.MeshPhongMaterial({
+      color: 0x16122a,
+      emissive: 0x080614,
+      specular: 0x3a3468,
+      shininess: 30,
+      transparent: opacity < 1,
+      opacity,
+      wireframe: false,
+    });
+  }
+
+  function addPart(geometry, y, mat) {
+    const mesh = new THREE.Mesh(geometry, mat || bodyMat());
+    mesh.position.y = y;
+    mesh.castShadow = true;
+    eftBodyGroup.add(mesh);
+    return mesh;
+  }
+
+  // Head
+  addPart(new THREE.SphereGeometry(0.28, 16, 12), 2.55);
+  // Neck
+  addPart(new THREE.CylinderGeometry(0.1, 0.12, 0.25, 12), 2.27);
+  // Torso upper
+  addPart(new THREE.CylinderGeometry(0.38, 0.32, 0.7, 14), 1.9);
+  // Torso lower
+  addPart(new THREE.CylinderGeometry(0.32, 0.28, 0.5, 14), 1.35);
+  // Hips
+  addPart(new THREE.CylinderGeometry(0.3, 0.25, 0.35, 14), 0.93);
+
+  // Upper legs
+  [-0.15, 0.15].forEach(x => {
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.11, 0.7, 12), bodyMat());
+    m.position.set(x, 0.45, 0);
+    eftBodyGroup.add(m);
+  });
+
+  // Lower legs
+  [-0.15, 0.15].forEach(x => {
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.07, 0.65, 12), bodyMat());
+    m.position.set(x, -0.15, 0);
+    eftBodyGroup.add(m);
+  });
+
+  // Feet
+  [-0.15, 0.15].forEach(x => {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.08, 0.22), bodyMat());
+    m.position.set(x, -0.54, 0.06);
+    eftBodyGroup.add(m);
+  });
+
+  // Upper arms
+  [-0.55, 0.55].forEach(x => {
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.08, 0.55, 12), bodyMat());
+    m.position.set(x, 1.85, 0);
+    m.rotation.z = x > 0 ? -0.25 : 0.25;
+    eftBodyGroup.add(m);
+  });
+
+  // Lower arms
+  [-0.75, 0.75].forEach(x => {
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.06, 0.5, 12), bodyMat());
+    m.position.set(x, 1.45, 0);
+    m.rotation.z = x > 0 ? -0.15 : 0.15;
+    eftBodyGroup.add(m);
+  });
+
+  // Hands
+  [-0.92, 0.92].forEach(x => {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.16, 0.06), bodyMat());
+    m.position.set(x, 1.22, 0);
+    eftBodyGroup.add(m);
+  });
+
+  // Hotspots
+  eftHotspots = [];
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+
+  ZONES.forEach(zone => {
+    const geo = new THREE.SphereGeometry(zone.size, 16, 12);
+    const mat = new THREE.MeshPhongMaterial({
+      color: new THREE.Color(zone.color),
+      emissive: new THREE.Color(zone.color),
+      emissiveIntensity: 0.3,
+      transparent: true,
+      opacity: 0.45,
+      depthWrite: false,
+    });
+    const sphere = new THREE.Mesh(geo, mat);
+    sphere.position.set(zone.bodyPos.x, zone.bodyPos.y, zone.bodyPos.z);
+    sphere.userData = { zone };
+    eftBodyGroup.add(sphere);
+    eftHotspots.push(sphere);
+
+    // Pulse ring
+    const ringGeo = new THREE.RingGeometry(zone.size * 1.1, zone.size * 1.35, 24);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(zone.color),
+      transparent: true,
+      opacity: 0.25,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.position.copy(sphere.position);
+    ring.userData = { pulse: true, baseOpacity: 0.25 };
+    eftBodyGroup.add(ring);
+  });
+
+  // Events
+  canvas.addEventListener('mousedown', e => {
+    eftIsDragging = false;
+    eftPrevMouse = { x: e.clientX, y: e.clientY };
+    const onDrag = e => {
+      const dx = e.clientX - eftPrevMouse.x;
+      const dy = e.clientY - eftPrevMouse.y;
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) eftIsDragging = true;
+      if (eftIsDragging) {
+        eftRotY += dx * 0.008;
+        eftRotX += dy * 0.005;
+        eftRotX = Math.max(-0.6, Math.min(0.6, eftRotX));
+        eftAutoRotate = false;
+        eftPrevMouse = { x: e.clientX, y: e.clientY };
+      }
+    };
+    const onUp = e => {
+      canvas.removeEventListener('mousemove', onDrag);
+      canvas.removeEventListener('mouseup', onUp);
+      if (!eftIsDragging) handleClickEft(e);
+    };
+    canvas.addEventListener('mousemove', onDrag);
+    canvas.addEventListener('mouseup', onUp);
+  });
+
+  // Touch
+  canvas.addEventListener('touchstart', e => {
+    eftPrevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    eftIsDragging = false;
+  });
+  canvas.addEventListener('touchmove', e => {
+    const dx = e.touches[0].clientX - eftPrevMouse.x;
+    if (Math.abs(dx) > 3) eftIsDragging = true;
+    eftRotY += dx * 0.008;
+    eftAutoRotate = false;
+    eftPrevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    e.preventDefault();
+  }, { passive: false });
+  canvas.addEventListener('touchend', e => {
+    if (!eftIsDragging) handleClickEft(e.changedTouches[0]);
+  });
+
+  function handleClickEft(e) {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, eftCamera);
+    const hits = raycaster.intersectObjects(eftHotspots);
+
+    if (hits.length > 0) {
+      const zone = hits[0].object.userData.zone;
+      selectZoneEft(zone);
+    }
+  }
+
+  eftClock = new THREE.Clock();
+  animateEft();
+}
+
+function animateEft() {
+  eftAnimationId = requestAnimationFrame(animateEft);
+  const t = eftClock.getElapsedTime();
+
+  // Auto-rotate
+  if (eftAutoRotate) eftRotY += 0.004;
+
+  // Apply rotation
+  if (eftBodyGroup) {
+    eftBodyGroup.rotation.y = eftRotY;
+    eftBodyGroup.rotation.x = eftRotX;
+    
+    // Floating body
+    eftBodyGroup.position.y = Math.sin(t * 0.4) * 0.04;
+  }
+
+  // Pulse hotspots
+  eftHotspots.forEach((h, i) => {
+    const phase = t * 1.8 + i * 0.7;
+    const pulse = (Math.sin(phase) * 0.5 + 0.5);
+    if (eftSelectedZone && h.userData.zone.id === eftSelectedZone.id) {
+      h.material.emissiveIntensity = 0.4 + pulse * 0.4;
+      h.scale.setScalar(1 + pulse * 0.08);
+    } else {
+      h.material.emissiveIntensity = 0.15 + pulse * 0.15;
+      h.scale.setScalar(1);
+    }
+  });
+
+  if (eftRenderer && eftScene && eftCamera) {
+    eftRenderer.render(eftScene, eftCamera);
+  }
+}
+
+function selectZoneEft(zone) {
+  eftSelectedZone = zone;
+
+  // Update hotspot visuals
+  eftHotspots.forEach(h => {
+    const isSelected = h.userData.zone.id === zone.id;
+    h.material.opacity = isSelected ? 0.75 : 0.3;
+    h.material.emissiveIntensity = isSelected ? 0.6 : 0.2;
+    if (isSelected) {
+      h.material.color.set(zone.color);
+      h.material.emissive.set(zone.color);
+    }
+  });
+
+  // Show zone info
+  document.getElementById('idle-state-eft').style.display = 'none';
+  const zi = document.getElementById('zone-info-eft');
+  zi.style.display = 'flex';
+
+  // Set color
+  zi.style.setProperty('--zone-color', zone.color);
+  document.getElementById('zone-name-eft').style.color = zone.color;
+  document.getElementById('zone-name-eft').textContent = zone.name;
+  document.getElementById('zone-point-eft').textContent = zone.point;
+
+  // Tags
+  document.getElementById('zone-tags-eft').innerHTML = [
+    `<span class="zone-tag-eft" style="color:${zone.color};border-color:${zone.color};">${zone.zodiac}</span>`,
+    `<span class="zone-tag-eft" style="color:var(--silver);border-color:var(--border-bright);">${zone.house}</span>`,
+    `<span class="zone-tag-eft" style="color:var(--teal);border-color:rgba(42,175,170,.4);">${zone.meridian}</span>`,
+  ].join('');
+
+  document.getElementById('zone-emotion-eft').textContent = zone.emotion;
+  document.getElementById('zone-instruction-eft').textContent = zone.instruction;
+  document.getElementById('zone-phrase-eft').textContent = zone.phrase;
+
+  // Reset oracle
+  document.getElementById('oracle-response-eft').textContent = 'Ask the Oracle what this body region is holding for you.';
+  document.getElementById('oracle-response-eft').classList.remove('loading');
+  document.getElementById('ask-btn-eft').disabled = false;
+  document.getElementById('ask-btn-eft').textContent = '☽ Ask the Oracle';
+
+  // Update list
+  document.querySelectorAll('.zone-list-item-eft').forEach(el => {
+    el.classList.toggle('active', el.dataset.id === zone.id);
+  });
+}
+
+function showIdleEft() {
+  eftSelectedZone = null;
+  document.getElementById('idle-state-eft').style.display = 'flex';
+  document.getElementById('zone-info-eft').style.display = 'none';
+  eftHotspots.forEach(h => {
+    h.material.opacity = 0.45;
+    h.material.emissiveIntensity = 0.3;
+  });
+}
+
+function buildZoneListEft() {
+  const list = document.getElementById('zones-list-eft');
+  list.innerHTML = ZONES.map(z => `
+    <div class="zone-list-item-eft" data-id="${z.id}" onclick="selectZoneEft(ZONES.find(x=>x.id==='${z.id}'))">
+      <span class="zli-dot-eft" style="background:${z.color};border-color:${z.color};"></span>
+      <span class="zli-name-eft">${z.name}</span>
+      <span class="zli-meridian-eft">${z.meridian.split('/')[0].trim()}</span>
+    </div>
+  `).join('');
+}
+
+function setViewEft(view) {
+  eftAutoRotate = false;
+  if (view === 'front') { eftRotY = 0; eftRotX = 0; }
+  if (view === 'back') { eftRotY = Math.PI; eftRotX = 0; }
+  document.getElementById('btn-front').classList.toggle('active', view === 'front');
+  document.getElementById('btn-back').classList.toggle('active', view === 'back');
+}
+
+function resetViewEft() {
+  eftRotY = 0; eftRotX = 0;
+  eftAutoRotate = true;
+  document.getElementById('btn-front').classList.add('active');
+  document.getElementById('btn-back').classList.remove('active');
+}
+
+function switchEftTab(t){
+  ['session','meridians','matrix','qigong'].forEach(x=>{
+    const el=document.getElementById('eft-panel-'+x);
+    if(el)el.style.display=x===t?'block':'none';
+    const b=document.getElementById('eft-tab-'+x);
+    if(b){b.style.background='';b.style.borderColor='';b.style.color='';}
+  });
+  const ab=document.getElementById('eft-tab-'+t);
+  if(ab){
+    ab.style.background='rgba(42,175,170,.1)';
+    ab.style.borderColor='var(--teal)';
+    ab.style.color='var(--teal)';
+  }
+}
+
+async function askOracleEft() {
+  if (!eftSelectedZone) return;
+  const btn = document.getElementById('ask-btn-eft');
+  const text = document.getElementById('oracle-response-eft');
+  btn.disabled = true;
+  btn.textContent = 'Consulting...';
+  text.classList.add('loading');
+  text.textContent = 'Reading what this body region is holding...';
+
+  const prompt = `The person has selected the body zone: ${eftSelectedZone.name}.
+
+Meridian: ${eftSelectedZone.meridian}
+Emotional domain: ${eftSelectedZone.emotion}
+Zodiac: ${eftSelectedZone.zodiac} · ${eftSelectedZone.house}
+
+Please give a deep reading of what this body region commonly holds — the emotional patterns, the unresolved experiences, the physical sensations that accompany these emotions, and how EFT tapping at this point can begin to release them. Connect to the meridian's function in Chinese medicine and the zodiac/house correspondence. Be specific and speak directly to the person.`;
+
+  try {
+    const r = await fetch('/api/oracle', {
+      method: 'POST',
+      headers: ah(),
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 500,
+        system: 'You are a master EFT practitioner and body-centered therapist with deep knowledge of Chinese meridian theory, emotional anatomy, and somatic healing. Give specific, direct guidance about what body regions hold emotionally. Speak directly to the person.',
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const d = await r.json();
+    const reply = d.content?.[0]?.text || 'Cannot read this field at this moment.';
+    text.classList.remove('loading');
+    text.innerHTML = reply.replace(/\n/g, '<br>').replace(/\r/g, '<br>');
+    btn.textContent = '↻ Read Again';
+  } catch(e) {
+    text.classList.remove('loading');
+    text.textContent = 'Connection disrupted. Try again.';
+    btn.textContent = '☽ Ask the Oracle';
+  }
+  btn.disabled = false;
+}
 // GEMATRIA
 const GC={SE:{fn:w=>w.toUpperCase().split('').reduce((s,c)=>{const v=c.charCodeAt(0)-64;return v>=1&&v<=26?s+v:s;},0),color:'#c8a84b',desc:'A=1 through Z=26'},FR:{fn:w=>{const v={A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};return w.toUpperCase().split('').reduce((s,c)=>s+(v[c]||0),0);},color:'#9d6fd1',desc:'Pythagorean reduction'},CH:{fn:w=>{const v={A:1,B:2,C:3,D:4,E:5,F:8,G:3,H:5,I:1,J:1,K:2,L:3,M:4,N:5,O:7,P:8,Q:1,R:2,S:3,T:4,U:6,V:6,W:6,X:5,Y:1,Z:7};return w.toUpperCase().split('').reduce((s,c)=>s+(v[c]||0),0);},color:'#e09030',desc:'Ancient Babylonian'},RO:{fn:w=>w.toUpperCase().split('').reduce((s,c)=>{const v=c.charCodeAt(0)-64;return v>=1&&v<=26?s+(27-v):s;},0),color:'#2aafaa',desc:'Z=1 through A=26'}};
 const GM={1:{t:'The Prime Mover',d:'Unity, divine will, the I AM. Hebrew Aleph — the breath before speech.'},2:{t:'The Witness',d:'Duality, reflection, partnership. The first division of light and dark.'},3:{t:'The Trinity',d:'Father, Son, Holy Spirit. Past, present, future. The first number that creates dimension.'},4:{t:'The Foundation',d:'Four elements, four directions. Structure, stability, physical mastery.'},5:{t:'The Pentagram',d:'Five points of the star — four elements plus spirit. Freedom, change, the human body.'},6:{t:'The Hexagram',d:'Star of David — as above so below. Harmony, balance, love. Six days of creation.'},7:{t:'The Seeker',d:'Seven days, seven chakras, seven planets. Spiritual completeness. The mystic.'},8:{t:'The Infinite',d:'The lemniscate — infinity vertical. Power, abundance, karma. Return at a higher level.'},9:{t:'The Completion',d:'Universal love, humanitarian service. In mathematics 9 absorbs all numbers.'},11:{t:'The Illuminator',d:'Master number — the gate between dimensions. Intuition, spiritual vision, the messenger.'},22:{t:'The Master Builder',d:'Most powerful number. 22 Hebrew letters, 22 Tree of Life paths, 22 Major Arcana.'},33:{t:'The Master Teacher',d:'Christ consciousness. The master who has completed all lessons and returns to teach.'},44:{t:'The Master Healer',d:'Builds systems of healing that outlast the healer. Practical mastery in collective service.'}};
